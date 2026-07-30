@@ -1,0 +1,852 @@
+/* ==========================================================================
+   KIC — Landing page
+   Port of the Claude Design source "KIC Landing Page.dc.html".
+   Inline design-canvas styles are lifted into real rules here; the
+   `style-hover` attributes become :hover/:focus-visible states.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Tokens
+   -------------------------------------------------------------------------- */
+:root {
+  /* Cacao palette */
+  --kic-cacao-900: #150B07;   /* deepest — footer, hero vignette */
+  --kic-cacao-800: #1C100B;   /* base background */
+  --kic-cacao-700: #2E1A12;   /* raised surface */
+  --kic-gold:      #F4C430;   /* primary accent */
+  --kic-gold-deep: #E5A93C;   /* accent gradient end */
+  --kic-cream:     #FAF6F0;   /* text on dark */
+
+  --kic-on-gold:        var(--kic-cacao-800);
+  --kic-on-gold-soft:   rgba(28, 16, 11, .78);
+  --kic-on-gold-mute:   rgba(28, 16, 11, .70);
+  --kic-on-dark-soft:   rgba(250, 246, 240, .75);
+  --kic-on-dark-mute:   rgba(250, 246, 240, .62);
+  --kic-on-dark-faint:  rgba(250, 246, 240, .45);
+  --kic-hairline:       rgba(250, 246, 240, .22);
+  --kic-hairline-soft:  rgba(250, 246, 240, .10);
+
+  /* Type */
+  --kic-font-display: Montserrat, system-ui, sans-serif;
+  --kic-font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+
+  /* Rhythm */
+  --kic-gutter: 48px;
+  --kic-shell: 1180px;
+}
+
+/* --------------------------------------------------------------------------
+   2. Base
+   -------------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  background: var(--kic-cacao-800);
+  color: var(--kic-cream);
+  font-family: var(--kic-font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--kic-gold); text-decoration: none; }
+a:hover { color: var(--kic-cream); }
+
+img { display: block; max-width: 100%; }
+
+h1, h2, h3 { margin: 0; }
+
+:focus-visible {
+  outline: 2px solid var(--kic-gold);
+  outline-offset: 3px;
+}
+
+.kic-sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.kic-skip {
+  position: absolute;
+  left: -9999px;
+  z-index: 100;
+  padding: 14px 22px;
+  background: var(--kic-gold);
+  color: var(--kic-on-gold);
+  font: 800 12px/1 var(--kic-font-body);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+.kic-skip:focus { left: 16px; top: 16px; color: var(--kic-on-gold); }
+
+/* Shared bits ------------------------------------------------------------- */
+.kic-eyebrow {
+  margin: 0;
+  font: 700 10px/1 var(--kic-font-body);
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--kic-gold);
+}
+
+.kic-eyebrow--rule {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 11px;
+  letter-spacing: .26em;
+  color: var(--kic-on-dark-mute);
+}
+
+.kic-rule {
+  width: 38px;
+  height: 1px;
+  background: var(--kic-gold);
+}
+
+.kic-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 34px;
+  font: 800 12px/1 var(--kic-font-body);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  transition: background-color .22s ease, color .22s ease;
+}
+.kic-btn--sm { gap: 8px; padding: 16px 26px; font-size: 11px; letter-spacing: .18em; }
+
+.kic-btn--gold {
+  background: var(--kic-gold);
+  color: var(--kic-on-gold);
+}
+.kic-btn--gold:hover,
+.kic-btn--gold:focus-visible { background: var(--kic-cream); color: var(--kic-cacao-800); }
+
+.kic-btn--dark {
+  background: var(--kic-cacao-800);
+  color: var(--kic-cream);
+}
+.kic-btn--dark:hover,
+.kic-btn--dark:focus-visible { background: var(--kic-cream); color: var(--kic-cacao-800); }
+
+.kic-arrow { font-size: 14px; }
+
+/* --------------------------------------------------------------------------
+   3. Image slots
+   Ports <image-slot>: the figure carries a branded placeholder so the layout
+   reads correctly before the photography lands. js/kic.js flags a figure
+   `.is-empty` when its <img> fails to load, which reveals the placeholder.
+   Drop the real file at the src path in index.html and it takes over — no
+   markup change needed. See README.md for the slot → filename map.
+   -------------------------------------------------------------------------- */
+.kic-media {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  background: linear-gradient(150deg, var(--kic-cacao-700), var(--kic-cacao-900));
+}
+
+.kic-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.kic-media--cover img { object-fit: cover; }
+
+.kic-media::after {
+  content: attr(data-label);
+  position: absolute;
+  inset: 0;
+  display: none;
+  place-content: center;
+  padding: 12% 14%;
+  pointer-events: none;
+  font: 600 11px/1.6 var(--kic-font-body);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--kic-on-dark-mute);
+}
+
+.kic-media.is-empty img { display: none; }
+.kic-media.is-empty::after { display: grid; }
+
+/* --------------------------------------------------------------------------
+   4. Announcement bar
+   -------------------------------------------------------------------------- */
+.kic-announce {
+  padding: 11px 20px;
+  background: var(--kic-gold);
+  color: var(--kic-on-gold);
+  font: 600 11px/1 var(--kic-font-body);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   5. Header
+   -------------------------------------------------------------------------- */
+.kic-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 24px;
+  padding: 20px var(--kic-gutter);
+  background: rgba(28, 16, 11, .82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(250, 246, 240, .08);
+}
+
+.kic-logo {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  min-width: 0;
+  color: var(--kic-cream);
+}
+.kic-logo:hover { color: var(--kic-cream); }
+.kic-logo__mark { font: 900 26px/1 var(--kic-font-display); letter-spacing: .02em; }
+.kic-logo__tag {
+  font: 600 8px/1 var(--kic-font-body);
+  letter-spacing: .34em;
+  text-transform: uppercase;
+  color: var(--kic-gold);
+}
+
+.kic-nav {
+  display: flex;
+  gap: 34px;
+  font: 700 11px/1 var(--kic-font-body);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+.kic-nav a { color: var(--kic-cream); transition: color .2s ease; }
+.kic-nav a:hover,
+.kic-nav a.is-active { color: var(--kic-gold); }
+
+.kic-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 14px;
+}
+
+.kic-icon-btn {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--kic-hairline);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--kic-cream);
+  transition: border-color .2s ease, color .2s ease;
+}
+.kic-icon-btn:hover,
+.kic-icon-btn:focus-visible { border-color: var(--kic-gold); color: var(--kic-gold); }
+
+.kic-icon-glyph { font: 400 15px/1 var(--kic-font-body); }
+
+/* Account glyph, drawn with two spans as in the design source */
+.kic-account-head {
+  position: absolute;
+  top: 8px;
+  width: 9px; height: 9px;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+}
+.kic-account-body {
+  position: absolute;
+  bottom: 6px;
+  width: 17px; height: 9px;
+  border: 1.5px solid currentColor;
+  border-bottom: 0;
+  border-radius: 9px 9px 0 0;
+}
+
+.kic-cart {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: var(--kic-gold);
+  color: var(--kic-on-gold);
+  font: 800 11px/1 var(--kic-font-body);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background-color .2s ease;
+}
+.kic-cart:hover,
+.kic-cart:focus-visible { background: var(--kic-cream); color: var(--kic-cacao-800); }
+
+/* Burger — mobile only; the design source is desktop-width */
+.kic-burger {
+  display: none;
+  width: 38px; height: 34px;
+  padding: 8px 6px;
+  background: none;
+  border: 1px solid var(--kic-hairline);
+  border-radius: 8px;
+  cursor: pointer;
+}
+.kic-burger span {
+  display: block;
+  height: 2px;
+  background: var(--kic-cream);
+  border-radius: 2px;
+  transition: transform .24s ease, opacity .24s ease;
+}
+.kic-burger span + span { margin-top: 4px; }
+.kic-burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.kic-burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.kic-burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+/* --------------------------------------------------------------------------
+   6. Hero
+   -------------------------------------------------------------------------- */
+.kic-hero {
+  position: relative;
+  padding: 56px var(--kic-gutter) 96px;
+  background: radial-gradient(120% 90% at 50% 20%, var(--kic-cacao-700) 0%, var(--kic-cacao-800) 62%, var(--kic-cacao-900) 100%);
+  overflow: hidden;
+}
+
+.kic-hero__inner {
+  position: relative;
+  max-width: 1360px;
+  margin: 0 auto;
+}
+
+.kic-hero__head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.kic-hero__title {
+  font: 900 clamp(64px, 13.5vw, 196px)/.86 var(--kic-font-display);
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--kic-cream);
+  text-shadow: 0 30px 80px rgba(0, 0, 0, .55);
+}
+
+.kic-media--hero {
+  position: relative;
+  z-index: 2;
+  width: min(620px, 68vw);
+  margin: -140px auto 0;
+  aspect-ratio: 1 / 1;
+  background: none;
+  filter: drop-shadow(0 60px 70px rgba(0, 0, 0, .6));
+}
+.kic-media--hero.is-empty {
+  background: linear-gradient(150deg, var(--kic-cacao-700), var(--kic-cacao-900));
+  border-radius: 50%;
+}
+
+.kic-hero__cta {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  margin: -28px 0 0;
+}
+.kic-hero__cta .kic-btn--gold { box-shadow: 0 22px 44px rgba(244, 196, 48, .24); }
+
+/* --------------------------------------------------------------------------
+   7. Floating decor
+   -------------------------------------------------------------------------- */
+@keyframes kicFloat {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50%      { transform: translate3d(0, -18px, 0) rotate(4deg); }
+}
+@keyframes kicFloatSlow {
+  0%, 100% { transform: translate3d(0, 6px, 0) rotate(-3deg); }
+  50%      { transform: translate3d(0, -14px, 0) rotate(6deg); }
+}
+
+.kic-decor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.kic-blob { position: absolute; display: block; }
+
+/* Hero blobs */
+.kic-blob--h1 { left: 4%;  top: 34%;    width: 120px; height: 96px;  border-radius: 46% 54% 62% 38% / 48% 42% 58% 52%; background: linear-gradient(150deg, #4A2A19, #22120C); animation: kicFloat 7s ease-in-out infinite; }
+.kic-blob--h2 { left: 15%; top: 66%;    width: 64px;  height: 52px;  border-radius: 50%; background: linear-gradient(150deg, #3C2214, #1B0F09); animation: kicFloatSlow 9s ease-in-out infinite; }
+.kic-blob--h3 { right: 6%; top: 28%;    width: 150px; height: 120px; border-radius: 54% 46% 38% 62% / 52% 58% 42% 48%; background: linear-gradient(200deg, #54301C, #22120C); animation: kicFloatSlow 8s ease-in-out infinite; }
+.kic-blob--h4 { right: 18%; top: 72%;   width: 78px;  height: 62px;  border-radius: 50%; background: linear-gradient(160deg, #422516, #1B0F09); animation: kicFloat 11s ease-in-out infinite; }
+.kic-blob--h5 { left: 44%; bottom: 6%;  width: 40px;  height: 40px;  border-radius: 50%; background: var(--kic-gold); opacity: .5; filter: blur(1px); animation: kicFloat 6s ease-in-out infinite; }
+
+/* Story blobs */
+.kic-blob--s1 { left: 6%;   top: 12%;    width: 112px; height: 88px;  border-radius: 44% 56% 60% 40% / 50% 44% 56% 50%; background: linear-gradient(150deg, #3A2013, #1C100B); animation: kicFloat 8s ease-in-out infinite; }
+.kic-blob--s2 { left: 34%;  top: 6%;     width: 70px;  height: 58px;  border-radius: 50% 50% 42% 58%; background: linear-gradient(150deg, #2E1A12, #160C07); animation: kicFloatSlow 10s ease-in-out infinite; }
+.kic-blob--s3 { right: 8%;  top: 16%;    width: 132px; height: 104px; border-radius: 56% 44% 40% 60% / 48% 56% 44% 52%; background: linear-gradient(200deg, #422516, #1C100B); animation: kicFloatSlow 9s ease-in-out infinite; }
+.kic-blob--s4 { right: 26%; bottom: 10%; width: 86px;  height: 70px;  border-radius: 50%; background: linear-gradient(160deg, #351D11, #170D08); animation: kicFloat 12s ease-in-out infinite; }
+.kic-blob--s5 { left: 12%;  bottom: 12%; width: 56px;  height: 46px;  border-radius: 50%; background: linear-gradient(160deg, #2E1A12, #160C07); animation: kicFloat 7.5s ease-in-out infinite; }
+
+/* --------------------------------------------------------------------------
+   8. Notre histoire
+   -------------------------------------------------------------------------- */
+.kic-story {
+  position: relative;
+  padding: 110px var(--kic-gutter);
+  background: linear-gradient(180deg, var(--kic-gold) 0%, var(--kic-gold-deep) 100%);
+  overflow: hidden;
+}
+
+.kic-story__inner {
+  position: relative;
+  max-width: var(--kic-shell);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+
+.kic-media--story {
+  width: 100%;
+  aspect-ratio: 5 / 4;
+  background: none;
+  filter: drop-shadow(0 40px 50px rgba(28, 16, 11, .28));
+}
+.kic-media--story.is-empty { background: linear-gradient(150deg, var(--kic-cacao-700), var(--kic-cacao-900)); }
+
+.kic-story__body {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  color: var(--kic-on-gold);
+}
+
+.kic-story__title {
+  font: 900 clamp(44px, 6vw, 84px)/.88 var(--kic-font-display);
+  letter-spacing: .01em;
+  text-transform: uppercase;
+  color: var(--kic-cream);
+  text-shadow: 0 10px 30px rgba(28, 16, 11, .22);
+}
+
+.kic-story__lead {
+  margin: 0;
+  max-width: 46ch;
+  font: 700 15px/1.65 var(--kic-font-body);
+  text-wrap: pretty;
+}
+
+.kic-story__text {
+  margin: 0;
+  max-width: 52ch;
+  font: 400 14px/1.75 var(--kic-font-body);
+  color: var(--kic-on-gold-soft);
+  text-wrap: pretty;
+}
+
+.kic-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 34px;
+  margin: 6px 0 0;
+}
+.kic-stat { display: flex; flex-direction: column; gap: 4px; }
+.kic-stat__value { font: 900 30px/1 var(--kic-font-display); }
+.kic-stat__label {
+  margin: 0;
+  font: 600 10px/1.4 var(--kic-font-body);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--kic-on-gold-mute);
+}
+
+.kic-story__cta { margin: 10px 0 0; }
+.kic-story__cta .kic-btn { padding: 19px 32px; gap: 10px; }
+
+/* --------------------------------------------------------------------------
+   9. Catégories produits
+   -------------------------------------------------------------------------- */
+.kic-cats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.kic-cat {
+  position: relative;
+  min-height: 440px;
+  overflow: hidden;
+}
+.kic-cat .kic-media--cover {
+  position: absolute;
+  inset: 0;
+  background: none;
+}
+/* Copy sits top-left over these cards, so park the empty-slot caption clear of it */
+.kic-cat .kic-media::after {
+  align-content: end;
+  padding: 40px var(--kic-gutter);
+  text-align: right;
+}
+/* ...and the gold card needs a dark caption to stay legible */
+.kic-cat--feves .kic-media::after { color: var(--kic-on-gold-mute); }
+
+.kic-cat__veil {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.kic-cat__body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 52px var(--kic-gutter);
+  max-width: 60%;
+  pointer-events: none;      /* keeps the photo hoverable around the copy */
+}
+.kic-cat__body .kic-btn { align-self: flex-start; pointer-events: auto; }
+
+.kic-cat__title {
+  font: 900 clamp(34px, 4vw, 56px)/.9 var(--kic-font-display);
+  text-transform: uppercase;
+  color: var(--kic-cream);
+}
+
+.kic-cat--beurre { background: var(--kic-cacao-800); }
+.kic-cat--beurre .kic-cat__veil { background: linear-gradient(100deg, rgba(21, 11, 7, .90) 0%, rgba(21, 11, 7, .55) 46%, rgba(21, 11, 7, 0) 78%); }
+
+.kic-cat--poudre { background: var(--kic-cacao-700); }
+.kic-cat--poudre .kic-cat__veil { background: linear-gradient(100deg, rgba(46, 26, 18, .92) 0%, rgba(46, 26, 18, .50) 48%, rgba(46, 26, 18, 0) 80%); }
+
+.kic-cat--pate { background: var(--kic-cacao-900); }
+.kic-cat--pate .kic-cat__veil { background: linear-gradient(100deg, rgba(15, 8, 5, .92) 0%, rgba(15, 8, 5, .50) 48%, rgba(15, 8, 5, 0) 80%); }
+
+.kic-cat--feves { background: var(--kic-gold-deep); }
+.kic-cat--feves .kic-cat__veil { background: linear-gradient(100deg, rgba(229, 169, 60, .94) 0%, rgba(229, 169, 60, .50) 48%, rgba(229, 169, 60, 0) 80%); }
+.kic-cat--feves .kic-eyebrow,
+.kic-cat--feves .kic-cat__title { color: var(--kic-on-gold); }
+
+/* --------------------------------------------------------------------------
+   10. Newsletter
+   -------------------------------------------------------------------------- */
+.kic-news {
+  position: relative;
+  padding: 96px var(--kic-gutter);
+  background: linear-gradient(105deg, var(--kic-gold-deep) 0%, var(--kic-gold) 58%, var(--kic-gold) 100%);
+  overflow: hidden;
+}
+
+.kic-news__inner {
+  position: relative;
+  max-width: var(--kic-shell);
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px;
+  align-items: center;
+}
+
+.kic-news__title {
+  font: 900 clamp(40px, 5.4vw, 76px)/.88 var(--kic-font-display);
+  text-transform: uppercase;
+  color: var(--kic-on-gold);
+}
+
+.kic-news__body {
+  /* Floor raised from the source's 280px: the h2 is wide enough to squeeze this
+     column onto its minimum, which clipped the e-mail placeholder. */
+  flex: 1 1 340px;
+  min-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.kic-news__text {
+  margin: 0;
+  max-width: 44ch;
+  font: 500 14px/1.7 var(--kic-font-body);
+  color: rgba(28, 16, 11, .82);
+  text-wrap: pretty;
+}
+
+.kic-news__form {
+  display: flex;
+  max-width: 560px;
+  background: var(--kic-cream);
+}
+
+.kic-news__input {
+  flex: 1;
+  min-width: 0;
+  padding: 20px 22px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font: 600 11px/1 var(--kic-font-body);
+  letter-spacing: .16em;
+  color: var(--kic-on-gold);
+}
+.kic-news__input::placeholder { color: rgba(28, 16, 11, .55); }
+.kic-news__input:focus-visible { outline: 2px solid var(--kic-cacao-800); outline-offset: -2px; }
+
+.kic-news__submit {
+  border: 0;
+  cursor: pointer;
+  padding: 20px 32px;
+  background: var(--kic-cacao-800);
+  color: var(--kic-cream);
+  font: 800 11px/1 var(--kic-font-body);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  transition: background-color .22s ease;
+}
+.kic-news__submit:hover,
+.kic-news__submit:focus-visible { background: var(--kic-cacao-700); }
+
+.kic-news__feedback {
+  margin: 0;
+  min-height: 1em;
+  font: 600 11px/1.5 var(--kic-font-body);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--kic-on-gold);
+}
+
+.kic-media--news {
+  flex: 0 1 240px;
+  min-width: 180px;
+  aspect-ratio: 4 / 5;
+  box-shadow: 0 26px 50px rgba(28, 16, 11, .25);
+}
+.kic-media--news img { object-fit: cover; }
+
+/* --------------------------------------------------------------------------
+   11. Footer
+   -------------------------------------------------------------------------- */
+.kic-footer {
+  position: relative;
+  padding: 88px var(--kic-gutter) 0;
+  background: var(--kic-cacao-900);
+  overflow: hidden;
+}
+
+.kic-footer__grid {
+  position: relative;
+  z-index: 2;
+  max-width: var(--kic-shell);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr 1fr;
+  gap: 44px;
+}
+
+.kic-footer__brand { display: flex; flex-direction: column; gap: 14px; }
+.kic-footer__logo { font: 900 30px/1 var(--kic-font-display); color: var(--kic-cream); }
+.kic-footer__about {
+  margin: 0;
+  max-width: 30ch;
+  font: 400 13px/1.7 var(--kic-font-body);
+  color: rgba(250, 246, 240, .6);
+}
+
+.kic-social { display: flex; gap: 10px; margin-top: 6px; }
+.kic-social__link {
+  width: 36px; height: 36px;
+  border: 1px solid var(--kic-hairline);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font: 700 11px/1 var(--kic-font-body);
+  color: var(--kic-cream);
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+}
+.kic-social__link:hover,
+.kic-social__link:focus-visible {
+  background: var(--kic-gold);
+  color: var(--kic-cacao-800);
+  border-color: var(--kic-gold);
+}
+
+.kic-footer__col { display: flex; flex-direction: column; gap: 12px; }
+.kic-footer__head {
+  margin: 0;
+  font: 700 10px/1 var(--kic-font-body);
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: var(--kic-gold);
+}
+.kic-footer__col a {
+  font: 500 13px/1 var(--kic-font-body);
+  color: var(--kic-on-dark-soft);
+  transition: color .2s ease;
+}
+.kic-footer__col a:hover { color: var(--kic-gold); }
+
+.kic-footer__address {
+  font: 500 13px/1.6 var(--kic-font-body);
+  font-style: normal;
+  color: var(--kic-on-dark-soft);
+}
+
+.kic-footer__wave {
+  position: relative;
+  margin-top: 64px;
+  height: 260px;
+}
+.kic-footer__wave .kic-media { position: absolute; inset: 0; }
+.kic-footer__wave-veil {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, var(--kic-cacao-900) 0%, rgba(21, 11, 7, .35) 26%, rgba(21, 11, 7, 0) 60%);
+}
+
+.kic-footer__bottom {
+  position: relative;
+  max-width: var(--kic-shell);
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 26px 0 30px;
+  border-top: 1px solid var(--kic-hairline-soft);
+  font: 500 11px/1 var(--kic-font-body);
+  letter-spacing: .1em;
+  color: var(--kic-on-dark-faint);
+}
+.kic-footer__legal { display: flex; flex-wrap: wrap; gap: 26px; }
+.kic-footer__legal a { color: var(--kic-on-dark-faint); }
+.kic-footer__legal a:hover { color: var(--kic-gold); }
+
+/* --------------------------------------------------------------------------
+   12. Responsive
+   The design source is authored at desktop width; these breakpoints carry it
+   down without changing the desktop rendering.
+   -------------------------------------------------------------------------- */
+@media (max-width: 1080px) {
+  :root { --kic-gutter: 32px; }
+
+  .kic-story__inner { grid-template-columns: 1fr; gap: 44px; }
+  .kic-footer__grid { grid-template-columns: 1fr 1fr; gap: 36px; }
+
+  /* Once the story is one column the copy spans the full width, and the
+     dark blobs land behind the dark-on-gold text. Drop them. */
+  .kic-decor--story { display: none; }
+}
+
+@media (max-width: 900px) {
+  /* Grid → flex so the nav can drop to its own full-width row */
+  .kic-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .kic-logo { order: 1; flex: 0 1 auto; overflow: hidden; }
+  .kic-actions { order: 2; margin-left: auto; flex: 0 0 auto; }
+  .kic-icon-btn { display: none; }
+  .kic-burger { display: block; order: 3; flex: 0 0 auto; }
+
+  /* Nav collapses into a panel under the sticky bar */
+  .kic-nav {
+    order: 4;
+    flex-basis: 100%;
+    display: none;
+    flex-direction: column;
+    gap: 0;
+    margin: 4px calc(var(--kic-gutter) * -1) -20px;
+    border-top: 1px solid var(--kic-hairline-soft);
+  }
+  .kic-nav.is-open { display: flex; }
+  .kic-nav a {
+    padding: 18px var(--kic-gutter);
+    border-bottom: 1px solid var(--kic-hairline-soft);
+  }
+
+  .kic-cats { grid-template-columns: 1fr; }
+  .kic-cat { min-height: 380px; }
+  .kic-cat__body { max-width: 76%; padding: 44px var(--kic-gutter); }
+
+  .kic-media--hero { margin-top: -80px; }
+  .kic-media--news { flex: 1 1 220px; max-width: 260px; }
+}
+
+@media (max-width: 620px) {
+  :root { --kic-gutter: 22px; }
+
+  .kic-announce { font-size: 9px; letter-spacing: .12em; padding: 10px 14px; }
+
+  /* The tagline is what pushes the header past a 390px viewport */
+  .kic-logo__tag { display: none; }
+  .kic-cart { letter-spacing: .08em; padding: 0 12px; }
+
+  .kic-nav a { padding: 16px var(--kic-gutter); }
+
+  .kic-hero { padding-bottom: 68px; }
+  /* The title wraps to two lines here — keep the product clear of the second */
+  .kic-media--hero { width: 84vw; margin-top: -12px; }
+  .kic-hero__cta { margin-top: -8px; }
+  .kic-media::after { font-size: 10px; letter-spacing: .1em; }
+  .kic-hero__cta .kic-btn { padding: 17px 26px; font-size: 11px; }
+  .kic-eyebrow--rule { font-size: 10px; letter-spacing: .18em; text-align: center; }
+
+  .kic-story { padding-block: 72px; }
+  .kic-stats { gap: 22px; }
+
+  .kic-cat__body { max-width: 100%; }
+  .kic-cat__veil { background-image: linear-gradient(160deg, rgba(21, 11, 7, .92) 0%, rgba(21, 11, 7, .62) 60%, rgba(21, 11, 7, .35) 100%) !important; }
+  .kic-cat--feves .kic-cat__veil { background-image: linear-gradient(160deg, rgba(229, 169, 60, .94) 0%, rgba(229, 169, 60, .68) 60%, rgba(229, 169, 60, .4) 100%) !important; }
+
+  .kic-news { padding-block: 72px; }
+  .kic-news__inner { gap: 32px; }
+  .kic-news__form { flex-direction: column; }
+  .kic-news__submit { padding: 18px 24px; }
+  .kic-media--news { max-width: 100%; aspect-ratio: 16 / 10; }
+
+  .kic-footer { padding-top: 64px; }
+  .kic-footer__grid { grid-template-columns: 1fr; gap: 30px; }
+  .kic-footer__wave { height: 180px; margin-top: 44px; }
+  .kic-footer__bottom { justify-content: flex-start; }
+}
+
+/* --------------------------------------------------------------------------
+   13. Motion & print
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .kic-blob { animation: none !important; }
+  *, *::before, *::after {
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+@media print {
+  .kic-header, .kic-decor, .kic-burger, .kic-news__form { display: none !important; }
+  body { background: #fff; color: #000; }
+}

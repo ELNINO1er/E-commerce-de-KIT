@@ -2,6 +2,7 @@
   'use strict';
 
   var CART_KEY = 'kic.cart.count';
+  var FAVORITES_KEY = 'kic.favorites';
   var grid = document.querySelector('.kic-grid');
   if (!grid) return;
 
@@ -21,6 +22,22 @@
     });
   }
 
+  function readFavorites() {
+    try { return JSON.parse(localStorage.getItem(FAVORITES_KEY)) || []; }
+    catch (error) { return []; }
+  }
+
+  function writeFavorites(favorites) {
+    try { localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites)); }
+    catch (error) { /* Les favoris restent utilisables pendant la session. */ }
+  }
+
+  function paintFavorite(button, selected) {
+    button.classList.toggle('is-favorite', selected);
+    button.setAttribute('aria-pressed', String(selected));
+    button.querySelector('span').textContent = selected ? '♥' : '♡';
+  }
+
   var cards = Array.prototype.slice.call(grid.querySelectorAll('.kic-card'));
   var initialOrder = cards.slice();
   var chips = Array.prototype.slice.call(document.querySelectorAll('.kic-chip'));
@@ -30,8 +47,29 @@
   var activeFilter = 'all';
 
   paintCart(readCart());
+  var favorites = readFavorites();
+  cards.forEach(function (card) {
+    var button = card.querySelector('.kic-favorite');
+    if (button) paintFavorite(button, favorites.indexOf(card.dataset.name) !== -1);
+  });
 
   grid.addEventListener('click', function (event) {
+    var favoriteButton = event.target.closest('.kic-favorite');
+    if (favoriteButton) {
+      var favoriteCard = favoriteButton.closest('.kic-card');
+      var favoriteName = favoriteCard.dataset.name;
+      var favoriteIndex = favorites.indexOf(favoriteName);
+      if (favoriteIndex === -1) {
+        favorites.push(favoriteName);
+        paintFavorite(favoriteButton, true);
+      } else {
+        favorites.splice(favoriteIndex, 1);
+        paintFavorite(favoriteButton, false);
+      }
+      writeFavorites(favorites);
+      return;
+    }
+
     var button = event.target.closest('.kic-card__add');
     if (!button) return;
 

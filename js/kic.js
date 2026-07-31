@@ -112,7 +112,7 @@
         return;
       }
 
-      feedback.textContent = 'Merci ! Votre inscription au club KIC est enregistrée.';
+      feedback.textContent = 'Merci ! Votre demande a bien été enregistrée. KIC vous recontactera prochainement.';
       form.reset();
     });
   }

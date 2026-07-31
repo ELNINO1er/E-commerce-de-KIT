@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contacter KIC — Demande professionnelle</title>
+<meta name="description" content="Contactez KIC pour une demande de devis, d’échantillon ou d’information sur nos produits cacao en France et en Europe.">
+<meta name="theme-color" content="#1C100B">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/kic.css">
+<link rel="stylesheet" href="css/header-tools.css">
+<link rel="stylesheet" href="css/contact.css">
+</head>
+<body>
+
+<a class="kic-skip" href="#contact-form">Aller au formulaire</a>
+<div class="kic-announce">Approvisionnement durable · Produits traçables · Livraison en France et en Europe</div>
+
+<header class="kic-header">
+  <a class="kic-logo" href="index.html">
+    <span class="kic-logo__mark">KIC</span>
+    <span class="kic-logo__tag">Konan Industrie et Chocolaterie</span>
+  </a>
+  <button class="kic-burger" type="button" aria-expanded="false" aria-controls="kic-nav" aria-label="Ouvrir le menu"><span></span><span></span><span></span></button>
+  <nav class="kic-nav" id="kic-nav" aria-label="Navigation principale">
+    <a href="index.html">Accueil</a>
+    <a href="index.html#histoire">À propos</a>
+    <a href="produits.html">Nos produits</a>
+    <a href="contact.html" class="is-active" aria-current="page">Contact</a>
+  </nav>
+  <div class="kic-actions">
+    <button class="kic-icon-btn" type="button" data-kic-open="search" title="Rechercher" aria-label="Ouvrir la recherche"><span class="kic-icon-glyph" aria-hidden="true">⌕</span></button>
+    <button class="kic-icon-btn kic-icon-btn--account" type="button" data-kic-open="account" title="Mon compte" aria-label="Connexion et inscription"><span class="kic-account-head" aria-hidden="true"></span><span class="kic-account-body" aria-hidden="true"></span></button>
+    <button class="kic-cart" type="button" data-kic-open="cart">Panier · <span class="kic-cart__count">0</span></button>
+  </div>
+</header>
+
+<main>
+  <section class="kic-contact-hero">
+    <div class="kic-contact-hero__inner">
+      <div>
+        <nav class="kic-crumb" aria-label="Fil d’Ariane"><a href="index.html">Accueil</a><span aria-hidden="true">/</span><span>Contact</span></nav>
+        <p class="kic-eyebrow kic-eyebrow--rule"><span class="kic-rule" aria-hidden="true"></span>Échangeons sur votre projet</p>
+        <h1 class="kic-contact-hero__title">Parlons de<br>vos besoins</h1>
+        <p class="kic-contact-hero__text">Vous êtes artisan, distributeur, restaurateur ou industriel ? Donnez-nous quelques informations sur votre projet afin que KIC puisse vous orienter vers les produits, formats et conditions adaptés.</p>
+      </div>
+      <figure class="kic-contact-hero__visual">
+        <img src="img/images-05.png" alt="Produits cacao KIC présentés dans un univers professionnel">
+      </figure>
+    </div>
+  </section>
+
+  <section class="kic-contact-main" id="contact-form">
+    <div class="kic-contact-main__inner">
+      <aside class="kic-contact-info">
+        <p class="kic-eyebrow">KIC à votre écoute</p>
+        <h2>Un contact direct et professionnel</h2>
+        <p>Notre équipe étudie les demandes liées aux produits, aux volumes, aux échantillons et aux conditions de livraison en France et en Europe.</p>
+
+        <div class="kic-contact-detail">
+          <span class="kic-contact-detail__icon" aria-hidden="true">☎</span>
+          <div><strong>Téléphone</strong><a href="tel:+33745908778">+33 7 45 90 87 78</a></div>
+        </div>
+        <div class="kic-contact-detail">
+          <span class="kic-contact-detail__icon" aria-hidden="true">◆</span>
+          <div><strong>Siège social</strong><address>18, rue Masséna<br>06300 Nice, France</address></div>
+        </div>
+        <div class="kic-contact-detail">
+          <span class="kic-contact-detail__icon" aria-hidden="true">→</span>
+          <div><strong>Zone commerciale</strong><span>France et Europe, selon les zones couvertes</span></div>
+        </div>
+
+        <div class="kic-contact-note">
+          <strong>Pour une réponse plus précise</strong>
+          <span>Indiquez le produit, le volume estimé, votre pays de livraison et l’échéance souhaitée.</span>
+        </div>
+      </aside>
+
+      <div class="kic-contact-form-card">
+        <div class="kic-contact-form-card__head">
+          <p class="kic-eyebrow">Votre demande</p>
+          <h2>Comment pouvons-nous vous accompagner ?</h2>
+        </div>
+        <form class="kic-contact-form" action="#" method="post" novalidate>
+          <div class="kic-contact-form__row">
+            <label><span>Nom complet *</span><input name="name" autocomplete="name" required></label>
+            <label><span>Société</span><input name="company" autocomplete="organization"></label>
+          </div>
+          <div class="kic-contact-form__row">
+            <label><span>E-mail professionnel *</span><input name="email" type="email" autocomplete="email" required></label>
+            <label><span>Téléphone</span><input name="phone" type="tel" autocomplete="tel"></label>
+          </div>
+          <div class="kic-contact-form__row">
+            <label><span>Objet de la demande *</span>
+              <select name="subject" required>
+                <option value="">Sélectionnez un objet</option>
+                <option value="devis">Demande de devis</option>
+                <option value="echantillon">Demande d’échantillon</option>
+                <option value="produit">Information produit</option>
+                <option value="livraison">Livraison et disponibilité</option>
+                <option value="partenariat">Partenariat commercial</option>
+                <option value="autre">Autre demande</option>
+              </select>
+            </label>
+            <label><span>Produit concerné</span>
+              <select name="product">
+                <option value="">Toute la gamme</option>
+                <option>Beurre de cacao</option>
+                <option>Poudre de cacao</option>
+                <option>Masse de cacao</option>
+                <option>Infusion de cacao</option>
+                <option>Jus de cacao</option>
+              </select>
+            </label>
+          </div>
+          <label><span>Votre message *</span><textarea name="message" rows="6" required placeholder="Présentez votre activité, le volume recherché, le lieu de livraison et votre échéance."></textarea></label>
+          <label class="kic-contact-consent"><input type="checkbox" required><span>J’accepte que KIC utilise ces informations pour répondre à ma demande.</span></label>
+          <button class="kic-contact-submit" type="submit">Envoyer ma demande<span aria-hidden="true">→</span></button>
+          <p class="kic-contact-feedback" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="kic-footer">
+  <div class="kic-footer__grid">
+    <div class="kic-footer__brand">
+      <span class="kic-footer__logo">KIC</span>
+      <p class="kic-footer__about">KIC accompagne les artisans-transformateurs, distributeurs et professionnels de l’agroalimentaire avec une sélection de produits cacao traçables, adaptés à leurs usages et distribués en France et en Europe.</p>
+      <div class="kic-footer-actions">
+        <a class="kic-footer-action" href="tel:+33745908778"><span aria-hidden="true">☎</span> Appeler KIC</a>
+        <a class="kic-footer-action" href="contact.html?subject=devis"><span aria-hidden="true">≡</span> Demander un devis</a>
+        <a class="kic-footer-action kic-footer-action--accent" href="contact.html?subject=echantillon"><span aria-hidden="true">◆</span> Demander un échantillon</a>
+      </div>
+    </div>
+    <nav class="kic-footer__col" aria-label="Navigation"><h2 class="kic-footer__head">Navigation</h2><a href="index.html">Accueil</a><a href="index.html#histoire">À propos</a><a href="produits.html">Nos produits</a><a href="contact.html">Contact</a></nav>
+    <div class="kic-footer__col"><h2 class="kic-footer__head">Contacter KIC</h2><a href="tel:+33745908778">+33 7 45 90 87 78</a><a href="produits.html">Consulter le catalogue</a><a href="contact.html?subject=echantillon">Demander un échantillon</a></div>
+    <div class="kic-footer__col"><h2 class="kic-footer__head">Siège social</h2><address class="kic-footer__address">18, rue Masséna<br>06300 Nice<br>France</address></div>
+  </div>
+  <div class="kic-footer__wave"><figure class="kic-media kic-media--cover"><img src="img/kic-footer-wave.jpg" alt="Vague de cacao liquide" loading="lazy"></figure><div class="kic-footer__wave-veil" aria-hidden="true"></div></div>
+  <div class="kic-footer__bottom"><span>KIC — Konan Industrie et Chocolaterie</span><div class="kic-footer__legal"><a href="contact.html">Mentions légales</a><a href="contact.html">Politique de confidentialité</a></div></div>
+</footer>
+
+<script src="js/kic.js" defer></script>
+<script src="js/header-tools.js" defer></script>
+<script src="js/contact.js" defer></script>
+</body>
+</html>

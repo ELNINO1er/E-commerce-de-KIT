@@ -1,0 +1,160 @@
+.kic-tools-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  justify-items: end;
+  background: rgba(10, 5, 3, .72);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .2s ease, visibility .2s ease;
+}
+.kic-tools-overlay.is-open { opacity: 1; visibility: visible; }
+.kic-tools-panel {
+  width: min(460px, 100%);
+  height: 100%;
+  padding: 28px;
+  overflow-y: auto;
+  background: var(--kic-cacao-800);
+  border-left: 1px solid var(--kic-hairline);
+  box-shadow: -24px 0 60px rgba(0, 0, 0, .38);
+  transform: translateX(100%);
+  transition: transform .25s ease;
+}
+.kic-tools-overlay.is-open .kic-tools-panel { transform: translateX(0); }
+.kic-tools-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--kic-hairline-soft);
+}
+.kic-tools-title {
+  font: 900 25px/1 var(--kic-font-display);
+  text-transform: uppercase;
+  color: var(--kic-cream);
+}
+.kic-tools-close {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--kic-hairline);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--kic-cream);
+  cursor: pointer;
+  font-size: 22px;
+}
+.kic-tool-view[hidden],
+.kic-tool-form[hidden] { display: none; }
+.kic-tool-intro {
+  margin: 0 0 20px;
+  font: 400 13px/1.7 var(--kic-font-body);
+  color: var(--kic-on-dark-mute);
+}
+.kic-tool-form { display: grid; gap: 14px; }
+.kic-tool-field { display: grid; gap: 7px; }
+.kic-tool-label {
+  font: 700 9px/1 var(--kic-font-body);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--kic-gold);
+}
+.kic-tool-input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 15px;
+  border: 1px solid var(--kic-hairline);
+  background: var(--kic-cacao-700);
+  color: var(--kic-cream);
+  font: 500 13px/1 var(--kic-font-body);
+}
+.kic-tool-input:focus { border-color: var(--kic-gold); outline: 0; }
+.kic-tool-submit {
+  min-height: 46px;
+  padding: 0 18px;
+  border: 0;
+  background: var(--kic-gold);
+  color: var(--kic-on-gold);
+  cursor: pointer;
+  font: 800 10px/1 var(--kic-font-body);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.kic-auth-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 24px;
+  border: 1px solid var(--kic-hairline);
+}
+.kic-auth-tab {
+  min-height: 44px;
+  border: 0;
+  background: transparent;
+  color: var(--kic-on-dark-soft);
+  cursor: pointer;
+  font: 700 10px/1 var(--kic-font-body);
+  text-transform: uppercase;
+}
+.kic-auth-tab.is-active { background: var(--kic-gold); color: var(--kic-on-gold); }
+.kic-tool-feedback {
+  min-height: 20px;
+  margin: 14px 0 0;
+  color: var(--kic-gold);
+  font: 600 11px/1.5 var(--kic-font-body);
+}
+.kic-cart-items { display: grid; gap: 12px; }
+.kic-cart-empty {
+  padding: 32px 18px;
+  border: 1px dashed var(--kic-hairline);
+  text-align: center;
+  color: var(--kic-on-dark-mute);
+  font: 500 12px/1.7 var(--kic-font-body);
+}
+.kic-cart-line {
+  display: grid;
+  grid-template-columns: 76px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 12px;
+  background: var(--kic-cacao-700);
+  border: 1px solid var(--kic-hairline-soft);
+}
+.kic-cart-line__image {
+  width: 76px;
+  height: 76px;
+  object-fit: cover;
+  background: var(--kic-cacao-900);
+}
+.kic-cart-line__content {
+  min-width: 0;
+  display: grid;
+  gap: 7px;
+}
+.kic-cart-line__name { font: 700 13px/1.4 var(--kic-font-body); color: var(--kic-cream); }
+.kic-cart-line__meta { font: 500 10px/1.4 var(--kic-font-body); color: var(--kic-on-dark-faint); }
+.kic-cart-line__remove {
+  align-self: center;
+  border: 0;
+  background: transparent;
+  color: var(--kic-gold);
+  cursor: pointer;
+  font-size: 18px;
+}
+.kic-cart-summary {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--kic-hairline);
+  font: 800 13px/1 var(--kic-font-body);
+  color: var(--kic-cream);
+}
+body.kic-tools-locked { overflow: hidden; }
+
+@media (max-width: 520px) {
+  .kic-tools-panel { padding: 22px 18px; }
+  .kic-cart-line { grid-template-columns: 64px 1fr auto; }
+  .kic-cart-line__image { width: 64px; height: 64px; }
+}

@@ -17,6 +17,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/kic.css">
+<link rel="stylesheet" href="css/header-tools.css">
 </head>
 <body>
 
@@ -39,18 +40,18 @@
     <a href="#hero" class="is-active" aria-current="page">Accueil</a>
     <a href="#histoire">À propos</a>
     <a href="produits.html">Nos produits</a>
-    <a href="#contact">Contact</a>
+    <a href="contact.html">Contact</a>
   </nav>
 
   <div class="kic-actions">
-    <a class="kic-icon-btn" href="#produits" title="Recherche" aria-label="Recherche">
+    <button class="kic-icon-btn" type="button" data-kic-open="search" title="Rechercher" aria-label="Ouvrir la recherche">
       <span class="kic-icon-glyph" aria-hidden="true">⌕</span>
-    </a>
-    <a class="kic-icon-btn kic-icon-btn--account" href="#contact" title="Mon compte" aria-label="Mon compte">
+    </button>
+    <button class="kic-icon-btn kic-icon-btn--account" type="button" data-kic-open="account" title="Mon compte" aria-label="Connexion et inscription">
       <span class="kic-account-head" aria-hidden="true"></span>
       <span class="kic-account-body" aria-hidden="true"></span>
-    </a>
-    <a class="kic-cart" href="#produits">Panier · <span class="kic-cart__count">2</span></a>
+    </button>
+    <button class="kic-cart" type="button" data-kic-open="cart">Panier · <span class="kic-cart__count">0</span></button>
   </div>
 </header>
 
@@ -162,7 +163,7 @@
       <div class="kic-cat__body">
         <p class="kic-eyebrow">Produits</p>
         <h3 class="kic-cat__title">Masse de<br>cacao</h3>
-        <a class="kic-btn kic-btn--sm kic-btn--gold" href="#contact">Demander un devis</a>
+        <a class="kic-btn kic-btn--sm kic-btn--gold" href="contact.html?subject=devis">Demander un devis</a>
       </div>
     </article>
 
@@ -174,30 +175,27 @@
       <div class="kic-cat__body">
         <p class="kic-eyebrow">Produits</p>
         <h3 class="kic-cat__title">Éclats<br>de cacao</h3>
-        <a class="kic-btn kic-btn--sm kic-btn--dark" href="#contact">Demander un devis</a>
+        <a class="kic-btn kic-btn--sm kic-btn--dark" href="contact.html?subject=devis">Demander un devis</a>
       </div>
     </article>
 
   </section>
 
   <!-- ===================== NEWSLETTER ===================== -->
-  <section class="kic-news" aria-labelledby="kic-news-title">
+  <section class="kic-news kic-news--contact" aria-labelledby="kic-news-title">
     <div class="kic-news__inner">
-      <h2 class="kic-news__title" id="kic-news-title">Parlons de<br>vos besoins</h2>
+      <h2 class="kic-news__title" id="kic-news-title">Construisons<br>votre projet</h2>
 
       <div class="kic-news__body">
-        <p class="kic-news__text">Chocolatier, pâtissier, glacier ou biscuitier ? Recevez des informations adaptées à votre besoin d’approvisionnement.</p>
-
-        <form class="kic-news__form" action="#" method="post" novalidate>
-          <label class="kic-sr-only" for="kic-news-email">Votre adresse e-mail</label>
-          <input class="kic-news__input" id="kic-news-email" name="email" type="email" autocomplete="email" required placeholder="VOTRE ADRESSE E-MAIL">
-          <button class="kic-news__submit" type="submit">Être recontacté</button>
-        </form>
-        <p class="kic-news__feedback" role="status" aria-live="polite"></p>
+        <p class="kic-news__text">Vous recherchez un produit cacao, un échantillon ou une solution adaptée à vos volumes ? Présentez-nous votre activité et vos besoins : KIC vous apportera une réponse ciblée.</p>
+        <div class="kic-news__actions">
+          <a class="kic-btn kic-btn--dark" href="contact.html">Contacter KIC<span class="kic-arrow" aria-hidden="true">→</span></a>
+          <a class="kic-news__link" href="produits.html">Consulter le catalogue</a>
+        </div>
       </div>
 
-      <figure class="kic-media kic-media--news" data-label="Texture cacao / pralines">
-        <img src="img/kic-news-bg.jpg" alt="Texture de cacao et pralines" loading="lazy" decoding="async">
+      <figure class="kic-media kic-media--news" data-label="Produits cacao KIC">
+        <img src="img/images-05.png" alt="Masse et jus de cacao de la gamme KIC" loading="lazy" decoding="async">
       </figure>
     </div>
   </section>
@@ -213,8 +211,8 @@
       <p class="kic-footer__about">KIC accompagne les artisans-transformateurs, distributeurs et professionnels de l’agroalimentaire avec une sélection de produits cacao traçables, adaptés à leurs usages et distribués en France et en Europe.</p>
       <div class="kic-footer-actions">
         <a class="kic-footer-action" href="tel:+33745908778"><span aria-hidden="true">☎</span> Appeler KIC</a>
-        <a class="kic-footer-action" href="#contact"><span aria-hidden="true">≡</span> Demander un devis</a>
-        <a class="kic-footer-action kic-footer-action--accent" href="#contact"><span aria-hidden="true">◆</span> Demander un échantillon</a>
+        <a class="kic-footer-action" href="contact.html?subject=devis"><span aria-hidden="true">≡</span> Demander un devis</a>
+        <a class="kic-footer-action kic-footer-action--accent" href="contact.html?subject=echantillon"><span aria-hidden="true">◆</span> Demander un échantillon</a>
       </div>
     </div>
 
@@ -223,14 +221,14 @@
       <a href="#hero">Accueil</a>
       <a href="#histoire">À propos</a>
       <a href="produits.html">Nos produits</a>
-      <a href="#contact">Contact</a>
+      <a href="contact.html">Contact</a>
     </nav>
 
     <div class="kic-footer__col">
       <h2 class="kic-footer__head">Contacter KIC</h2>
       <a href="tel:+33745908778">+33 7 45 90 87 78</a>
       <a href="produits.html">Consulter le catalogue</a>
-      <a href="#contact">Demander un échantillon</a>
+      <a href="contact.html?subject=echantillon">Demander un échantillon</a>
     </div>
 
     <div class="kic-footer__col">
@@ -257,5 +255,6 @@
 </footer>
 
 <script src="js/kic.js" defer></script>
+<script src="js/header-tools.js" defer></script>
 </body>
 </html>

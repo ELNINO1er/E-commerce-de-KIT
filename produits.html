@@ -18,6 +18,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/kic.css">
 <link rel="stylesheet" href="css/produits.css">
+<link rel="stylesheet" href="css/header-tools.css">
 </head>
 <body>
 
@@ -39,18 +40,18 @@
     <a href="index.html#hero">Accueil</a>
     <a href="index.html#histoire">À propos</a>
     <a href="produits.html" class="is-active" aria-current="page">Nos produits</a>
-    <a href="#contact">Contact</a>
+    <a href="contact.html">Contact</a>
   </nav>
 
   <div class="kic-actions">
-    <a class="kic-icon-btn" href="#catalogue" title="Rechercher un produit" aria-label="Rechercher un produit">
+    <button class="kic-icon-btn" type="button" data-kic-open="search" title="Rechercher un produit" aria-label="Ouvrir la recherche">
       <span class="kic-icon-glyph" aria-hidden="true">⌕</span>
-    </a>
-    <a class="kic-icon-btn kic-icon-btn--account" href="#contact" title="Contacter KIC" aria-label="Contacter KIC">
+    </button>
+    <button class="kic-icon-btn kic-icon-btn--account" type="button" data-kic-open="account" title="Mon compte" aria-label="Connexion et inscription">
       <span class="kic-account-head" aria-hidden="true"></span>
       <span class="kic-account-body" aria-hidden="true"></span>
-    </a>
-    <a class="kic-cart" href="#catalogue">Panier · <span class="kic-cart__count">0</span></a>
+    </button>
+    <button class="kic-cart" type="button" data-kic-open="cart">Panier · <span class="kic-cart__count">0</span></button>
   </div>
 </header>
 
@@ -89,12 +90,24 @@
 
         <div class="kic-sort">
           <label for="kic-sort-select">Trier par</label>
-          <select class="kic-sort__select" id="kic-sort-select">
-            <option value="default">Sélection KIC</option>
-            <option value="price-asc">Prix croissant</option>
-            <option value="price-desc">Prix décroissant</option>
-            <option value="name">Nom (A → Z)</option>
-          </select>
+          <span class="kic-select-wrap">
+            <select class="kic-sort__native" id="kic-sort-select" tabindex="-1" aria-hidden="true">
+              <option value="default">Sélection KIC</option>
+              <option value="price-asc">Prix : du moins cher au plus cher</option>
+              <option value="price-desc">Prix : du plus cher au moins cher</option>
+              <option value="name">Nom du produit : A → Z</option>
+            </select>
+            <button class="kic-sort__trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+              <span class="kic-sort__value">Sélection KIC</span>
+              <span class="kic-select-arrow" aria-hidden="true"></span>
+            </button>
+            <span class="kic-sort__menu" role="listbox" aria-label="Ordre de tri" hidden>
+              <button class="kic-sort__option is-selected" type="button" role="option" aria-selected="true" data-value="default">Sélection KIC</button>
+              <button class="kic-sort__option" type="button" role="option" aria-selected="false" data-value="price-asc">Prix : du moins cher au plus cher</button>
+              <button class="kic-sort__option" type="button" role="option" aria-selected="false" data-value="price-desc">Prix : du plus cher au moins cher</button>
+              <button class="kic-sort__option" type="button" role="option" aria-selected="false" data-value="name">Nom du produit : A → Z</button>
+            </span>
+          </span>
         </div>
       </div>
 
@@ -213,7 +226,7 @@
         <p class="kic-eyebrow">Solutions professionnelles</p>
         <h2 class="kic-pro__title" id="kic-pro-title">Un approvisionnement adapté à votre activité</h2>
         <p class="kic-pro__text">KIC accompagne chocolatiers, pâtissiers, glaciers, biscuitiers, restaurateurs, distributeurs et industries dans la sélection d’ingrédients et de produits cacao adaptés à leurs usages, leurs volumes et leurs marchés.</p>
-        <a class="kic-btn kic-btn--dark" href="#contact">Demander un devis<span class="kic-arrow" aria-hidden="true">→</span></a>
+        <a class="kic-btn kic-btn--dark" href="contact.html?subject=devis">Demander un devis<span class="kic-arrow" aria-hidden="true">→</span></a>
       </div>
       <ul class="kic-pro__points">
         <li><strong>Traçabilité</strong>Suivi de l’origine, des lots et des documents techniques disponibles.</li>
@@ -224,20 +237,18 @@
     </div>
   </section>
 
-  <section class="kic-news" aria-labelledby="kic-news-title">
+  <section class="kic-news kic-news--contact" aria-labelledby="kic-news-title">
     <div class="kic-news__inner">
-      <h2 class="kic-news__title" id="kic-news-title">Parlons de<br>vos besoins</h2>
+      <h2 class="kic-news__title" id="kic-news-title">Construisons<br>votre projet</h2>
       <div class="kic-news__body">
-        <p class="kic-news__text">Laissez votre adresse e-mail pour recevoir des informations adaptées à votre besoin d’approvisionnement.</p>
-        <form class="kic-news__form" action="#" method="post" novalidate>
-          <label class="kic-sr-only" for="kic-news-email">Votre adresse e-mail</label>
-          <input class="kic-news__input" id="kic-news-email" name="email" type="email" autocomplete="email" required placeholder="VOTRE ADRESSE E-MAIL">
-          <button class="kic-news__submit" type="submit">Être recontacté</button>
-        </form>
-        <p class="kic-news__feedback" role="status" aria-live="polite"></p>
+        <p class="kic-news__text">Besoin d’un tarif professionnel, d’un échantillon ou d’informations techniques ? Décrivez votre activité, le produit recherché et le volume envisagé.</p>
+        <div class="kic-news__actions">
+          <a class="kic-btn kic-btn--dark" href="contact.html">Contacter KIC<span class="kic-arrow" aria-hidden="true">→</span></a>
+          <a class="kic-news__link" href="#catalogue">Revoir les produits</a>
+        </div>
       </div>
       <figure class="kic-media kic-media--news" data-label="Univers du cacao KIC">
-        <img src="img/images003.png" alt="Sélection de produits cacao semi-finis" loading="lazy" decoding="async">
+        <img src="img/images-05.png" alt="Masse et jus de cacao de la gamme KIC" loading="lazy" decoding="async">
       </figure>
     </div>
   </section>
@@ -250,8 +261,8 @@
       <p class="kic-footer__about">KIC accompagne les artisans-transformateurs, distributeurs et professionnels de l’agroalimentaire avec une sélection de produits cacao traçables, adaptés à leurs usages et distribués en France et en Europe.</p>
       <div class="kic-footer-actions">
         <a class="kic-footer-action" href="tel:+33745908778"><span aria-hidden="true">☎</span> Appeler KIC</a>
-        <a class="kic-footer-action" href="#contact"><span aria-hidden="true">≡</span> Demander un devis</a>
-        <a class="kic-footer-action kic-footer-action--accent" href="#contact"><span aria-hidden="true">◆</span> Demander un échantillon</a>
+        <a class="kic-footer-action" href="contact.html?subject=devis"><span aria-hidden="true">≡</span> Demander un devis</a>
+        <a class="kic-footer-action kic-footer-action--accent" href="contact.html?subject=echantillon"><span aria-hidden="true">◆</span> Demander un échantillon</a>
       </div>
     </div>
 
@@ -260,14 +271,14 @@
       <a href="index.html">Accueil</a>
       <a href="index.html#histoire">À propos</a>
       <a href="produits.html">Nos produits</a>
-      <a href="#contact">Contact</a>
+      <a href="contact.html">Contact</a>
     </nav>
 
     <div class="kic-footer__col">
       <h2 class="kic-footer__head">Contacter KIC</h2>
       <a href="tel:+33745908778">+33 7 45 90 87 78</a>
       <a href="#catalogue">Consulter le catalogue</a>
-      <a href="#contact">Demander un échantillon</a>
+      <a href="contact.html?subject=echantillon">Demander un échantillon</a>
     </div>
 
     <div class="kic-footer__col">
@@ -293,6 +304,7 @@
 </footer>
 
 <script src="js/kic.js" defer></script>
+<script src="js/header-tools.js" defer></script>
 <script src="js/produits.js" defer></script>
 </body>
 </html>

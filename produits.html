@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nos produits — KIC</title>
+<meta name="description" content="Beurre, poudre, masse et éclats de cacao KIC pour les artisans-transformateurs et les professionnels de l’agroalimentaire en Europe.">
+<meta name="theme-color" content="#1C100B">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="Nos produits — KIC">
+<meta property="og:description" content="Des ingrédients cacao semi-finis, traçables et issus de filières durables pour les professionnels européens.">
+<meta property="og:image" content="img/kic-hero-product.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/kic.css">
+<link rel="stylesheet" href="css/produits.css">
+</head>
+<body>
+
+<a class="kic-skip" href="#catalogue">Aller au catalogue</a>
+
+<div class="kic-announce">Approvisionnement durable · Produits traçables · Livraison en France et en Europe</div>
+
+<header class="kic-header">
+  <a class="kic-logo" href="index.html">
+    <span class="kic-logo__mark">KIC</span>
+    <span class="kic-logo__tag">Konan Industrie et Chocolaterie</span>
+  </a>
+
+  <button class="kic-burger" type="button" aria-expanded="false" aria-controls="kic-nav" aria-label="Ouvrir le menu">
+    <span></span><span></span><span></span>
+  </button>
+
+  <nav class="kic-nav" id="kic-nav" aria-label="Navigation principale">
+    <a href="index.html#hero">Accueil</a>
+    <a href="index.html#histoire">À propos</a>
+    <a href="produits.html" class="is-active" aria-current="page">Nos produits</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <div class="kic-actions">
+    <a class="kic-icon-btn" href="#catalogue" title="Rechercher un produit" aria-label="Rechercher un produit">
+      <span class="kic-icon-glyph" aria-hidden="true">⌕</span>
+    </a>
+    <a class="kic-icon-btn kic-icon-btn--account" href="#contact" title="Contacter KIC" aria-label="Contacter KIC">
+      <span class="kic-account-head" aria-hidden="true"></span>
+      <span class="kic-account-body" aria-hidden="true"></span>
+    </a>
+    <a class="kic-cart" href="#catalogue">Panier · <span class="kic-cart__count">0</span></a>
+  </div>
+</header>
+
+<main>
+  <section class="kic-page-head">
+    <div class="kic-decor kic-decor--head" aria-hidden="true">
+      <span class="kic-blob kic-blob--h1"></span>
+      <span class="kic-blob kic-blob--h3"></span>
+      <span class="kic-blob kic-blob--h5"></span>
+    </div>
+
+    <div class="kic-page-head__inner">
+      <nav class="kic-crumb" aria-label="Fil d’Ariane">
+        <a href="index.html">Accueil</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Nos produits</span>
+      </nav>
+      <p class="kic-eyebrow kic-eyebrow--rule"><span class="kic-rule" aria-hidden="true"></span>Catalogue KIC</p>
+      <h1 class="kic-page-head__title">Nos produits</h1>
+      <p class="kic-page-head__intro">KIC facilite l’accès des chocolatiers, pâtissiers, glaciers, biscuitiers, restaurateurs et industries agroalimentaires à des ingrédients cacao semi-finis de qualité, issus de filières responsables et traçables.</p>
+    </div>
+  </section>
+
+  <section class="kic-catalogue" id="catalogue" aria-labelledby="kic-catalogue-title">
+    <h2 class="kic-sr-only" id="kic-catalogue-title">Catalogue des produits KIC</h2>
+    <div class="kic-catalogue__inner">
+      <div class="kic-filters">
+        <div class="kic-chips" role="group" aria-label="Filtrer par catégorie">
+          <button class="kic-chip is-active" type="button" data-filter="all" aria-pressed="true">Tous</button>
+          <button class="kic-chip" type="button" data-filter="beurre" aria-pressed="false">Beurre de cacao</button>
+          <button class="kic-chip" type="button" data-filter="poudre" aria-pressed="false">Poudre de cacao</button>
+          <button class="kic-chip" type="button" data-filter="masse" aria-pressed="false">Masse de cacao</button>
+          <button class="kic-chip" type="button" data-filter="eclats" aria-pressed="false">Éclats de cacao</button>
+        </div>
+
+        <div class="kic-sort">
+          <label for="kic-sort-select">Trier par</label>
+          <select class="kic-sort__select" id="kic-sort-select">
+            <option value="default">Sélection KIC</option>
+            <option value="price-asc">Prix croissant</option>
+            <option value="price-desc">Prix décroissant</option>
+            <option value="name">Nom (A → Z)</option>
+          </select>
+        </div>
+      </div>
+
+      <p class="kic-results" role="status" aria-live="polite">4 produits</p>
+
+      <div class="kic-grid">
+        <article class="kic-card" data-category="beurre" data-price="40" data-name="Beurre de cacao">
+          <div class="kic-card__visual">
+            <figure class="kic-media kic-media--card" data-label="Beurre de cacao KIC">
+              <img src="img/beurre-cacao-pub.png" alt="Beurre de cacao KIC conditionné en sachet" loading="lazy" decoding="async">
+            </figure>
+            <span class="kic-card__badge">Qualité professionnelle</span>
+          </div>
+          <div class="kic-card__body">
+            <p class="kic-card__cat">Beurre de cacao</p>
+            <h3 class="kic-card__name">Beurre de cacao — 1 kg</h3>
+            <p class="kic-card__desc">Un beurre de cacao traçable, issu de filières durables, adapté à la chocolaterie, à la pâtisserie, à la biscuiterie et aux préparations alimentaires.</p>
+            <p class="kic-card__meta">Format : 1 kg · Conservation au sec, au frais et à l’abri de la chaleur</p>
+            <p class="kic-card__price"><span class="kic-card__amount">40 €</span></p>
+            <button class="kic-btn kic-btn--sm kic-btn--gold kic-card__add" type="button">Ajouter au panier</button>
+          </div>
+        </article>
+
+        <article class="kic-card" data-category="poudre" data-price="15" data-name="Poudre de cacao">
+          <div class="kic-card__visual">
+            <figure class="kic-media kic-media--card" data-label="Poudre de cacao KIC">
+              <img src="img/poudre-cacao-pub.png" alt="Poudre de cacao KIC conditionnée en sachet" loading="lazy" decoding="async">
+            </figure>
+            <span class="kic-card__badge">Usage polyvalent</span>
+          </div>
+          <div class="kic-card__body">
+            <p class="kic-card__cat">Poudre de cacao</p>
+            <h3 class="kic-card__name">Poudre de cacao — 1 kg</h3>
+            <p class="kic-card__desc">Une poudre adaptée aux pâtissiers, glaciers, biscuitiers, restaurateurs, fabricants de boissons et professionnels de l’agroalimentaire.</p>
+            <p class="kic-card__meta">Format : 1 kg · Conservation au sec et à l’abri de l’humidité</p>
+            <p class="kic-card__price"><span class="kic-card__amount">15 €</span></p>
+            <button class="kic-btn kic-btn--sm kic-btn--gold kic-card__add" type="button">Ajouter au panier</button>
+          </div>
+        </article>
+
+        <article class="kic-card" data-category="masse" data-price="" data-name="Masse de cacao">
+          <div class="kic-card__visual">
+            <figure class="kic-media kic-media--card" data-label="Masse de cacao KIC">
+              <img src="img/masse-cacao-pub.png" alt="Masse de cacao KIC conditionnée en sachet de 1 kg" loading="lazy" decoding="async">
+            </figure>
+            <span class="kic-card__badge kic-card__badge--pro">Artisans-transformateurs</span>
+          </div>
+          <div class="kic-card__body">
+            <p class="kic-card__cat">Masse de cacao</p>
+            <h3 class="kic-card__name">Masse de cacao</h3>
+            <p class="kic-card__desc">Une matière première essentielle à la fabrication du chocolat, sélectionnée pour les artisans-transformateurs et les professionnels européens.</p>
+            <p class="kic-card__meta">Formats et disponibilité selon votre besoin professionnel</p>
+            <p class="kic-card__price"><span class="kic-card__amount">Sur devis</span></p>
+            <a class="kic-btn kic-btn--sm kic-btn--gold kic-card__quote" href="#contact">Demander un devis</a>
+          </div>
+        </article>
+
+        <article class="kic-card" data-category="eclats" data-price="" data-name="Éclats de cacao">
+          <div class="kic-card__visual">
+            <figure class="kic-media kic-media--card" data-label="Éclats de cacao">
+              <img src="img/kic-cat-feves.jpg" alt="Éclats et fèves de cacao croquants" loading="lazy" decoding="async">
+            </figure>
+            <span class="kic-card__badge">Créations gourmandes</span>
+          </div>
+          <div class="kic-card__body">
+            <p class="kic-card__cat">Éclats de cacao</p>
+            <h3 class="kic-card__name">Éclats de cacao</h3>
+            <p class="kic-card__desc">Des éclats croquants adaptés à la pâtisserie, à la chocolaterie artisanale, aux glaces et aux préparations gourmandes.</p>
+            <p class="kic-card__meta">Formats et disponibilité selon votre besoin professionnel</p>
+            <p class="kic-card__price"><span class="kic-card__amount">Sur devis</span></p>
+            <a class="kic-btn kic-btn--sm kic-btn--gold kic-card__quote" href="#contact">Demander un devis</a>
+          </div>
+        </article>
+      </div>
+
+      <p class="kic-price-note">Les prix affichés ne comprennent pas les frais de livraison. Ceux-ci sont calculés selon l’adresse, le volume de la commande et le mode de transport sélectionné. La mention HT ou TTC reste à confirmer avant la mise en ligne commerciale.</p>
+      <p class="kic-empty" hidden>Aucun produit dans cette catégorie pour le moment.</p>
+    </div>
+  </section>
+
+  <section class="kic-pro" aria-labelledby="kic-pro-title">
+    <div class="kic-pro__inner">
+      <div class="kic-pro__body">
+        <p class="kic-eyebrow">Solutions professionnelles</p>
+        <h2 class="kic-pro__title" id="kic-pro-title">Un approvisionnement adapté à votre activité</h2>
+        <p class="kic-pro__text">KIC accompagne chocolatiers, pâtissiers, glaciers, biscuitiers, restaurateurs, distributeurs et industries dans la sélection de produits cacao semi-finis répondant à leurs contraintes de production.</p>
+        <a class="kic-btn kic-btn--dark" href="#contact">Demander un devis<span class="kic-arrow" aria-hidden="true">→</span></a>
+      </div>
+      <ul class="kic-pro__points">
+        <li><strong>Traçabilité</strong>Suivi de l’origine, des lots et des documents techniques disponibles.</li>
+        <li><strong>Qualité</strong>Produits sélectionnés selon les besoins des professionnels.</li>
+        <li><strong>Formats adaptés</strong>Conditionnements étudiés selon les volumes et les usages.</li>
+        <li><strong>Livraison</strong>France et Europe, selon les zones couvertes et les disponibilités.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="kic-news" aria-labelledby="kic-news-title">
+    <div class="kic-news__inner">
+      <h2 class="kic-news__title" id="kic-news-title">Parlons de<br>vos besoins</h2>
+      <div class="kic-news__body">
+        <p class="kic-news__text">Laissez votre adresse e-mail pour recevoir des informations adaptées à votre besoin d’approvisionnement.</p>
+        <form class="kic-news__form" action="#" method="post" novalidate>
+          <label class="kic-sr-only" for="kic-news-email">Votre adresse e-mail</label>
+          <input class="kic-news__input" id="kic-news-email" name="email" type="email" autocomplete="email" required placeholder="VOTRE ADRESSE E-MAIL">
+          <button class="kic-news__submit" type="submit">Être recontacté</button>
+        </form>
+        <p class="kic-news__feedback" role="status" aria-live="polite"></p>
+      </div>
+      <figure class="kic-media kic-media--news" data-label="Univers du cacao KIC">
+        <img src="img/images003.png" alt="Sélection de produits cacao semi-finis" loading="lazy" decoding="async">
+      </figure>
+    </div>
+  </section>
+</main>
+
+<footer class="kic-footer" id="contact">
+  <div class="kic-footer__grid">
+    <div class="kic-footer__brand">
+      <span class="kic-footer__logo">KIC</span>
+      <p class="kic-footer__about">Votre partenaire pour l’approvisionnement, l’importation et la distribution de produits cacao semi-finis en Europe.</p>
+      <div class="kic-social">
+        <a class="kic-social__link" href="tel:+33745908778" aria-label="Appeler KIC">TEL</a>
+        <a class="kic-social__link" href="#contact" aria-label="Demander un devis">DEV</a>
+        <a class="kic-social__link" href="#contact" aria-label="Demander un échantillon">ECH</a>
+      </div>
+    </div>
+
+    <nav class="kic-footer__col" aria-label="Liens rapides">
+      <h2 class="kic-footer__head">Liens rapides</h2>
+      <a href="index.html">Accueil</a>
+      <a href="index.html#histoire">À propos</a>
+      <a href="produits.html">Nos produits</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="kic-footer__col">
+      <h2 class="kic-footer__head">Téléphone</h2>
+      <a href="tel:+33745908778">+33 7 45 90 87 78</a>
+      <a href="#catalogue">Découvrir les produits</a>
+      <a href="#contact">Demander un devis</a>
+    </div>
+
+    <div class="kic-footer__col">
+      <h2 class="kic-footer__head">Adresse</h2>
+      <address class="kic-footer__address">18, rue Masséna<br>06300 Nice<br>France</address>
+    </div>
+  </div>
+
+  <div class="kic-footer__wave">
+    <figure class="kic-media kic-media--cover" data-label="Vague de cacao liquide et lait">
+      <img src="img/kic-footer-wave.jpg" alt="Vague de cacao liquide et de lait" loading="lazy" decoding="async">
+    </figure>
+    <div class="kic-footer__wave-veil" aria-hidden="true"></div>
+  </div>
+
+  <div class="kic-footer__bottom">
+    <span>KIC — Konan Industrie et Chocolaterie</span>
+    <div class="kic-footer__legal">
+      <a href="#contact">Mentions légales</a>
+      <a href="#contact">Politique de confidentialité</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/kic.js" defer></script>
+<script src="js/produits.js" defer></script>
+</body>
+</html>

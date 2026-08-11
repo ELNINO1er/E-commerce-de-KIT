@@ -116,4 +116,25 @@
       form.reset();
     });
   }
+
+  /* ------------------------------------------------------------------------
+     5. Révélation du footer au scroll
+     Le CSS reste visible sans JS ; on n'active l'état masqué que si JS tourne
+     et que l'utilisateur n'a pas demandé la réduction des animations.
+     ---------------------------------------------------------------------- */
+  var footer = document.querySelector('.kic-footer');
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (footer && !reduceMotion && 'IntersectionObserver' in window) {
+    footer.classList.add('is-reveal-ready');
+    var footerObserver = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-revealed');
+        obs.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.15 });
+
+    footerObserver.observe(footer);
+  }
 })();

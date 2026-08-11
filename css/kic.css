@@ -662,7 +662,7 @@ h1, h2, h3 { margin: 0; }
   align-items: center;
   background:
     linear-gradient(90deg, rgba(21, 11, 7, .96) 0%, rgba(28, 16, 11, .9) 48%, rgba(28, 16, 11, .55) 100%),
-    url('../img/images-05.png') center 48% / cover no-repeat;
+    url('../img/infusion.png') center 48% / cover no-repeat;
 }
 .kic-news--contact::after {
   content: "";

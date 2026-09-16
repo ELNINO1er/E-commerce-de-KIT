@@ -1235,3 +1235,39 @@ body.is-leaving .kic-page-loader {
   .kic-header, .kic-decor, .kic-burger, .kic-news__form { display: none !important; }
   body { background: #fff; color: #000; }
 }
+/* Identité KIC : logo original sur une signature claire. */
+.kic-header { grid-template-columns: minmax(160px, 1fr) auto minmax(160px, 1fr); padding-top: 12px; padding-bottom: 12px; }
+.kic-logo { align-items: center; gap: 14px; }
+.kic-logo__tag { max-width: 150px; line-height: 1.7; letter-spacing: .14em; }
+.kic-logo__image, .kic-footer__logo, .kic-page-loader__logo {
+  display: block; flex-shrink: 0; overflow: hidden; background: #fff;
+  border: 1px solid rgba(244, 196, 48, .3); border-radius: 14px;
+}
+.kic-logo__image { width: 104px; height: 76px; transition: transform .2s ease; }
+.kic-logo:hover .kic-logo__image { transform: translateY(-2px); }
+.kic-logo__image img, .kic-footer__logo img, .kic-page-loader__logo img {
+  display: block; width: 100%; height: 100%; max-width: none; object-fit: cover;
+}
+.kic-footer__logo { width: 180px; height: 140px; animation: none; box-shadow: 0 12px 32px rgba(0,0,0,.16); }
+.kic-page-loader { transition: opacity .3s ease, visibility .3s ease; }
+.kic-page-loader__content { gap: 24px; }
+.kic-page-loader__logo { width: clamp(180px, 38vw, 240px); height: clamp(150px, 32vw, 200px); border-radius: 24px; box-shadow: 0 24px 70px rgba(0,0,0,.25); animation: kic-brand-breathe 1.8s ease-in-out infinite; }
+.kic-page-loader__line { width: 160px; height: 2px; border-radius: 2px; }
+.kic-page-loader__line::after { background: linear-gradient(90deg, transparent, var(--kic-gold), transparent); animation-duration: 1.4s; }
+.kic-page-loader__text { color: var(--kic-cream); letter-spacing: .25em; }
+.kic-btn { transition: transform .2s ease, background-color .2s ease, color .2s ease; }
+.kic-btn:hover { transform: translateY(-3px); }
+.kic-btn:active { transform: translateY(0) scale(.98); }
+.kic-nav a { position: relative; }
+.kic-nav a::after { content: ''; position: absolute; left: 0; right: 0; bottom: -8px; height: 2px; background: var(--kic-gold); transform: scaleX(0); transform-origin: left; transition: transform .2s ease; }
+.kic-nav a:hover::after, .kic-nav a.is-active::after { transform: scaleX(1); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--kic-gold); outline-offset: 5px; }
+@keyframes kic-brand-breathe { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@media (min-width: 901px) and (max-width: 1200px) { .kic-logo__tag { display: none; } .kic-nav { gap: 20px; } }
+@media (max-width: 900px) { .kic-nav a::after { display: none; } .kic-nav { margin-bottom: -12px; } }
+@media (max-width: 620px) { .kic-logo__image { width: 86px; height: 64px; border-radius: 10px; } .kic-header { gap: 10px; } .kic-footer__logo { width: 160px; height: 124px; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  .kic-page-loader { animation: kic-loader-fallback 0s 2.5s forwards !important; }
+  body.is-leaving .kic-page-loader { animation: none !important; }
+}

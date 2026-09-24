@@ -25,6 +25,12 @@ if ($method==='GET' && $path==='/auth/me') respond(user_response(current_user())
 if ($method==='PATCH' && $path==='/auth/me') {
     $user=current_user(); $body=json_body(); $sets=[];$bind=[];
     foreach (['firstName'=>'first_name','lastName'=>'last_name','phone'=>'phone'] as $input=>$column) if (array_key_exists($input,$body)) {$sets[]="$column=?";$bind[]=$body[$input];}
+    if (!empty($body['newPassword'])) {
+        if (empty($body['currentPassword'])) fail(422,'VALIDATION_ERROR','Le mot de passe actuel est obligatoire.',['currentPassword'=>['Champ obligatoire.']]);
+        if (strlen((string)$body['newPassword'])<12) fail(422,'VALIDATION_ERROR','Le nouveau mot de passe doit contenir au moins 12 caractères.',['newPassword'=>['12 caractères minimum.']]);
+        if (!password_verify((string)$body['currentPassword'],(string)$user['password_hash'])) fail(422,'INVALID_CURRENT_PASSWORD','Le mot de passe actuel est incorrect.',['currentPassword'=>['Mot de passe incorrect.']]);
+        $sets[]='password_hash=?';$bind[]=password_hash((string)$body['newPassword'],PASSWORD_DEFAULT);
+    }
     if ($sets) {$bind[]=$user['id'];db()->prepare('UPDATE users SET '.implode(',',$sets).' WHERE id=?')->execute($bind);}
     $q=db()->prepare('SELECT id,email,first_name,last_name,phone,role,enabled FROM users WHERE id=?');$q->execute([$user['id']]);respond(user_response($q->fetch()));
 }

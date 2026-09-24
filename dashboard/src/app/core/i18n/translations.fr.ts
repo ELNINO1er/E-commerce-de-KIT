@@ -49,6 +49,14 @@ export const FR = {
   'profile.emailHint':
     "L'adresse e-mail sert d'identifiant de connexion et ne se modifie pas ici.",
   'profile.saved': 'Profil mis à jour.',
+  'profile.passwordTitle': 'Changer le mot de passe',
+  'profile.passwordHint': 'Laissez ces champs vides pour conserver le mot de passe actuel.',
+  'profile.currentPassword': 'Mot de passe actuel',
+  'profile.newPassword': 'Nouveau mot de passe',
+  'profile.confirmPassword': 'Confirmer le nouveau mot de passe',
+  'profile.currentPasswordError': 'Saisissez votre mot de passe actuel.',
+  'profile.newPasswordError': 'Utilisez au moins 12 caractères.',
+  'profile.confirmPasswordError': 'Les deux mots de passe doivent être identiques.',
 
   // --- Titres d'onglet ---
   'title.login': 'Connexion — KIC Admin',

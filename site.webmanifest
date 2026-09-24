@@ -1,0 +1,13 @@
+{
+  "name": "KIC — Konan Industrie et Chocolaterie",
+  "short_name": "KIC France",
+  "description": "Produits cacao pour les professionnels en France et en Europe.",
+  "lang": "fr-FR",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1C100B",
+  "theme_color": "#1C100B",
+  "icons": [
+    { "src": "/img/logo-kic-transparent.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

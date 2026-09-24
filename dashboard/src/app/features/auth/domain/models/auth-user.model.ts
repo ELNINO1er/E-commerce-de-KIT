@@ -28,6 +28,8 @@ export interface UpdateProfileRequest {
   firstName?: string | null;
   lastName?: string | null;
   phone?: string | null;
+  currentPassword?: string | null;
+  newPassword?: string | null;
 }
 
 /** Initiales affichees dans la pastille d'avatar de la barre laterale. */

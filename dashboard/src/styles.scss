@@ -11,28 +11,28 @@
 
 :root {
   /* --- Palette cacao (identique a KIC-03) --- */
-  --scmc-chocolate-950: #1f0e09; // topbar, sidebar, fonds tres sombres
-  --scmc-chocolate-900: #32180f; // titres, sections sombres
-  --scmc-chocolate-700: #5c2b17; // bordures et survols fonces
-  --scmc-cocoa: #7b3f20; // couleur d'action principale (boutons, prix, actif)
-  --scmc-caramel: #b86f42; // accent, soulignements, focus
-  --scmc-gold: #d39b45; // survols sur fond sombre, details premium
-  --scmc-cream: #fbf5ef; // fonds de section clairs
-  --scmc-sand: #f2e4d6; // separateurs, fonds secondaires
-  --scmc-ink: #34241e; // texte courant
-  --scmc-muted: #76625a; // texte secondaire
-  --scmc-white: #fffdfb; // blanc casse chaud (surfaces)
-  --scmc-page: #f1ece7; // fond de page, derriere la coquille blanche de l'app
+  --scmc-chocolate-950: #150b07;
+  --scmc-chocolate-900: #1c100b;
+  --scmc-chocolate-700: #2e1a12;
+  --scmc-cocoa: #f4c430;
+  --scmc-caramel: #e5a93c;
+  --scmc-gold: #f4c430;
+  --scmc-cream: #faf6f0;
+  --scmc-sand: #f0e8dc;
+  --scmc-ink: #211711;
+  --scmc-muted: #71665e;
+  --scmc-white: #fffdf9;
+  --scmc-page: #f5f1eb;
 
   /* --- Couleurs derivees, propres a l'espace admin (KIC-03 « Espace client ») --- */
-  --scmc-paragraph: #4b342b; // couleur de paragraphe du template
-  --scmc-border: #eadfd8; // bordure des cartes du dashboard
-  --scmc-border-input: #e1d6cf; // bordure des champs de formulaire
-  --scmc-nav-active: #74401f; // item de navigation actif, entetes de tableau
-  --scmc-nav-active-bg: #faf4ed;
-  --scmc-nav-idle: #5f5148;
+  --scmc-paragraph: #443a34;
+  --scmc-border: #e8e0d5;
+  --scmc-border-input: #ddd3c6;
+  --scmc-nav-active: #1c100b;
+  --scmc-nav-active-bg: #fff5cc;
+  --scmc-nav-idle: #655c56;
   --scmc-surface: #fff;
-  --scmc-surface-alt: #f6f0ea;
+  --scmc-surface-alt: #faf6f0;
   /* Les cartes internes reprennent le beige de la page pour se detacher de la
      carte blanche du contenu ; les graphiques ont besoin de deux tons au-dela. */
   --scmc-track: #e6dcd3;
@@ -63,8 +63,8 @@
   --scmc-shadow-raised: 0 12px 28px rgba(50, 24, 15, 0.24);
 
   /* --- Typographie --- */
-  --scmc-font-heading: 'Rajdhani', sans-serif;
-  --scmc-font-body: 'Open Sans', sans-serif;
+  --scmc-font-heading: 'Montserrat', system-ui, sans-serif;
+  --scmc-font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
 
   /* --- Rythme --- */
   --scmc-gap: 28px;
@@ -277,7 +277,7 @@ p {
 .btn--primary {
   background: var(--scmc-cocoa);
   border-color: var(--scmc-cocoa);
-  color: #fff;
+  color: var(--scmc-chocolate-900);
 
   &:hover:not(:disabled) {
     background: var(--scmc-chocolate-900);

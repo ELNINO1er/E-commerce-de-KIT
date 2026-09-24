@@ -205,3 +205,51 @@
     flex-direction: column;
   }
 }
+
+/* Tableau de bord KIC : contraste cacao/or, espaces plus generux et mouvement
+   discret pour garder une lecture rapide des indicateurs. */
+.page-head {
+  margin-bottom: 28px;
+  h1 { font-size: clamp(28px, 3vw, 42px); font-weight: 900; letter-spacing: -.04em; }
+  p { font-size: 13px; }
+}
+
+.kpis { gap: 16px; margin-bottom: 20px; }
+.kpi {
+  position: relative;
+  min-height: 155px;
+  padding: 22px;
+  overflow: hidden;
+  border: 1px solid #ece4d9;
+  border-radius: 20px;
+  background: #fffaf2;
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  animation: kicCardIn .5s ease both;
+
+  &:hover { transform: translateY(-4px); border-color: rgba(244,196,48,.65); box-shadow: 0 16px 32px rgba(35,22,14,.08); }
+  strong { font-size: 32px; font-weight: 900; }
+}
+.kpi:nth-child(2) { animation-delay: .05s; }
+.kpi:nth-child(3) { animation-delay: .1s; }
+.kpi:nth-child(4) { animation-delay: .15s; }
+.kpi:nth-child(5) { animation-delay: .2s; }
+.kpi__mark { color: #1c100b; background: #f4c430; }
+.kpi--featured {
+  background:
+    radial-gradient(circle at 88% 8%, rgba(244,196,48,.22), transparent 38%),
+    linear-gradient(145deg, #2e1a12, #150b07);
+  box-shadow: 0 18px 36px rgba(21,11,7,.16);
+  .kpi__mark { color: #1c100b; background: #f4c430; }
+}
+.panels { gap: 20px; }
+.panel { border: 1px solid #ece4d9; border-radius: 20px; background: #fffaf2; }
+.panel--dark {
+  border: 0;
+  background:
+    radial-gradient(circle at 90% 10%, rgba(244,196,48,.2), transparent 42%),
+    linear-gradient(145deg, #2e1a12, #150b07);
+}
+.tracker__dot { background: #f4c430; box-shadow: 0 0 0 5px rgba(244,196,48,.18); animation: kicPulse 2s ease-in-out infinite; }
+
+@keyframes kicCardIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes kicPulse { 50% { box-shadow: 0 0 0 10px rgba(244,196,48,0); } }

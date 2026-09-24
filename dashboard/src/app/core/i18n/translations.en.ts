@@ -45,6 +45,14 @@ export const EN: Record<TranslationKey, string> = {
   'profile.required': 'This field is required.',
   'profile.emailHint': 'The email address is your login identifier and cannot be changed here.',
   'profile.saved': 'Profile updated.',
+  'profile.passwordTitle': 'Change password',
+  'profile.passwordHint': 'Leave these fields empty to keep the current password.',
+  'profile.currentPassword': 'Current password',
+  'profile.newPassword': 'New password',
+  'profile.confirmPassword': 'Confirm new password',
+  'profile.currentPasswordError': 'Enter your current password.',
+  'profile.newPasswordError': 'Use at least 12 characters.',
+  'profile.confirmPasswordError': 'Both passwords must match.',
 
   // --- Document titles ---
   'title.login': 'Sign in — KIC Admin',

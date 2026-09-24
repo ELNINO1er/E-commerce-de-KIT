@@ -224,6 +224,9 @@ export class DashboardShell {
     firstName: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     lastName: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     phone: new FormControl('', { nonNullable: true }),
+    currentPassword: new FormControl('', { nonNullable: true }),
+    newPassword: new FormControl('', { nonNullable: true }),
+    confirmPassword: new FormControl('', { nonNullable: true }),
   });
 
   protected openProfileEditor(): void {
@@ -235,6 +238,9 @@ export class DashboardShell {
       firstName: user.firstName ?? '',
       lastName: user.lastName ?? '',
       phone: user.phone ?? '',
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: '',
     });
     this.closeMenu();
     this.editingProfile.set(true);
@@ -245,13 +251,24 @@ export class DashboardShell {
   }
 
   protected saveProfile(): void {
+    const value = this.profileForm.getRawValue();
+    if (value.newPassword && value.newPassword.length < 12) {
+      this.profileForm.controls.newPassword.setErrors({ minlength: true });
+    }
+    if (value.newPassword !== value.confirmPassword) {
+      this.profileForm.controls.confirmPassword.setErrors({ mismatch: true });
+    }
+    if (value.newPassword && !value.currentPassword) {
+      this.profileForm.controls.currentPassword.setErrors({ required: true });
+    }
     if (this.profileForm.invalid) {
       this.profileForm.markAllAsTouched();
       return;
     }
     this.savingProfile.set(true);
 
-    this.session.updateProfile(this.profileForm.getRawValue()).subscribe({
+    const { confirmPassword: _confirmPassword, ...request } = value;
+    this.session.updateProfile(request).subscribe({
       next: () => {
         this.savingProfile.set(false);
         this.closeProfileEditor();

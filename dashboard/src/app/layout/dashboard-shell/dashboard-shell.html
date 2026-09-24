@@ -1,10 +1,12 @@
 <div class="shell">
   <aside class="sidebar" [attr.aria-busy]="booting()">
     <a class="sidebar__brand" routerLink="/">
-      <img src="/images/kic-logo.png" alt="" width="34" height="34" />
+      <span class="sidebar__brand-mark">
+        <img src="images/kic-logo.png" alt="Logo KIC" width="56" height="56" />
+      </span>
       <span>
         <strong>KIC</strong>
-        <small>KIC</small>
+        <small>Administration</small>
       </span>
     </a>
 
@@ -172,6 +174,32 @@
           </label>
 
           <p class="hint">{{ 'profile.emailHint' | t }}</p>
+
+          <div class="profile-password">
+            <h3>{{ 'profile.passwordTitle' | t }}</h3>
+            <p class="hint">{{ 'profile.passwordHint' | t }}</p>
+            <label>
+              {{ 'profile.currentPassword' | t }}
+              <input type="password" formControlName="currentPassword" autocomplete="current-password" />
+              @if (profileForm.controls.currentPassword.touched && profileForm.controls.currentPassword.invalid) {
+                <small class="field-error">{{ 'profile.currentPasswordError' | t }}</small>
+              }
+            </label>
+            <label>
+              {{ 'profile.newPassword' | t }}
+              <input type="password" formControlName="newPassword" autocomplete="new-password" />
+              @if (profileForm.controls.newPassword.touched && profileForm.controls.newPassword.invalid) {
+                <small class="field-error">{{ 'profile.newPasswordError' | t }}</small>
+              }
+            </label>
+            <label>
+              {{ 'profile.confirmPassword' | t }}
+              <input type="password" formControlName="confirmPassword" autocomplete="new-password" />
+              @if (profileForm.controls.confirmPassword.touched && profileForm.controls.confirmPassword.invalid) {
+                <small class="field-error">{{ 'profile.confirmPasswordError' | t }}</small>
+              }
+            </label>
+          </div>
 
           <footer class="profile-actions">
             <button type="button" class="btn btn--ghost" (click)="closeProfileEditor()">

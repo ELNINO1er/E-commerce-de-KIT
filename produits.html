@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Nos produits — KIC</title>
+<title>Produits cacao professionnels | Catalogue KIC France</title>
 <link rel="canonical" href="https://kic-fr.com/produits">
-<meta name="description" content="Découvrez les cinq produits KIC : beurre de cacao, poudre de cacao, masse de cacao, infusion de cacao et jus de cacao pour les professionnels européens.">
+<meta name="description" content="Catalogue KIC France : beurre, poudre, masse, infusion et jus de cacao pour chocolatiers, pâtissiers, restaurateurs et distributeurs professionnels.">
 <meta name="theme-color" content="#1C100B">
 
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
-<meta property="og:title" content="Nos produits — KIC">
+<meta property="og:title" content="Produits cacao professionnels | Catalogue KIC France">
 <meta property="og:description" content="Beurre, poudre, masse, infusion et jus de cacao issus de filières durables et sélectionnés pour les professionnels européens.">
 <meta property="og:image" content="https://kic-fr.com/img/kic-hero-product.png">
 <meta property="og:url" content="https://kic-fr.com/produits">
@@ -18,6 +18,7 @@
 
 <link rel="icon" type="image/png" href="img/Logo%20KIC%2001.png">
 <link rel="apple-touch-icon" href="img/Logo%20KIC%2001.png">
+<link rel="manifest" href="site.webmanifest">
 <link rel="preload" as="image" href="img/Logo%20KIC%2001.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,7 +26,7 @@
 <link rel="stylesheet" href="css/kic.css">
 <link rel="stylesheet" href="css/produits.css">
 <link rel="stylesheet" href="css/header-tools.css">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"KIC — Konan Industrie et Chocolaterie","url":"https://kic-fr.com/","logo":"https://kic-fr.com/img/Logo%20KIC%2001.png","address":{"@type":"PostalAddress","streetAddress":"18 rue Masséna","postalCode":"06300","addressLocality":"Nice","addressCountry":"FR"},"telephone":"+33745908778","areaServed":["FR","EU"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://kic-fr.com/"},{"@type":"ListItem","position":2,"name":"Produits cacao","item":"https://kic-fr.com/produits"}]},{"@type":"ItemList","name":"Catalogue de produits cacao KIC","numberOfItems":5,"itemListElement":[{"@type":"ListItem","position":1,"item":{"@type":"Product","name":"Beurre de cacao KIC 1 kg","image":"https://kic-fr.com/img/beurre-cacao-pub.png","description":"Beurre de cacao pour chocolaterie, pâtisserie et préparations alimentaires professionnelles.","brand":{"@type":"Brand","name":"KIC"},"offers":{"@type":"Offer","price":"40","priceCurrency":"EUR","availability":"https://schema.org/InStock","url":"https://kic-fr.com/produits#beurre"}}},{"@type":"ListItem","position":2,"item":{"@type":"Product","name":"Poudre de cacao KIC 1 kg","image":"https://kic-fr.com/img/poudre-cacao-pub.png","description":"Poudre de cacao pour boissons, desserts, glaces et biscuits professionnels.","brand":{"@type":"Brand","name":"KIC"},"offers":{"@type":"Offer","price":"15","priceCurrency":"EUR","availability":"https://schema.org/InStock","url":"https://kic-fr.com/produits#poudre"}}},{"@type":"ListItem","position":3,"item":{"@type":"Product","name":"Masse de cacao KIC 1 kg","image":"https://kic-fr.com/img/masse-cacao-pub.png","brand":{"@type":"Brand","name":"KIC"}}},{"@type":"ListItem","position":4,"item":{"@type":"Product","name":"Infusion de cacao KIC","image":"https://kic-fr.com/img/infusion-cacao-01.png","brand":{"@type":"Brand","name":"KIC"}}},{"@type":"ListItem","position":5,"item":{"@type":"Product","name":"Jus de cacao KIC","image":"https://kic-fr.com/img/jus-cacao.jpg","brand":{"@type":"Brand","name":"KIC"}}}]}]}</script>
 </head>
 <body>
 
@@ -123,7 +124,7 @@
       <p class="kic-results" role="status" aria-live="polite">5 produits</p>
 
       <div class="kic-grid">
-        <article class="kic-card" data-category="beurre" data-price="40" data-name="Beurre de cacao">
+        <article class="kic-card" id="beurre" data-category="beurre" data-price="40" data-name="Beurre de cacao">
           <div class="kic-card__visual">
             <figure class="kic-media kic-media--card" data-label="Beurre de cacao KIC">
               <img src="img/beurre-cacao-pub.png" alt="Beurre de cacao KIC conditionné en sachet" loading="lazy" decoding="async">
@@ -138,12 +139,13 @@
             <p class="kic-card__price"><span class="kic-card__amount">40 €</span></p>
             <div class="kic-card__actions">
               <button class="kic-btn kic-btn--sm kic-btn--gold kic-card__add" type="button">Ajouter au panier</button>
+              <a class="kic-favorite" href="beurre-de-cacao.html">En savoir plus</a>
               <button class="kic-favorite" type="button" aria-pressed="false" aria-label="Ajouter le beurre de cacao aux favoris"><span aria-hidden="true">♡</span> Favoris</button>
             </div>
           </div>
         </article>
 
-        <article class="kic-card" data-category="poudre" data-price="15" data-name="Poudre de cacao">
+        <article class="kic-card" id="poudre" data-category="poudre" data-price="15" data-name="Poudre de cacao">
           <div class="kic-card__visual">
             <figure class="kic-media kic-media--card" data-label="Poudre de cacao KIC">
               <img src="img/poudre-cacao-pub.png" alt="Poudre de cacao KIC conditionnée en sachet" loading="lazy" decoding="async">
@@ -158,12 +160,13 @@
             <p class="kic-card__price"><span class="kic-card__amount">15 €</span></p>
             <div class="kic-card__actions">
               <button class="kic-btn kic-btn--sm kic-btn--gold kic-card__add" type="button">Ajouter au panier</button>
+              <a class="kic-favorite" href="poudre-de-cacao.html">En savoir plus</a>
               <button class="kic-favorite" type="button" aria-pressed="false" aria-label="Ajouter la poudre de cacao aux favoris"><span aria-hidden="true">♡</span> Favoris</button>
             </div>
           </div>
         </article>
 
-        <article class="kic-card" data-category="masse" data-price="" data-name="Masse de cacao">
+        <article class="kic-card" id="masse" data-category="masse" data-price="" data-name="Masse de cacao">
           <div class="kic-card__visual">
             <figure class="kic-media kic-media--card" data-label="Masse de cacao KIC">
               <img src="img/masse-cacao-pub.png" alt="Masse de cacao KIC conditionnée en sachet de 1 kg" loading="lazy" decoding="async">
@@ -178,6 +181,7 @@
             <p class="kic-card__price"><span class="kic-card__amount">Sur devis</span></p>
             <div class="kic-card__actions">
               <button class="kic-btn kic-btn--sm kic-btn--gold kic-card__add" type="button">Ajouter au panier</button>
+              <a class="kic-favorite" href="masse-de-cacao.html">En savoir plus</a>
               <button class="kic-favorite" type="button" aria-pressed="false" aria-label="Ajouter la masse de cacao aux favoris"><span aria-hidden="true">♡</span> Favoris</button>
             </div>
           </div>

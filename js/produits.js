@@ -51,21 +51,122 @@
   var empty = document.querySelector('.kic-empty');
   var activeFilter = 'all';
 
-  /* L'API fournit les identifiants techniques des variantes. Le HTML et son
-     design restent la source du rendu ; seules les données commerce sont liées. */
+  function escapeHtml(value) {
+    var node = document.createElement('span');
+    node.textContent = value == null ? '' : String(value);
+    return node.innerHTML;
+  }
+
+  function slug(value) {
+    return String(value || 'produit').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  }
+
+  function preferredVariant(product) {
+    var formats = product.formats || [];
+    if (formats.length) {
+      return formats.slice().sort(function (a, b) {
+        return Number(a.promoPrice == null ? a.price : a.promoPrice) - Number(b.promoPrice == null ? b.price : b.promoPrice);
+      })[0];
+    }
+    return product.variants && product.variants[0];
+  }
+
+  function detailUrl(product) {
+    var pages = {
+      'beurre-de-cacao': 'beurre-de-cacao.html',
+      'poudre-de-cacao': 'poudre-de-cacao.html',
+      'masse-de-cacao': 'masse-de-cacao.html'
+    };
+    return pages[product.slug] || '';
+  }
+
+  function productCard(product) {
+    var variant = preferredVariant(product);
+    var category = product.category || {};
+    var categorySlug = category.slug || slug(category.name);
+    var price = variant ? Number(variant.promoPrice == null ? variant.price : variant.promoPrice) : null;
+    var stock = variant ? Number(variant.stock || 0) : 0;
+    var image = product.imageUrl || 'img/logo-kic-transparent.png';
+    var format = variant ? (variant.label || variant.format || '') : '';
+    var details = detailUrl(product);
+    var unavailable = !variant || stock < 1;
+    var badge = product.badge || (unavailable ? 'Indisponible' : 'Disponible');
+    var more = details ? '<a class="kic-favorite" href="' + escapeHtml(details) + '">En savoir plus</a>' : '';
+
+    return '<article class="kic-card" id="' + escapeHtml(product.slug || slug(product.name)) + '"' +
+      ' data-category="' + escapeHtml(categorySlug) + '" data-price="' + (price == null ? '' : price / 100) + '"' +
+      ' data-name="' + escapeHtml(product.name) + '" data-variant-id="' + (variant ? escapeHtml(variant.variantId || variant.id) : '') + '"' +
+      ' data-format="' + escapeHtml(format) + '">' +
+      '<div class="kic-card__visual"><figure class="kic-media kic-media--card" data-label="' + escapeHtml(product.name) + '">' +
+      '<img src="' + escapeHtml(image) + '" alt="' + escapeHtml(product.name + ' KIC') + '" loading="lazy" decoding="async"></figure>' +
+      '<span class="kic-card__badge">' + escapeHtml(badge) + '</span></div>' +
+      '<div class="kic-card__body"><p class="kic-card__cat">' + escapeHtml(category.name || 'Produit KIC') + '</p>' +
+      '<h3 class="kic-card__name">' + escapeHtml(product.name) + '</h3>' +
+      '<p class="kic-card__desc">' + escapeHtml(product.description || 'Produit KIC sélectionné pour les professionnels et les particuliers.') + '</p>' +
+      '<p class="kic-card__meta">' + escapeHtml(format ? 'Format : ' + format + (stock > 0 ? ' · En stock' : ' · Rupture de stock') : 'Disponibilité sur demande') + '</p>' +
+      '<p class="kic-card__price"><span class="kic-card__amount">' + (price == null ? 'Sur devis' : window.KICAPI.money(price)) + '</span></p>' +
+      '<div class="kic-card__actions"><button class="kic-btn kic-btn--sm kic-btn--gold kic-card__add" type="button"' +
+      (unavailable ? ' disabled aria-disabled="true"' : '') + '>' + (unavailable ? 'Indisponible' : 'Ajouter au panier') + '</button>' + more +
+      '<button class="kic-favorite" data-favorite type="button" aria-pressed="false" aria-label="Ajouter ' + escapeHtml(product.name) + ' aux favoris"><span aria-hidden="true">♡</span> Favoris</button>' +
+      '</div></div></article>';
+  }
+
+  function refreshCollections() {
+    cards = Array.prototype.slice.call(grid.querySelectorAll('.kic-card'));
+    initialOrder = cards.slice();
+    chips = Array.prototype.slice.call(document.querySelectorAll('.kic-chip'));
+  }
+
+  function bindChips() {
+    chips.forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        activeFilter = chip.dataset.filter;
+        chips.forEach(function (other) {
+          var selected = other === chip;
+          other.classList.toggle('is-active', selected);
+          other.setAttribute('aria-pressed', String(selected));
+        });
+        applyCatalogue();
+      });
+    });
+  }
+
+  function renderCategories(products) {
+    var container = document.querySelector('.kic-chips');
+    if (!container) return;
+    var seen = {};
+    var categories = [];
+    products.forEach(function (product) {
+      var category = product.category || {};
+      var key = category.slug || slug(category.name);
+      if (key && !seen[key]) {
+        seen[key] = true;
+        categories.push({ key: key, name: category.name || 'Autres produits' });
+      }
+    });
+    container.innerHTML = '<button class="kic-chip is-active" type="button" data-filter="all" aria-pressed="true">Tous</button>' +
+      categories.map(function (category) {
+        return '<button class="kic-chip" type="button" data-filter="' + escapeHtml(category.key) + '" aria-pressed="false">' + escapeHtml(category.name) + '</button>';
+      }).join('');
+  }
+
+  /* Le catalogue public est rendu depuis la meme API que le dashboard. */
   if (window.KICAPI) {
     window.KICAPI.products().then(function (page) {
-      (page.content || []).forEach(function (product) {
-        var card = cards.filter(function (item) { return item.dataset.name === product.name; })[0];
-        var variant = product.variants && product.variants[0];
-        if (card && variant) {
-          card.dataset.variantId = String(variant.id);
-          card.dataset.format = variant.format;
-          card.dataset.price = String(Number(variant.price) / 100);
-          var amount = card.querySelector('.kic-card__amount');
-          if (amount) amount.textContent = window.KICAPI.money(variant.price);
-        }
+      var products = page.content || [];
+      grid.innerHTML = products.map(productCard).join('');
+      renderCategories(products);
+      refreshCollections();
+      bindChips();
+      cards.forEach(function (card) {
+        var button = card.querySelector('[data-favorite]');
+        if (button) paintFavorite(button, favorites.indexOf(card.dataset.name) !== -1);
       });
+      applyCatalogue();
+      var requested = window.location.hash.replace('#', '');
+      var requestedChip = chips.filter(function (chip) { return chip.dataset.filter === requested; })[0];
+      if (requestedChip) requestedChip.click();
     }).catch(function () { /* Le catalogue statique reste disponible. */ });
   }
 
@@ -77,7 +178,7 @@
   });
 
   grid.addEventListener('click', function (event) {
-    var favoriteButton = event.target.closest('.kic-favorite');
+    var favoriteButton = event.target.closest('button[data-favorite], button.kic-favorite:not([data-favorite])');
     if (favoriteButton) {
       var favoriteCard = favoriteButton.closest('.kic-card');
       var favoriteName = favoriteCard.dataset.name;
@@ -151,17 +252,7 @@
     if (empty) empty.hidden = visible !== 0;
   }
 
-  chips.forEach(function (chip) {
-    chip.addEventListener('click', function () {
-      activeFilter = chip.dataset.filter;
-      chips.forEach(function (other) {
-        var selected = other === chip;
-        other.classList.toggle('is-active', selected);
-        other.setAttribute('aria-pressed', String(selected));
-      });
-      applyCatalogue();
-    });
-  });
+  bindChips();
 
   if (sortSelect) sortSelect.addEventListener('change', applyCatalogue);
 

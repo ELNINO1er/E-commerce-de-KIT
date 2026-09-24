@@ -281,6 +281,11 @@
   font-family: var(--kic-font-body);
 }
 .kic-card__add.is-added { background: var(--kic-cream); color: var(--kic-cacao-800); }
+.kic-card__add:disabled {
+  cursor: not-allowed;
+  opacity: .58;
+  filter: grayscale(.35);
+}
 .kic-favorite {
   min-height: 38px;
   padding: 10px 14px;

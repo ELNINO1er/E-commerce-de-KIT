@@ -36,7 +36,8 @@
   function paintFavorite(button, selected) {
     button.classList.toggle('is-favorite', selected);
     button.setAttribute('aria-pressed', String(selected));
-    button.querySelector('span').textContent = selected ? '♥' : '♡';
+    var icon = button.querySelector('span');
+    if (icon) icon.textContent = selected ? '♥' : '♡';
   }
 
   var cards = Array.prototype.slice.call(grid.querySelectorAll('.kic-card'));
@@ -173,7 +174,7 @@
   paintCart(readCart());
   var favorites = readFavorites();
   cards.forEach(function (card) {
-    var button = card.querySelector('.kic-favorite');
+    var button = card.querySelector('button.kic-favorite');
     if (button) paintFavorite(button, favorites.indexOf(card.dataset.name) !== -1);
   });
 

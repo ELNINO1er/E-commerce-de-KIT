@@ -1,0 +1,557 @@
+/* Trois blocs independants poses sur le fond de page : la barre laterale, la
+   barre d'entete, et la zone de contenu ou les cartes flottent directement.
+   Aucune coquille englobante — c'est le contraste avec `--scmc-page` qui separe. */
+
+/* La coquille occupe exactement la hauteur de la fenetre et ne defile pas :
+   seuls le contenu et la liste de navigation ont leur propre ascenseur, ce qui
+   maintient l'entete et le profil visibles en permanence. */
+:host {
+  display: block;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--scmc-page);
+}
+
+.shell {
+  display: grid;
+  grid-template-columns: 248px minmax(0, 1fr);
+  /* Ecart entre les trois blocs : resserre pour qu'ils se lisent comme un
+     ensemble plutot que comme trois panneaux flottants. */
+  gap: 10px;
+  align-items: stretch;
+  height: 100%;
+  /* Marge exterieure reduite au minimum : l'app affleure les bords de l'ecran. */
+  padding: 8px;
+}
+
+/* --- Bloc 1 : barre laterale --- */
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  /* Pas de retrait horizontal ici : les items de navigation occupent toute la
+     largeur pour que la barre d'accent de l'item actif affleure le bord. Le
+     retrait est repris item par item. */
+  padding: 20px 0 14px;
+  border: 1px solid var(--scmc-border);
+  border-radius: var(--scmc-radius);
+  background: #fff;
+  box-shadow: var(--scmc-shadow-hairline);
+}
+
+.sidebar__brand {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 11px;
+  padding: 2px 22px 20px;
+  border-bottom: 1px solid var(--scmc-border);
+
+  img {
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  strong {
+    display: block;
+    color: var(--scmc-chocolate-900);
+    font-family: var(--scmc-font-heading);
+    font-size: 21px;
+    line-height: 1.05;
+  }
+
+  small {
+    color: var(--scmc-muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+}
+
+.sidebar__nav {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.sidebar__group {
+  padding: 16px 22px 8px;
+}
+
+.sidebar__nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sidebar__nav a,
+.sidebar__nav .is-pending {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 22px;
+  color: var(--scmc-nav-idle);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+  /* Le libelle tient sur une ligne : c'est la pastille qui cede, pas le texte. */
+  white-space: nowrap;
+}
+
+.sidebar__nav app-icon {
+  flex: 0 0 auto;
+}
+
+/* Item actif : barre d'accent affleurant le bord gauche, libelle appuye — pas
+   de pastille de fond, conformement a la reference. */
+.sidebar__nav a.is-active {
+  color: var(--scmc-nav-active);
+  font-weight: 700;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 3px;
+    height: 24px;
+    border-radius: 0 3px 3px 0;
+    background: var(--scmc-cocoa);
+    transform: translateY(-50%);
+  }
+}
+
+.sidebar__nav a:hover:not(.is-active) {
+  color: var(--scmc-nav-active);
+  background: #faf7f4;
+}
+
+.sidebar__nav .is-pending {
+  color: #b7aaa2;
+  cursor: default;
+}
+
+.sidebar__nav .count-badge,
+.sidebar__nav .soon {
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+.sidebar__nav .soon {
+  padding: 2px 7px;
+  border-radius: var(--scmc-radius-pill);
+  background: #f4efeb;
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* --- Carte sombre en pied de barre --- */
+
+.sidebar__card {
+  position: relative;
+  display: block;
+  flex: none;
+  margin: 16px 14px 0;
+  padding: 16px;
+  overflow: hidden;
+  border-radius: var(--scmc-radius-card);
+  color: rgba(255, 255, 255, 0.72);
+  background:
+    radial-gradient(circle at 90% 6%, rgba(184, 111, 66, 0.42), transparent 46%),
+    var(--scmc-chocolate-950);
+
+  strong {
+    display: block;
+    margin-top: 11px;
+    color: #fff;
+    font-family: var(--scmc-font-heading);
+    font-size: 16px;
+  }
+
+  small {
+    display: block;
+    margin-bottom: 13px;
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  &:hover .sidebar__card-cta {
+    background: var(--scmc-caramel);
+  }
+}
+
+.sidebar__card-icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  color: #f2ddc9;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar__card-cta {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 10px;
+  color: #fff;
+  background: var(--scmc-cocoa);
+  font-size: 12px;
+  font-weight: 700;
+  transition: background 0.25s ease;
+}
+
+/* --- Colonne de droite : entete puis contenu, separes --- */
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+}
+
+/* --- Bloc 2 : entete --- */
+
+.topbar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 13px 20px;
+  border: 1px solid var(--scmc-border);
+  border-radius: var(--scmc-radius);
+  background: #fff;
+  box-shadow: var(--scmc-shadow-hairline);
+}
+
+/* La recherche globale est un composant a part entiere : la coquille ne lui
+   donne que sa place dans l'entete, le cadre et le panneau lui appartiennent. */
+app-global-search {
+  flex: 0 1 420px;
+}
+
+/* --- Menu du profil : langue + deconnexion --- */
+
+.profile {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.profile__trigger {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 5px 10px 5px 5px;
+  border: 1px solid transparent;
+  border-radius: var(--scmc-radius-pill);
+  background: transparent;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease;
+
+  &:hover,
+  &[aria-expanded='true'] {
+    border-color: var(--scmc-border);
+    background: #faf7f4;
+  }
+
+  app-icon {
+    color: var(--scmc-muted);
+    transition: transform 0.25s ease;
+  }
+
+  &[aria-expanded='true'] app-icon {
+    transform: rotate(180deg);
+  }
+}
+
+.profile__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+}
+
+.profile__menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 21;
+  min-width: 216px;
+  padding: 8px;
+  border: 1px solid var(--scmc-border);
+  border-radius: var(--scmc-radius-card);
+  background: #fff;
+  box-shadow: 0 18px 44px rgba(50, 24, 15, 0.16);
+
+  hr {
+    height: 1px;
+    margin: 6px 4px;
+    border: 0;
+    background: var(--scmc-border);
+  }
+}
+
+.profile__section {
+  padding: 8px 10px 6px;
+}
+
+.profile__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: var(--scmc-radius-sm);
+  color: var(--scmc-nav-idle);
+  background: transparent;
+  font-family: var(--scmc-font-body);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    color 0.25s ease,
+    background 0.25s ease;
+
+  app-icon {
+    margin-left: auto;
+  }
+
+  &:hover {
+    background: var(--scmc-nav-active-bg);
+  }
+
+  &.is-active {
+    color: var(--scmc-nav-active);
+    font-weight: 700;
+  }
+}
+
+.profile__item--danger {
+  color: var(--scmc-error);
+
+  app-icon {
+    order: -1;
+    margin-left: 0;
+  }
+
+  &:hover {
+    background: var(--scmc-error-bg);
+  }
+}
+
+.topbar__avatar {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  color: #fff;
+  background: linear-gradient(135deg, #9b6b45, #4b2918);
+  font-family: var(--scmc-font-heading);
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.topbar__identity {
+  display: block;
+  line-height: 1.25;
+
+  strong {
+    display: block;
+    color: var(--scmc-chocolate-900);
+    font-size: 14px;
+  }
+
+  small {
+    color: var(--scmc-muted);
+    font-size: 12px;
+  }
+}
+
+/* --- Squelettes de chargement --- */
+
+.sk-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 22px;
+}
+
+.sk-nav__row {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 6px 0;
+}
+
+.sk-profile {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.sk-profile__lines {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.sk-page {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sk-page__tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(184px, 1fr));
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.sk-page__panels {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 16px;
+}
+
+.content__outlet.is-hidden {
+  display: none;
+}
+
+@media (max-width: 1100px) {
+  .sk-page__panels {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Bloc 3 : contenu, dans sa propre carte blanche --- */
+
+/* La carte porte le rayon et le decoupage ; le defilement est delegue a
+   l'element interne. Poser `overflow-y: auto` directement ici ferait dessiner
+   l'ascenseur dans un rectangle qui deborde du rayon, et les coins droits
+   disparaitraient. */
+.content {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  /* `min-height: 0` est indispensable : sans lui l'element flex refuse de
+     retrecir sous sa hauteur de contenu et c'est la page entiere qui defilerait. */
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid var(--scmc-border);
+  border-radius: var(--scmc-radius);
+  background: #fff;
+  box-shadow: var(--scmc-shadow-hairline);
+}
+
+.content__scroll {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  padding: clamp(18px, 2vw, 26px);
+}
+
+/* --- Adaptations --- */
+
+@media (max-width: 1024px) {
+  /* En colonne unique, figer la hauteur n'a plus de sens : on rend le
+     defilement a la page entiere. */
+  :host {
+    height: auto;
+    overflow: visible;
+  }
+
+  .shell {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .sidebar {
+    height: auto;
+  }
+
+  /* Plus d'ascenseur interne : sans lui le rayon n'a plus rien a decouper, et
+     laisser `overflow: hidden` rognerait le contenu qui deborde. */
+  .content,
+  .content__scroll {
+    overflow: visible;
+  }
+
+  .sidebar__nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .sidebar__nav a.is-active::before {
+    display: none;
+  }
+
+  .sidebar__card {
+    display: none;
+  }
+}
+
+/* Formulaire de profil, dans la fenetre modale. Meme registre que les autres
+   formulaires du back-office (categories, produits). */
+.profile-form label {
+  display: block;
+  margin-bottom: 14px;
+  font-size: 14px;
+  font-weight: 600;
+
+  input {
+    margin-top: 6px;
+    min-height: 42px;
+  }
+}
+
+.field-error {
+  display: block;
+  margin-top: 5px;
+  color: var(--scmc-error);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.profile-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+@media (max-width: 720px) {
+  .shell {
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .topbar {
+    flex-wrap: wrap;
+  }
+
+  app-global-search {
+    flex: 1 1 100%;
+    order: 2;
+  }
+
+  .topbar__identity {
+    display: none;
+  }
+}

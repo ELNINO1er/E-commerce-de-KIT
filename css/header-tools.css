@@ -158,3 +158,5 @@ body.kic-tools-locked { overflow: hidden; }
   .kic-cart-line { grid-template-columns: 64px 1fr auto; }
   .kic-cart-line__image { width: 64px; height: 64px; }
 }
+
+.kic-cart-checkout{display:flex;align-items:center;justify-content:center;margin-top:18px;text-decoration:none}.kic-cart-checkout:hover{color:var(--kic-on-gold)}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Commander — KIC | Produits cacao professionnels</title>
+<meta name="description" content="Contactez KIC pour une demande de devis, d’échantillon ou d’information sur nos produits cacao en France et en Europe.">
+<meta name="theme-color" content="#1C100B">
+<link rel="icon" type="image/png" href="img/Logo%20KIC%2001.png">
+<link rel="apple-touch-icon" href="img/Logo%20KIC%2001.png">
+<link rel="preload" as="image" href="img/Logo%20KIC%2001.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/kic.css">
+<link rel="stylesheet" href="css/header-tools.css">
+
+<link rel="stylesheet" href="css/produits.css">
+<link rel="stylesheet" href="css/commerce.css">
+</head>
+<body>
+
+<div class="kic-page-loader" aria-hidden="true"><div class="kic-page-loader__content"><span class="kic-page-loader__logo"><img src="img/Logo%20KIC%2001.png" alt="" width="1254" height="1254"></span><span class="kic-page-loader__line"></span><span class="kic-page-loader__text">Chargement</span></div></div>
+
+<a class="kic-skip" href="#contact-form">Aller au formulaire</a>
+<div class="kic-announce">Approvisionnement durable · Produits traçables · Livraison en France et en Europe</div>
+
+<header class="kic-header">
+  <a class="kic-logo" href="index.html">
+    <span class="kic-logo__image"><img src="img/Logo%20KIC%2001.png" alt="KIC ? Konan Industries &amp; Chocolaterie" width="1254" height="1254" decoding="async"></span>
+    <span class="kic-logo__tag">Konan Industrie et Chocolaterie</span>
+  </a>
+  <button class="kic-burger" type="button" aria-expanded="false" aria-controls="kic-nav" aria-label="Ouvrir le menu"><span></span><span></span><span></span></button>
+  <nav class="kic-nav" id="kic-nav" aria-label="Navigation principale">
+    <a href="index.html">Accueil</a>
+    <a href="index.html#histoire">À propos</a>
+    <a href="produits.html">Nos produits</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <div class="kic-actions">
+    <button class="kic-icon-btn" type="button" data-kic-open="search" title="Rechercher" aria-label="Ouvrir la recherche"><span class="kic-icon-glyph" aria-hidden="true">⌕</span></button>
+    <button class="kic-icon-btn kic-icon-btn--account" type="button" data-kic-open="account" title="Mon compte" aria-label="Connexion et inscription"><span class="kic-account-head" aria-hidden="true"></span><span class="kic-account-body" aria-hidden="true"></span></button>
+    <button class="kic-cart" type="button" data-kic-open="cart">Panier · <span class="kic-cart__count">0</span></button>
+  </div>
+</header>
+
+<main>
+<section class="kic-page-head"><div class="kic-page-head__inner"><nav class="kic-crumb" aria-label="Fil d’Ariane"><a href="index.html">Accueil</a><span>/</span><a href="produits.html">Produits</a><span>/</span><span aria-current="page">Commander</span></nav><p class="kic-eyebrow">Commande professionnelle</p><h1 class="kic-page-head__title">Finaliser votre demande</h1><p class="kic-page-head__intro">Transmettez votre commande à KIC. Aucun paiement n’est demandé en ligne : notre équipe valide la disponibilité, le transport et les conditions commerciales avant confirmation.</p></div></section>
+<section class="kic-commerce"><div class="kic-commerce__inner"><div class="kic-commerce__grid">
+<form class="kic-checkout-form" id="kic-checkout-form"><h2>Coordonnées et livraison</h2><p class="kic-checkout-note">Vous recevrez une confirmation commerciale avec le montant définitif et les modalités de règlement.</p><div class="kic-form-grid">
+<label class="kic-field"><span>Nom ou société *</span><input name="recipientName" autocomplete="organization" required maxlength="190"></label>
+<label class="kic-field"><span>E-mail professionnel *</span><input name="contactEmail" type="email" autocomplete="email" required></label>
+<label class="kic-field"><span>Téléphone *</span><input name="phone" type="tel" autocomplete="tel" required></label>
+<label class="kic-field"><span>Ville *</span><input name="city" autocomplete="address-level2" required></label>
+<label class="kic-field kic-field--wide"><span>Adresse de livraison *</span><input name="addressLine" autocomplete="street-address" required></label>
+<label class="kic-field"><span>Mode de réception *</span><select name="deliveryMethod"><option value="DELIVERY">Livraison</option><option value="PICKUP">Retrait au siège KIC à Nice</option></select></label>
+<label class="kic-field"><span>Zone de livraison *</span><select name="deliveryZoneId" id="kic-zone" required><option value="">Chargement…</option></select></label>
+<label class="kic-field"><span>Code promotionnel</span><input name="discountCode" autocomplete="off"></label>
+<label class="kic-field"><span>Pays</span><input name="country" value="France" autocomplete="country-name"></label>
+</div><button class="kic-btn kic-btn--gold" type="submit">Envoyer ma commande <span class="kic-arrow">→</span></button><p class="kic-form-feedback" id="kic-checkout-feedback" role="alert"></p></form>
+<aside class="kic-order-summary"><p class="kic-eyebrow">Votre sélection</p><h2>Récapitulatif</h2><div class="kic-summary-list" id="kic-summary"></div><div class="kic-summary-total"><span>Total indicatif</span><strong id="kic-summary-total">0,00 €</strong></div><p class="kic-checkout-note">Les produits « sur devis » et les frais professionnels spécifiques seront confirmés par KIC.</p></aside>
+</div></div></section></main><footer class="kic-footer">
+  <div class="kic-footer__grid">
+    <div class="kic-footer__brand">
+      <a class="kic-footer__logo" href="index.html" aria-label="KIC ? Accueil"><img src="img/Logo%20KIC%2001.png" alt="Konan Industries &amp; Chocolaterie" width="1254" height="1254" loading="lazy" decoding="async"></a>
+      <p class="kic-footer__about">KIC accompagne les artisans-transformateurs, distributeurs et professionnels de l’agroalimentaire avec une sélection de produits cacao traçables, adaptés à leurs usages et distribués en France et en Europe.</p>
+      <div class="kic-footer-actions">
+        <a class="kic-footer-action" href="tel:+33745908778"><span aria-hidden="true">☎</span> Appeler KIC</a>
+        <a class="kic-footer-action" href="contact.html?subject=devis"><span aria-hidden="true">≡</span> Demander un devis</a>
+        <a class="kic-footer-action kic-footer-action--accent" href="contact.html?subject=echantillon"><span aria-hidden="true">◆</span> Demander un échantillon</a>
+      </div>
+    </div>
+    <nav class="kic-footer__col" aria-label="Navigation"><h2 class="kic-footer__head">Navigation</h2><a href="index.html">Accueil</a><a href="index.html#histoire">À propos</a><a href="produits.html">Nos produits</a><a href="contact.html">Contact</a></nav>
+    <div class="kic-footer__col"><h2 class="kic-footer__head">Contacter KIC</h2><a href="tel:+33745908778">+33 7 45 90 87 78</a><a href="produits.html">Consulter le catalogue</a><a href="contact.html?subject=echantillon">Demander un échantillon</a></div>
+    <div class="kic-footer__col"><h2 class="kic-footer__head">Siège social</h2><address class="kic-footer__address">18, rue Masséna<br>06300 Nice<br>France</address></div>
+  </div>
+  <div class="kic-footer__wave"><figure class="kic-media kic-media--cover"><img src="img/kic-footer-wave.jpg" alt="Vague de cacao liquide" loading="lazy"></figure><div class="kic-footer__wave-veil" aria-hidden="true"></div></div>
+  <div class="kic-footer__bottom"><span>KIC — Konan Industrie et Chocolaterie</span><div class="kic-footer__legal"><a href="contact.html">Mentions légales</a><a href="contact.html">Politique de confidentialité</a></div></div>
+</footer>
+
+<script src="js/kic.js" defer></script><script src="js/kic-api.js" defer></script><script src="js/header-tools.js" defer></script><script src="js/checkout.js" defer></script><script src="js/page-loader.js" defer></script></body></html>

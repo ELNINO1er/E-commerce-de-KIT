@@ -1,0 +1,119 @@
+<header class="page-head">
+  <div>
+    <h1>{{ 'categories.title' | t }}</h1>
+    <p>{{ 'categories.subtitle' | t }}</p>
+  </div>
+  <button type="button" class="btn btn--primary" (click)="openCreate()">
+    <app-icon name="plus" [size]="17" />
+    {{ 'categories.new' | t }}
+  </button>
+</header>
+
+@if (errorMessage(); as message) {
+  <p class="message message--error" role="alert">{{ message }}</p>
+}
+
+<section class="panel">
+  <app-search-field
+    class="search"
+    [placeholder]="'categories.search' | t"
+    (search)="search.set($event)"
+  />
+
+  <app-data-table
+    [loading]="loading()"
+    [isEmpty]="!categories().length"
+    [emptyMessage]="(search() ? 'common.searchEmpty' : 'categories.empty') | t"
+    [skeletonWidths]="['30%', '22%', '18%']"
+    [skeletonRowCount]="5"
+  >
+    <ng-container tableHeader>
+      <th>{{ 'categories.column.name' | t }}</th>
+      <th>{{ 'categories.column.slug' | t }}</th>
+      <th>{{ 'categories.column.parent' | t }}</th>
+      <th class="data__actions">{{ 'categories.column.actions' | t }}</th>
+    </ng-container>
+
+    <ng-container tableBody>
+      @for (category of categories(); track category.id) {
+        <tr>
+          <td><strong>{{ category.name }}</strong></td>
+          <td><code>{{ category.slug }}</code></td>
+          <td>{{ parentName(category) }}</td>
+          <td class="data__actions">
+            <button
+              type="button"
+              class="icon-btn"
+              (click)="openEdit(category)"
+              [attr.aria-label]="'common.edit' | t"
+            >
+              <app-icon name="edit" [size]="16" />
+            </button>
+            <button
+              type="button"
+              class="icon-btn icon-btn--danger"
+              (click)="pendingDeletion.set(category)"
+              [attr.aria-label]="'common.delete' | t"
+            >
+              <app-icon name="trash" [size]="16" />
+            </button>
+          </td>
+        </tr>
+      }
+    </ng-container>
+  </app-data-table>
+</section>
+
+@if (editing()) {
+  <app-modal [title]="dialogTitle()" (closed)="close()">
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <label>
+        {{ 'categories.form.name' | t }}
+        <span class="req" aria-hidden="true" [title]="'common.requiredField' | t">*</span>
+        <input type="text" formControlName="name" aria-required="true" />
+        @if (form.controls.name.touched && form.controls.name.invalid) {
+          <small class="field-error">{{ 'common.required' | t }}</small>
+        }
+        @if (serverFieldErrors()['name']; as serverError) {
+          <small class="field-error">{{ serverError }}</small>
+        }
+      </label>
+
+      <label>
+        {{ 'categories.form.slug' | t }}
+        <small class="hint">{{ 'common.optional' | t }}</small>
+        <input type="text" formControlName="slug" placeholder="poudre-de-cacao" />
+        <small class="hint">{{ 'categories.form.slugHint' | t }}</small>
+      </label>
+
+      <label>
+        {{ 'categories.form.parent' | t }}
+        <app-select
+          formControlName="parentId"
+          [options]="parentOptions()"
+          [ariaLabel]="'categories.form.parent' | t"
+        />
+      </label>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn--ghost" (click)="close()">
+          {{ 'common.cancel' | t }}
+        </button>
+        <button type="submit" class="btn btn--primary" [disabled]="saving()">
+          {{ (saving() ? 'common.saving' : 'common.save') | t }}
+        </button>
+      </div>
+    </form>
+  </app-modal>
+}
+
+@if (pendingDeletion()) {
+  <app-confirm-dialog
+    [title]="'categories.delete.title' | t"
+    [message]="deleteMessage()"
+    [confirmLabel]="'common.delete' | t"
+    [danger]="true"
+    (confirmed)="confirmDeletion()"
+    (cancelled)="pendingDeletion.set(null)"
+  />
+}

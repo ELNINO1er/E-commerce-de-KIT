@@ -51,6 +51,24 @@
   var empty = document.querySelector('.kic-empty');
   var activeFilter = 'all';
 
+  /* L'API fournit les identifiants techniques des variantes. Le HTML et son
+     design restent la source du rendu ; seules les données commerce sont liées. */
+  if (window.KICAPI) {
+    window.KICAPI.products().then(function (page) {
+      (page.content || []).forEach(function (product) {
+        var card = cards.filter(function (item) { return item.dataset.name === product.name; })[0];
+        var variant = product.variants && product.variants[0];
+        if (card && variant) {
+          card.dataset.variantId = String(variant.id);
+          card.dataset.format = variant.format;
+          card.dataset.price = String(Number(variant.price) / 100);
+          var amount = card.querySelector('.kic-card__amount');
+          if (amount) amount.textContent = window.KICAPI.money(variant.price);
+        }
+      });
+    }).catch(function () { /* Le catalogue statique reste disponible. */ });
+  }
+
   paintCart(readCart());
   var favorites = readFavorites();
   cards.forEach(function (card) {
@@ -83,6 +101,8 @@
     cartItems.push({
       name: selectedCard.dataset.name,
       price: selectedCard.dataset.price,
+      variantId: selectedCard.dataset.variantId || null,
+      format: selectedCard.dataset.format || '',
       image: selectedCard.querySelector('.kic-media--card img').getAttribute('src')
     });
     writeCart(cartItems);

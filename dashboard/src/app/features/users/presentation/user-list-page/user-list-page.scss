@@ -1,0 +1,66 @@
+.page-head {
+  margin-bottom: 16px;
+
+  h1 {
+    margin: 0 0 2px;
+    font-size: 31px;
+  }
+
+  p {
+    margin: 0;
+    color: var(--scmc-muted);
+    font-size: 14px;
+  }
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: minmax(0, 320px) minmax(0, 240px);
+  gap: 16px;
+  align-items: start;
+  margin-bottom: 14px;
+
+  app-search-field,
+  app-select {
+    display: block;
+    margin-top: 6px;
+    --select-min-height: 42px;
+  }
+}
+
+/* Ligne de l'administrateur connecte : les actions y sont impossibles cote
+   API, on affiche donc un reperage plutot que des boutons inertes. */
+.self {
+  color: var(--scmc-muted);
+  font-size: 13px;
+}
+
+@media (max-width: 720px) {
+  .filters {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cell-account {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  color: #fff;
+  background: linear-gradient(135deg, #9b6b45, #4b2918);
+  font-family: var(--scmc-font-heading);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+a:hover {
+  color: var(--scmc-cocoa);
+}

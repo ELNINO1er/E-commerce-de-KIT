@@ -1,0 +1,108 @@
+<header class="page-head">
+  <div>
+    <h1>{{ 'returns.title' | t }}</h1>
+    <p>{{ 'returns.subtitle' | t }}</p>
+  </div>
+</header>
+
+@if (errorMessage(); as message) {
+  <p class="message message--error" role="alert">{{ message }}</p>
+}
+
+<section class="panel filters">
+  <label>
+    {{ 'returns.filters.status' | t }}
+    <app-select
+      [formControl]="filterControl"
+      [options]="filterOptions()"
+      [ariaLabel]="'returns.filters.status' | t"
+    />
+  </label>
+</section>
+
+<section class="panel">
+  <app-data-table
+    [loading]="loading()"
+    [isEmpty]="!requests().length"
+    [emptyMessage]="(status() ? 'returns.emptyFiltered' : 'returns.empty') | t"
+    [page]="page()"
+    [skeletonWidths]="['18%', '16%', '14%', '30%', '14%', '80px']"
+    (pageChange)="goToPage($event)"
+  >
+    <ng-container tableHeader>
+      <th>{{ 'returns.column.order' | t }}</th>
+      <th>{{ 'returns.column.date' | t }}</th>
+      <th>{{ 'returns.column.type' | t }}</th>
+      <th>{{ 'returns.column.reason' | t }}</th>
+      <th>{{ 'returns.column.status' | t }}</th>
+      <th class="data__actions"></th>
+    </ng-container>
+
+    <ng-container tableBody>
+      @for (request of requests(); track request.id) {
+        <tr>
+          <td><strong>{{ request.orderNumber }}</strong></td>
+          <td>{{ date(request) }}</td>
+          <td>{{ typeLabel(request) }}</td>
+          <td class="reason">{{ request.reason }}</td>
+          <td>
+            <span class="status" [class]="statusVariant(request)">{{ statusLabel(request) }}</span>
+          </td>
+          <td class="data__actions">
+            <button
+              type="button"
+              class="icon-btn"
+              (click)="open(request)"
+              [attr.aria-label]="'returns.process' | t"
+            >
+              <app-icon name="edit" [size]="16" />
+            </button>
+          </td>
+        </tr>
+      }
+    </ng-container>
+  </app-data-table>
+</section>
+
+@if (editing(); as request) {
+  <app-modal [title]="'returns.process' | t" (closed)="close()">
+    <dl class="facts">
+      <div>
+        <dt>{{ 'returns.column.order' | t }}</dt>
+        <dd><strong>{{ request.orderNumber }}</strong></dd>
+      </div>
+      <div>
+        <dt>{{ 'returns.column.type' | t }}</dt>
+        <dd>{{ typeLabel(request) }}</dd>
+      </div>
+      <div>
+        <dt>{{ 'returns.column.reason' | t }}</dt>
+        <dd>{{ request.reason }}</dd>
+      </div>
+    </dl>
+
+    <label>
+      {{ 'returns.column.status' | t }}
+      <app-select
+        [formControl]="statusControl"
+        [options]="statusOptions()"
+        [ariaLabel]="'returns.column.status' | t"
+      />
+    </label>
+    <p class="hint">{{ 'returns.stockHint' | t }}</p>
+
+    <footer class="actions">
+      <button type="button" class="btn btn--ghost" (click)="close()">
+        {{ 'common.cancel' | t }}
+      </button>
+      <button
+        type="button"
+        class="btn btn--primary"
+        (click)="apply()"
+        [disabled]="saving() || statusControl.value === request.status"
+      >
+        {{ (saving() ? 'common.saving' : 'common.save') | t }}
+      </button>
+    </footer>
+  </app-modal>
+}

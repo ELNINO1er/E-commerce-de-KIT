@@ -1,0 +1,81 @@
+{
+  "currency": "EUR",
+  "currencyLabel": "€",
+  "contact": {
+    "phone": "+33745908778",
+    "displayPhone": "+33 7 45 90 87 78",
+    "email": "contact@kic-fr.com",
+    "address": "18 rue Masséna, 06300 Nice, France"
+  },
+  "freeShippingThreshold": null,
+  "promoCodes": [
+    {
+      "code": "BIENVENUE10",
+      "type": "percent",
+      "value": 10,
+      "minimum": 10000,
+      "active": true
+    }
+  ],
+  "deliveryZones": [
+    {
+      "id": "retrait-nice",
+      "label": "Retrait au siège KIC — Nice",
+      "standard": 0,
+      "express": 0,
+      "delay": "1 à 2 jours ouvrés",
+      "city": "Nice"
+    },
+    {
+      "id": "france-metropolitaine",
+      "label": "France métropolitaine",
+      "standard": 1200,
+      "express": 2400,
+      "delay": "2 à 5 jours ouvrés",
+      "city": "France"
+    },
+    {
+      "id": "corse",
+      "label": "Corse",
+      "standard": 2200,
+      "express": null,
+      "delay": "4 à 7 jours ouvrés",
+      "city": "Corse"
+    },
+    {
+      "id": "europe",
+      "label": "Union européenne",
+      "standard": 2800,
+      "express": null,
+      "delay": "4 à 9 jours ouvrés",
+      "city": "Europe"
+    }
+  ],
+  "orderStatuses": [
+    {
+      "id": "pending",
+      "label": "Demande reçue",
+      "tone": "warning"
+    },
+    {
+      "id": "paid",
+      "label": "Commande confirmée",
+      "tone": "info"
+    },
+    {
+      "id": "shipping",
+      "label": "Expédiée",
+      "tone": "info"
+    },
+    {
+      "id": "delivered",
+      "label": "Livrée",
+      "tone": "success"
+    },
+    {
+      "id": "cancelled",
+      "label": "Annulée",
+      "tone": "muted"
+    }
+  ]
+}

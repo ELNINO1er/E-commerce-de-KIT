@@ -1,0 +1,179 @@
+<header class="page-head">
+  <div>
+    <a class="back" routerLink="/commandes">
+      <app-icon name="chevron" [size]="15" class="back__icon" />
+      {{ 'orders.backToList' | t }}
+    </a>
+    <h1>{{ orderNumber() }}</h1>
+    @if (order(); as data) {
+      <p>
+        <span class="status" [class]="statusVariant()">{{ statusLabel() }}</span>
+        <span class="page-head__date">{{ createdAt() }}</span>
+      </p>
+    }
+  </div>
+
+  @if (order()) {
+    <button
+      type="button"
+      class="btn btn--ghost"
+      (click)="downloadInvoice()"
+      [disabled]="downloading()"
+    >
+      <app-icon name="download" [size]="17" />
+      {{ (downloading() ? 'orders.invoiceDownloading' : 'orders.invoice') | t }}
+    </button>
+  }
+</header>
+
+@if (errorMessage(); as message) {
+  <p class="message message--error" role="alert">{{ message }}</p>
+}
+@if (loading() && !order()) {
+  <div class="sk-detail">
+    <app-skeleton height="240px" radius="16px" />
+    <app-skeleton height="240px" radius="16px" />
+  </div>
+} @else if (order(); as data) {
+  <div class="layout">
+    <div class="layout__main">
+      <section class="panel">
+        <div class="panel__head">
+          <h2>{{ 'orders.items.title' | t }}</h2>
+        </div>
+
+        <div class="table-wrap">
+          <table class="data">
+            <thead>
+              <tr>
+                <th>{{ 'orders.items.product' | t }}</th>
+                <th>{{ 'orders.items.unitPrice' | t }}</th>
+                <th>{{ 'orders.items.quantity' | t }}</th>
+                <th>{{ 'orders.items.lineTotal' | t }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of data.items; track item.variantId) {
+                <tr>
+                  <td>
+                    <strong>{{ item.productName }}</strong>
+                    <small>{{ item.format }}</small>
+                  </td>
+                  <td>{{ money(item.unitPrice) }}</td>
+                  <td>{{ item.quantity }}</td>
+                  <td><strong>{{ money(item.lineTotal) }}</strong></td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <dl class="totals">
+          <div>
+            <dt>{{ 'orders.totals.subtotal' | t }}</dt>
+            <dd>{{ money(data.subtotal) }}</dd>
+          </div>
+          <div>
+            <dt>{{ 'orders.totals.delivery' | t }}</dt>
+            <dd>{{ money(data.deliveryFee) }}</dd>
+          </div>
+          @if (data.discountAmount) {
+            <div class="totals__discount">
+              <dt>
+                {{ 'orders.totals.discount' | t }}
+                @if (data.discountCode) {
+                  <code>{{ data.discountCode }}</code>
+                }
+              </dt>
+              <dd>− {{ money(data.discountAmount) }}</dd>
+            </div>
+          }
+          <div class="totals__grand">
+            <dt>{{ 'orders.totals.total' | t }}</dt>
+            <dd>{{ money(data.total) }}</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="panel">
+        <div class="panel__head">
+          <h2>{{ 'orders.customer.title' | t }}</h2>
+        </div>
+        <dl class="facts">
+          <div>
+            <dt>{{ 'orders.customer.recipient' | t }}</dt>
+            <dd>{{ data.recipientName }}</dd>
+          </div>
+          <div>
+            <dt>{{ 'orders.customer.email' | t }}</dt>
+            <dd><a [href]="'mailto:' + data.contactEmail">{{ data.contactEmail }}</a></dd>
+          </div>
+          <div>
+            <dt>{{ 'orders.customer.phone' | t }}</dt>
+            <dd><a [href]="'tel:' + data.contactPhone">{{ data.contactPhone }}</a></dd>
+          </div>
+          <div>
+            <dt>{{ 'orders.customer.method' | t }}</dt>
+            <dd>{{ deliveryLabel() }}</dd>
+          </div>
+          @if (data.deliveryMethod === 'DELIVERY') {
+            <div>
+              <dt>{{ 'orders.customer.address' | t }}</dt>
+              <dd>{{ address() }}</dd>
+            </div>
+            <div>
+              <dt>{{ 'orders.customer.zone' | t }}</dt>
+              <dd>{{ data.deliveryZoneName ?? '—' }}</dd>
+            </div>
+          }
+          <div>
+            <dt>{{ 'orders.customer.estimated' | t }}</dt>
+            <dd>{{ data.estimatedDelivery ?? '—' }}</dd>
+          </div>
+        </dl>
+      </section>
+    </div>
+
+    <aside class="layout__side">
+      <section class="panel">
+        <div class="panel__head">
+          <h2>{{ 'orders.status.title' | t }}</h2>
+        </div>
+        <app-select
+          [formControl]="statusControl"
+          [options]="statusOptions()"
+          [ariaLabel]="'orders.status.title' | t"
+        />
+        <p class="hint">{{ 'orders.status.hint' | t }}</p>
+        <button
+          type="button"
+          class="btn btn--primary block"
+          (click)="applyStatus()"
+          [disabled]="saving() || statusControl.value === data.status"
+        >
+          {{ (saving() ? 'common.saving' : 'orders.status.apply') | t }}
+        </button>
+      </section>
+
+      <section class="panel">
+        <div class="panel__head">
+          <h2>{{ 'orders.tracking.title' | t }}</h2>
+        </div>
+        <textarea
+          [formControl]="trackingControl"
+          rows="4"
+          [placeholder]="'orders.tracking.placeholder' | t"
+        ></textarea>
+        <p class="hint">{{ 'orders.tracking.hint' | t }}</p>
+        <button
+          type="button"
+          class="btn btn--ghost block"
+          (click)="saveTracking()"
+          [disabled]="saving()"
+        >
+          {{ (saving() ? 'common.saving' : 'common.save') | t }}
+        </button>
+      </section>
+    </aside>
+  </div>
+}

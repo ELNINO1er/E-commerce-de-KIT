@@ -1,0 +1,131 @@
+/* Le dimensionnement dans l'entete est pose par la coquille sur l'hote ; le
+   composant ne gere que son propre cadre — sinon la bordure serait dessinee
+   deux fois, l'une dans l'autre. */
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* Le champ reprend exactement le cadre de l'entete, dont il remplace la
+   version inerte : meme gabarit, meme fond, meme rayon. */
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 0 14px;
+  border: 1px solid var(--scmc-border);
+  border-radius: var(--scmc-radius-sm);
+  color: #a4948b;
+  background: #faf7f4;
+
+  &:focus-within {
+    border-color: var(--scmc-cocoa);
+  }
+}
+
+.search__icon {
+  flex: none;
+}
+
+.search input {
+  flex: 1;
+  min-width: 0;
+  min-height: 40px;
+  padding: 0;
+  border: 0;
+  color: var(--scmc-chocolate-900);
+  background: transparent;
+  font-family: var(--scmc-font-body);
+  font-size: 14px;
+
+  /* Le conteneur porte l'etat focus : l'outline globale se tracerait sur le
+     rayon herite et deborderait du cadre. */
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
+
+  /* La croix native de `type=search` double le bouton d'effacement du champ
+     partage et ne se style pas. */
+  &::-webkit-search-cancel-button {
+    appearance: none;
+  }
+}
+
+.search__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+}
+
+.search__panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 21;
+  max-height: 420px;
+  padding: 8px;
+  overflow-y: auto;
+  border: 1px solid var(--scmc-border);
+  border-radius: var(--scmc-radius-card);
+  background: #fff;
+  box-shadow: 0 18px 44px rgba(50, 24, 15, 0.16);
+}
+
+.search__section {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 10px 10px 4px;
+
+  &:first-child {
+    margin-top: 2px;
+  }
+}
+
+.search__item {
+  display: block;
+  padding: 8px 10px;
+  border-radius: var(--scmc-radius-sm);
+  color: var(--scmc-nav-idle);
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+
+  strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  small {
+    display: block;
+    margin-top: 1px;
+    color: var(--scmc-muted);
+    font-size: 12px;
+  }
+
+  &:hover,
+  &:focus-visible {
+    color: var(--scmc-nav-active);
+    background: var(--scmc-nav-active-bg);
+  }
+}
+
+.search__hint,
+.search__more {
+  margin: 0;
+  padding: 10px;
+  color: var(--scmc-muted);
+  font-size: 13px;
+}
+
+.search__more {
+  padding-top: 2px;
+  font-size: 12px;
+}
+

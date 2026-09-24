@@ -1,0 +1,200 @@
+.page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 16px;
+
+  h1 {
+    margin: 0 0 2px;
+    font-size: 31px;
+  }
+
+  p {
+    margin: 0;
+    color: var(--scmc-muted);
+    font-size: 14px;
+  }
+}
+
+/* --- Barre de filtres --- */
+
+.filters {
+  margin-bottom: 14px;
+
+  form {
+    display: grid;
+    grid-template-columns: minmax(180px, 2fr) repeat(4, minmax(120px, 1fr)) auto;
+    gap: 14px;
+    align-items: end;
+  }
+
+  label {
+    display: block;
+  }
+
+  input {
+    margin-top: 6px;
+    min-height: 42px;
+    font-size: 14px;
+  }
+
+  /* La hauteur du select stylise se regle par variable : ses styles internes
+     sont encapsules, un selecteur descendant ne les atteindrait pas. */
+  app-select {
+    display: block;
+    margin-top: 6px;
+    --select-min-height: 42px;
+  }
+}
+
+/* En-tete de colonne cliquable. Il reste un `th` : c'est un bouton pour
+   l'interaction, pas pour la structure du tableau. */
+.sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+
+  &:hover,
+  &--active {
+    color: var(--scmc-cocoa);
+  }
+}
+
+.sort__icon {
+  opacity: 0.45;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+
+  .sort--active & {
+    opacity: 1;
+  }
+
+  &--asc {
+    transform: rotate(180deg);
+  }
+}
+
+.filters__checks {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  /* `wrap` pour que les deux libelles ne se chevauchent pas sur un ecran etroit. */
+  flex-wrap: wrap;
+  grid-column: 1 / -1;
+}
+
+.filters__check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--scmc-ink);
+  font-size: 13px;
+  font-weight: 600;
+
+  input {
+    margin-top: 0;
+    min-height: 0;
+  }
+}
+
+.filters__actions {
+  display: flex;
+  gap: 8px;
+  grid-column: 1 / -1;
+  justify-content: flex-end;
+}
+
+/* --- Tableau --- */
+
+.cell-product {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  img,
+  .cell-product__placeholder {
+    flex: none;
+    width: 46px;
+    height: 46px;
+    border-radius: 10px;
+    background: var(--scmc-page);
+  }
+
+  img {
+    object-fit: contain;
+    padding: 4px;
+  }
+
+  strong {
+    display: block;
+    color: var(--scmc-chocolate-900);
+    font-size: 15px;
+  }
+
+  small {
+    display: -webkit-box;
+    max-width: 320px;
+    overflow: hidden;
+    color: var(--scmc-muted);
+    font-size: 12px;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+}
+
+.cell-product__placeholder {
+  display: grid;
+  place-items: center;
+  color: var(--scmc-caramel);
+}
+
+.cell-price {
+  color: var(--scmc-cocoa);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Pastille et nombre d'unites centres l'un sur l'autre, en-tete compris. */
+.cell-stock-col {
+  text-align: center;
+}
+
+.cell-stock {
+  display: block;
+  margin-top: 4px;
+}
+
+/* Le chevron pointe vers le bas : un quart de tour l'oriente vers la droite,
+   sens attendu pour « ouvrir la fiche ». */
+.open-icon {
+  transform: rotate(-90deg);
+}
+
+/* `.data__actions` et `.icon-btn--danger` sont desormais globaux (styles.scss),
+   comme l'etat vide et les lignes fantomes qui appartiennent a `app-data-table`. */
+
+@media (max-width: 900px) {
+  .filters form {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .filters__search {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 575px) {
+  .page-head {
+    flex-direction: column;
+  }
+
+  .filters form {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,114 @@
+.page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 16px;
+
+  h1 {
+    margin: 0 0 2px;
+    font-size: 31px;
+  }
+
+  p {
+    margin: 0;
+    color: var(--scmc-muted);
+    font-size: 14px;
+  }
+}
+
+/* Un code promo se lit et se recopie caractere par caractere : espacement des
+   lettres elargi pour eviter les confusions O/0 et I/1. */
+.code {
+  padding: 4px 9px;
+  border-radius: 7px;
+  color: var(--scmc-cocoa);
+  background: var(--scmc-page);
+  font-family: var(--scmc-font-body);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.code-input {
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.search {
+  display: block;
+  max-width: 340px;
+  margin-bottom: 16px;
+}
+
+/* --- Formulaire en modale --- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+
+  input {
+    margin-top: 6px;
+  }
+
+  app-select {
+    display: block;
+    margin-top: 6px;
+  }
+}
+
+.grid__full {
+  grid-column: 1 / -1;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  input {
+    margin-top: 0;
+  }
+}
+
+.hint {
+  display: block;
+  color: var(--scmc-muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+/* « facultatif » reste sur la ligne du libelle ; l'aide passe sous le champ. */
+label > .hint:first-of-type {
+  display: inline;
+  margin-left: 6px;
+}
+
+input + .hint {
+  margin-top: 5px;
+}
+
+.field-error {
+  display: block;
+  margin-top: 5px;
+  color: var(--scmc-error);
+  font-size: 12px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+@media (max-width: 575px) {
+  .page-head {
+    flex-direction: column;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

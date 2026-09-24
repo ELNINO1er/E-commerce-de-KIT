@@ -1,0 +1,281 @@
+.page-head {
+  margin-bottom: 16px;
+
+  h1 {
+    margin: 6px 0 0;
+    font-size: 31px;
+  }
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--scmc-muted);
+  font-size: 13px;
+  font-weight: 700;
+
+  app-icon {
+    transform: rotate(90deg);
+  }
+
+  &:hover {
+    color: var(--scmc-cocoa);
+  }
+}
+
+.panel + .panel {
+  margin-top: 14px;
+}
+
+.grid {
+  display: grid;
+  /* Nom, catégorie puis photo sur une même ligne ; la description dessous.
+     Les deux champs cèdent de la largeur au cadre, qui a plus besoin de place. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 208px;
+  gap: 16px;
+  align-items: start;
+
+  /* Pas de règle `label { display: block }` ici : elle est déjà globale, et sa
+     spécificité (0,1,1) écraserait le `display: flex` du cadre photo. */
+
+  input,
+  textarea {
+    margin-top: 6px;
+  }
+
+  app-select {
+    display: block;
+    margin-top: 6px;
+  }
+
+  /* « facultatif » reste sur la ligne du libellé plutôt que d'occuper la sienne. */
+  label > .hint {
+    display: inline;
+    margin-left: 6px;
+    font-weight: 400;
+  }
+}
+
+/* La description n'occupe que les deux colonnes de champs : la troisième est
+   prise par le cadre photo, qui court sur les deux rangées. */
+.grid__full {
+  grid-column: 1 / 3;
+}
+
+.hint {
+  display: block;
+  color: var(--scmc-muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.field-error {
+  display: block;
+  margin-top: 5px;
+  color: var(--scmc-error);
+  font-size: 12px;
+}
+
+/* --- Photo : le cadre est lui-même la zone de dépôt cliquable --- */
+
+/* Le cadre court sur les deux rangees (champs + description) : sans cela, la
+   colonne de gauche laissait un grand vide sous le nom et la categorie. */
+.field-image {
+  display: flex;
+  flex-direction: column;
+  grid-column: 3;
+  grid-row: 1 / span 2;
+  height: 100%;
+}
+
+.field-image__label {
+  display: block;
+  margin-bottom: 6px;
+  color: #4a382e;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.drop {
+  position: relative;
+  flex: 1;
+  min-height: 132px;
+}
+
+.drop__zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  overflow: hidden;
+  border: 1px dashed var(--scmc-border-input);
+  border-radius: var(--scmc-radius-sm);
+  color: var(--scmc-caramel);
+  background: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease;
+
+  &:hover {
+    border-color: var(--scmc-caramel);
+    background: var(--scmc-nav-active-bg);
+  }
+
+  /* Une fois l'image posée, le trait discontinu n'a plus de raison d'être. */
+  &.has-image {
+    padding: 5px;
+    border-style: solid;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+.drop__status {
+  color: var(--scmc-muted);
+  font-weight: 600;
+}
+
+.drop__remove {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid var(--scmc-border);
+  border-radius: 50%;
+  color: var(--scmc-error);
+  background: #fff;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(50, 24, 15, 0.14);
+
+  &:hover {
+    border-color: var(--scmc-error);
+    background: var(--scmc-error-bg);
+  }
+}
+
+.field-image .hint {
+  margin-top: 6px;
+  font-size: 11px;
+}
+
+/* --- Formats --- */
+
+.variants .hint {
+  margin: -8px 0 16px;
+}
+
+.variant {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr auto;
+  gap: 12px;
+  /* `start` et non `end` : aligne par le haut, donc les libelles restent sur
+     une meme ligne. Avec `end`, l'apparition d'un message d'erreur allongeait
+     sa cellule vers le bas et decalait toutes les autres colonnes. */
+  align-items: start;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--scmc-track);
+
+  &:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  label {
+    display: block;
+  }
+
+  input {
+    margin-top: 6px;
+    min-height: 42px;
+  }
+}
+
+/* Les cellules etant alignees par le haut, ce retrait place le bouton au niveau
+   des champs : hauteur du libelle (~16px) + son ecart (6px) + le centrage du
+   bouton de 38px sur un champ de 50px. */
+.variant__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 28px;
+}
+
+.icon-btn--danger {
+  color: var(--scmc-error);
+
+  &:hover:not(:disabled) {
+    border-color: var(--scmc-error);
+    background: var(--scmc-error-bg);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+/* --- Actions --- */
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.sk-form {
+  display: grid;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+@media (max-width: 1000px) {
+  /* Plus de place pour trois colonnes : le cadre repasse dans le flux, sous les
+     deux champs, et la description reprend toute la largeur. */
+  .grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .field-image {
+    grid-column: 1 / -1;
+    grid-row: auto;
+    max-width: 230px;
+  }
+
+  .grid__full {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 800px) {
+  .grid,
+  .variant {
+    grid-template-columns: 1fr;
+  }
+
+  .field-image {
+    max-width: 230px;
+  }
+
+  .variant__actions {
+    justify-content: flex-end;
+  }
+}

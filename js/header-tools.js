@@ -16,7 +16,7 @@
           '<form class="kic-tool-form" data-auth-form="register" hidden><label class="kic-tool-field"><span class="kic-tool-label">Nom complet</span><input class="kic-tool-input" name="name" autocomplete="name" required></label><label class="kic-tool-field"><span class="kic-tool-label">E-mail professionnel</span><input class="kic-tool-input" name="email" type="email" autocomplete="email" required></label><label class="kic-tool-field"><span class="kic-tool-label">Mot de passe</span><input class="kic-tool-input" name="password" type="password" autocomplete="new-password" minlength="8" required></label><button class="kic-tool-submit" type="submit">Créer mon compte</button></form>' +
           '<p class="kic-tool-feedback" data-account-feedback role="status"></p>' +
         '</section>' +
-        '<section class="kic-tool-view" data-view="cart" hidden><p class="kic-tool-intro">Retrouvez les produits ajoutés à votre panier.</p><div class="kic-cart-items"></div><div class="kic-cart-summary"><span>Total connu</span><span data-cart-total>0 €</span></div></section>' +
+        '<section class="kic-tool-view" data-view="cart" hidden><p class="kic-tool-intro">Retrouvez les produits ajoutés à votre panier.</p><div class="kic-cart-items"></div><div class="kic-cart-summary"><span>Total connu</span><span data-cart-total>0 €</span></div><a class="kic-tool-submit kic-cart-checkout" href="commande.html">Finaliser la commande</a><p class="kic-tool-intro">Aucun paiement n’est demandé en ligne.</p></section>' +
       '</aside>' +
     '</div>');
 

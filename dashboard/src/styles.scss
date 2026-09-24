@@ -1,0 +1,720 @@
+/* ===========================================================================
+   KIC — Konan Industrie et Chocolaterie — direction artistique du back-office administrateur.
+
+   Les tokens sont repris tels quels du site client KIC-03
+   (`../../KIC-03/css/scmc-design.css` + `css/style.css`) pour que le
+   dashboard et la boutique partagent exactement la meme identite :
+   palette cacao, Rajdhani pour les titres, Open Sans pour le corps.
+
+   Les polices sont chargees dans `src/index.html` (preconnect + Google Fonts).
+   =========================================================================== */
+
+:root {
+  /* --- Palette cacao (identique a KIC-03) --- */
+  --scmc-chocolate-950: #1f0e09; // topbar, sidebar, fonds tres sombres
+  --scmc-chocolate-900: #32180f; // titres, sections sombres
+  --scmc-chocolate-700: #5c2b17; // bordures et survols fonces
+  --scmc-cocoa: #7b3f20; // couleur d'action principale (boutons, prix, actif)
+  --scmc-caramel: #b86f42; // accent, soulignements, focus
+  --scmc-gold: #d39b45; // survols sur fond sombre, details premium
+  --scmc-cream: #fbf5ef; // fonds de section clairs
+  --scmc-sand: #f2e4d6; // separateurs, fonds secondaires
+  --scmc-ink: #34241e; // texte courant
+  --scmc-muted: #76625a; // texte secondaire
+  --scmc-white: #fffdfb; // blanc casse chaud (surfaces)
+  --scmc-page: #f1ece7; // fond de page, derriere la coquille blanche de l'app
+
+  /* --- Couleurs derivees, propres a l'espace admin (KIC-03 « Espace client ») --- */
+  --scmc-paragraph: #4b342b; // couleur de paragraphe du template
+  --scmc-border: #eadfd8; // bordure des cartes du dashboard
+  --scmc-border-input: #e1d6cf; // bordure des champs de formulaire
+  --scmc-nav-active: #74401f; // item de navigation actif, entetes de tableau
+  --scmc-nav-active-bg: #faf4ed;
+  --scmc-nav-idle: #5f5148;
+  --scmc-surface: #fff;
+  --scmc-surface-alt: #f6f0ea;
+  /* Les cartes internes reprennent le beige de la page pour se detacher de la
+     carte blanche du contenu ; les graphiques ont besoin de deux tons au-dela. */
+  --scmc-track: #e6dcd3;
+  --scmc-track-line: #d5c5b8;
+
+  /* --- Etats --- */
+  --scmc-error: #962f25;
+  --scmc-error-bg: #fff0ee;
+  --scmc-success: #2f6b43;
+  --scmc-success-bg: #edf8f0;
+  --scmc-warning: #8a551e;
+  --scmc-warning-bg: #fff1dc;
+  --scmc-info: #2d5670;
+  --scmc-info-bg: #eaf2f8;
+
+  /* --- Formes et profondeur --- */
+  --scmc-radius-sm: 12px;
+  --scmc-radius: 20px;
+  --scmc-radius-lg: 30px;
+  --scmc-radius-pill: 999px;
+  --scmc-radius-card: 16px; // cartes et panneaux du back-office
+  --scmc-radius-shell: 30px; // coquille de l'application
+  /* Les surfaces du dashboard s'appuient sur un filet clair, pas sur une ombre. */
+  --scmc-shadow-hairline: 0 1px 2px rgba(50, 24, 15, 0.04);
+  --scmc-shadow: 0 18px 50px rgba(50, 24, 15, 0.12);
+  --scmc-shadow-card: 0 14px 35px rgba(57, 33, 22, 0.06);
+  --scmc-shadow-nav: 0 16px 40px rgba(57, 33, 22, 0.07);
+  --scmc-shadow-raised: 0 12px 28px rgba(50, 24, 15, 0.24);
+
+  /* --- Typographie --- */
+  --scmc-font-heading: 'Rajdhani', sans-serif;
+  --scmc-font-body: 'Open Sans', sans-serif;
+
+  /* --- Rythme --- */
+  --scmc-gap: 28px;
+  --scmc-sidebar-width: 255px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  outline: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--scmc-page);
+  color: var(--scmc-paragraph);
+  font-family: var(--scmc-font-body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.8;
+}
+
+::selection {
+  color: #fff;
+  background: var(--scmc-cocoa);
+}
+
+/* ---------------------------------------------------------------------------
+   Ascenseurs aux couleurs de la marque.
+
+   Firefox n'expose que les deux proprietes standard ; les navigateurs WebKit /
+   Chromium passent par les pseudo-elements. Le pouce est peint en
+   `content-box` a l'interieur d'une bordure transparente : c'est ce qui lui
+   donne son aspect arrondi et detache du bord.
+   --------------------------------------------------------------------------- */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scmc-track-line) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: var(--scmc-radius-pill);
+  background-color: var(--scmc-track-line);
+  background-clip: content-box;
+  transition: background-color 0.35s ease;
+
+  &:hover {
+    background-color: var(--scmc-caramel);
+  }
+
+  &:active {
+    background-color: var(--scmc-cocoa);
+  }
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Conteneurs portant la directive `appAutoHideScroll` : le pouce n'apparait que
+   pendant le defilement, puis s'efface. La gouttiere, elle, garde sa largeur —
+   apparition et disparition ne decalent donc jamais le contenu. */
+.scroll-auto-hide {
+  scrollbar-color: transparent transparent;
+}
+
+.scroll-auto-hide.is-scrolling {
+  scrollbar-color: var(--scmc-track-line) transparent;
+}
+
+.scroll-auto-hide::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+.scroll-auto-hide.is-scrolling::-webkit-scrollbar-thumb {
+  background-color: var(--scmc-track-line);
+
+  &:hover {
+    background-color: var(--scmc-caramel);
+  }
+
+  &:active {
+    background-color: var(--scmc-cocoa);
+  }
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition:
+    color 0.25s ease,
+    background 0.25s ease,
+    border-color 0.25s ease;
+}
+
+a:hover {
+  color: var(--scmc-caramel);
+}
+
+:focus-visible {
+  outline: 2px solid var(--scmc-caramel);
+  outline-offset: 3px;
+}
+
+/* --- Titres : echelle exacte du template client --- */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0 0 15px;
+  color: var(--scmc-chocolate-900);
+  font-family: var(--scmc-font-heading);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+h1 {
+  font-size: 36px;
+  line-height: 1.2;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 20px;
+}
+h5 {
+  font-size: 18px;
+}
+h6 {
+  font-size: 16px;
+}
+
+p {
+  margin: 0 0 1.5em;
+  color: var(--scmc-paragraph);
+}
+
+/* Sur-titre : la pastille `.section-subtitle` du site client. */
+.eyebrow {
+  color: var(--scmc-cocoa);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* ---------------------------------------------------------------------------
+   Boutons — reprennent `.theme-btn-1` (fond cocoa, survol chocolate + eleve).
+   --------------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border: 1px solid transparent;
+  border-radius: var(--scmc-radius-sm);
+  font-family: var(--scmc-font-body);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+  cursor: pointer;
+  transition:
+    color 0.25s ease,
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+
+  &:disabled,
+  &[aria-disabled='true'] {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+.btn--primary {
+  background: var(--scmc-cocoa);
+  border-color: var(--scmc-cocoa);
+  color: #fff;
+
+  &:hover:not(:disabled) {
+    background: var(--scmc-chocolate-900);
+    border-color: var(--scmc-chocolate-900);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: var(--scmc-shadow-raised);
+  }
+}
+
+/** Bouton secondaire : fond blanc plein, pour rester lisible aussi bien sur la
+    carte blanche du contenu que sur les panneaux beiges. */
+.btn--ghost {
+  background: #fff;
+  border-color: var(--scmc-border);
+  color: var(--scmc-nav-active);
+
+  &:hover:not(:disabled) {
+    background: var(--scmc-nav-active-bg);
+    border-color: var(--scmc-caramel);
+    color: var(--scmc-nav-active);
+  }
+}
+
+.btn--danger {
+  background: transparent;
+  border-color: rgba(150, 47, 37, 0.35);
+  color: var(--scmc-error);
+
+  &:hover:not(:disabled) {
+    background: var(--scmc-error-bg);
+    border-color: var(--scmc-error);
+  }
+}
+
+/** Confirmation d'une suppression : rouge plein, pour peser autant que l'acte. */
+.btn--danger-solid {
+  background: var(--scmc-error);
+  border-color: var(--scmc-error);
+  color: #fff;
+
+  &:hover:not(:disabled) {
+    background: #7c2620;
+    border-color: #7c2620;
+    color: #fff;
+  }
+}
+
+.btn--sm {
+  padding: 8px 16px;
+  font-size: 13px;
+}
+
+/* ---------------------------------------------------------------------------
+   Champs de formulaire — `.scmc-auth-card input` + focus caramel de KIC-03.
+   --------------------------------------------------------------------------- */
+
+input,
+textarea,
+select {
+  width: 100%;
+  min-height: 50px;
+  padding: 10px 14px;
+  border: 1px solid var(--scmc-border-input);
+  border-radius: var(--scmc-radius-sm);
+  background: #fff;
+  color: var(--scmc-ink);
+  font-family: var(--scmc-font-body);
+  font-size: 15px;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+textarea {
+  min-height: 110px;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--scmc-caramel);
+  box-shadow: 0 0 0 4px rgba(184, 111, 66, 0.12);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #a3928a;
+}
+
+/**
+ * Cases a cocher et boutons radio.
+ *
+ * Le bloc `input` ci-dessus leur imposait `padding: 10px 14px`, une bordure et
+ * un rayon. Sur un controle natif, la coche est dessinee dans la **boite de
+ * contenu** : le remplissage decalait donc le carre visible par rapport au
+ * cadre, et le libelle paraissait mal aligne meme avec `align-items: center`.
+ * D'ou cette remise a plat, avec une taille explicite.
+ */
+input[type='checkbox'],
+input[type='radio'] {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  /* Pour les cas hors conteneur flex. */
+  vertical-align: middle;
+  accent-color: var(--scmc-cocoa);
+}
+
+/* Curseur de clic sur tout ce qui se selectionne. Le libelle est inclus : il
+   fait partie de la cible cliquable d'une case, il doit le montrer.
+   `:has(>` cible uniquement les labels qui enveloppent une case ou un bouton
+   radio — pas ceux d'un champ texte. */
+select,
+input[type='checkbox'],
+input[type='radio'],
+label:has(> input[type='checkbox']),
+label:has(> input[type='radio']) {
+  cursor: pointer;
+}
+
+select:disabled,
+input:disabled,
+label:has(> input:disabled) {
+  cursor: not-allowed;
+}
+
+label {
+  display: block;
+  color: #4a382e;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/**
+ * Asterisque des champs obligatoires.
+ *
+ * Purement visuel : il est masque aux technologies d'assistance, qui reposent
+ * sur l'attribut `aria-required` porte par le champ lui-meme. Un asterisque
+ * annonce seul ne veut rien dire.
+ */
+.req {
+  margin-left: 3px;
+  color: var(--scmc-error);
+  font-weight: 700;
+}
+
+/* ---------------------------------------------------------------------------
+   Surfaces — cartes, panneaux, tuiles de statistiques.
+   --------------------------------------------------------------------------- */
+
+.panel {
+  padding: 22px;
+  border: 1px solid transparent;
+  border-radius: var(--scmc-radius-card);
+  /* Fond beige : le remplissage suffit a delimiter la carte sur le blanc,
+     le filet devient superflu. */
+  background: var(--scmc-page);
+}
+
+/** Variante « ancre sombre » : une carte pleine, chocolat, texte clair. */
+.panel--dark {
+  border-color: transparent;
+  background:
+    radial-gradient(circle at 88% 8%, rgba(184, 111, 66, 0.35), transparent 42%),
+    var(--scmc-chocolate-950);
+  color: rgba(255, 255, 255, 0.75);
+
+  h2,
+  h3 {
+    color: #fff;
+  }
+}
+
+.panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.panel__head h2,
+.panel__head h3 {
+  margin: 0;
+  font-size: 19px;
+}
+
+/* ---------------------------------------------------------------------------
+   Petits boutons de coin de carte : pastille ronde et pill « + Nouveau ».
+   --------------------------------------------------------------------------- */
+
+.icon-btn {
+  /* `inline-grid` et non `grid` : dans une cellule de tableau, un bouton en
+     `grid` forme un bloc et deux actions voisines s'empilent au lieu de
+     s'aligner. Dans un conteneur flex (entete, pagination) la valeur est de
+     toute facon ramenee a `grid`, le rendu y est donc inchange. */
+  display: inline-grid;
+  vertical-align: middle;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid var(--scmc-border);
+  border-radius: 50%;
+  color: var(--scmc-nav-active);
+  background: #fff;
+  cursor: pointer;
+  transition:
+    color 0.25s ease,
+    background 0.25s ease,
+    border-color 0.25s ease;
+
+  &:hover {
+    border-color: var(--scmc-caramel);
+    background: var(--scmc-nav-active-bg);
+  }
+}
+
+/** Action destructive : le bouton rond passe au rouge. */
+.icon-btn--danger {
+  color: var(--scmc-error);
+
+  &:hover {
+    border-color: var(--scmc-error);
+    background: var(--scmc-error-bg);
+  }
+}
+
+/** Derniere colonne d'un tableau : boutons d'action alignes a droite. */
+.data__actions {
+  width: 1%;
+  white-space: nowrap;
+  text-align: right;
+
+  > * + * {
+    margin-left: 6px;
+  }
+}
+
+.pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: 1px solid var(--scmc-border);
+  border-radius: var(--scmc-radius-pill);
+  color: var(--scmc-nav-active);
+  background: #fff;
+  font-family: var(--scmc-font-body);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease;
+
+  &:hover {
+    border-color: var(--scmc-caramel);
+    background: var(--scmc-nav-active-bg);
+  }
+}
+
+/** Micro-libelle de groupe (barre laterale, sections de formulaire). */
+.group-label {
+  margin: 0;
+  color: #a4948b;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/**
+ * Pastille chiffree posee au bout d'un item de navigation.
+ *
+ * Elle reprend les couleurs de la pastille de statut correspondante dans les
+ * tableaux : le badge « Commandes » compte les commandes `PENDING`, il porte
+ * donc le meme jaune que « En attente ». Le lien entre le chiffre du menu et les
+ * lignes concernees se lit alors sans explication.
+ */
+.count-badge {
+  display: inline-grid;
+  place-items: center;
+  min-width: 24px;
+  height: 20px;
+  padding: 0 7px;
+  border-radius: 7px;
+  color: var(--scmc-warning);
+  background: var(--scmc-warning-bg);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+/* ---------------------------------------------------------------------------
+   Tableaux — entete `--scmc-nav-active` sur texte blanc, comme
+   `.scmc-account-table`.
+   --------------------------------------------------------------------------- */
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table.data {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+table.data th {
+  padding: 14px 16px;
+  color: #fff;
+  background: var(--scmc-nav-active);
+  font-family: var(--scmc-font-heading);
+  font-size: 16px;
+  font-weight: 700;
+  text-align: left;
+  white-space: nowrap;
+
+  &:first-child {
+    border-radius: var(--scmc-radius-sm) 0 0 0;
+  }
+  &:last-child {
+    border-radius: 0 var(--scmc-radius-sm) 0 0;
+  }
+}
+
+table.data td {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(92, 43, 23, 0.1);
+  vertical-align: middle;
+}
+
+table.data tbody tr:hover td {
+  background: var(--scmc-cream);
+}
+
+table.data small {
+  display: block;
+  color: #86786f;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* ---------------------------------------------------------------------------
+   Pastilles de statut — `.scmc-status`, declinees par etat metier.
+   --------------------------------------------------------------------------- */
+
+/* `inline-flex` + hauteur de ligne explicite : en `inline-block`, la pastille
+   dependait de la hauteur de ligne heritee et du calage sur la ligne de base,
+   ce qui rognait le bas des lettres selon le contexte. */
+.status {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 15px;
+  line-height: 1.4;
+  border-radius: var(--scmc-radius-pill);
+  color: var(--scmc-warning);
+  background: var(--scmc-warning-bg);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.status--success {
+  color: var(--scmc-success);
+  background: var(--scmc-success-bg);
+}
+
+.status--danger {
+  color: var(--scmc-error);
+  background: var(--scmc-error-bg);
+}
+
+.status--info {
+  color: var(--scmc-info);
+  background: var(--scmc-info-bg);
+}
+
+.status--neutral {
+  color: #5f5148;
+  background: #f0e9e3;
+}
+
+/* ---------------------------------------------------------------------------
+   Messages — `.scmc-auth-message` du site client.
+   --------------------------------------------------------------------------- */
+
+.message {
+  margin: 12px 0;
+  padding: 11px 14px;
+  border-radius: 9px;
+  font-size: 14px;
+}
+
+.message--error {
+  color: var(--scmc-error);
+  background: var(--scmc-error-bg);
+}
+
+.message--success {
+  color: var(--scmc-success);
+  background: var(--scmc-success-bg);
+}
+
+/* --- Utilitaires --- */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

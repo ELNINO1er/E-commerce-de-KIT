@@ -1,0 +1,143 @@
+[
+  {
+    "id": "jus",
+    "slug": "jus-de-cacao",
+    "name": "Jus de cacao",
+    "category": "Boissons",
+    "subcategory": "Jus & nectars",
+    "image": "img/jus de cacao02.png",
+    "gallery": ["img/jus de cacao02.png", "img/jus de cacao 01.png", "img/jus pub.png", "img/jus details.jpeg"],
+    "badge": "Nouveau",
+    "popular": true,
+    "createdAt": "2026-07-10",
+    "description": "Boisson rafraîchissante issue de la pulpe de cacao, disponible en deux formats.",
+    "longDescription": "Le jus de cacao L’Or Brun est extrait de la pulpe fraîche qui entoure les fèves de cacao ivoirien. Naturellement fruité et peu sucré, il se déguste bien frais. Une valorisation locale et responsable du cacao par SCMC, de la cabosse à la bouteille.",
+    "ingredients": "Pulpe de cacao ivoirien, eau, sucre de canne (facultatif).",
+    "allergens": "Peut contenir des traces de fruits à coque. Sans gluten.",
+    "nutrition": [
+      {"label": "Valeur énergétique", "value": "48 kcal / 100 ml"},
+      {"label": "Glucides", "value": "11 g"},
+      {"label": "dont sucres", "value": "10 g"},
+      {"label": "Protéines", "value": "0,4 g"}
+    ],
+    "usage": "À consommer bien frais. Agiter avant ouverture.",
+    "conservation": "Conserver au frais entre 2 et 6 °C. À consommer rapidement après ouverture.",
+    "similar": ["infusion", "poudre"],
+    "rating": {"average": 4.5, "count": 12},
+    "formats": [
+      {"id": "250ml", "label": "250 ml", "price": 1500, "stock": 36, "sku": "SCMC-JUS-250"},
+      {"id": "500ml", "label": "500 ml", "price": 2000, "promoPrice": 1700, "stock": 20, "sku": "SCMC-JUS-500"}
+    ]
+  },
+  {
+    "id": "beurre",
+    "slug": "beurre-de-cacao",
+    "name": "Beurre de cacao",
+    "category": "Cosmétique",
+    "subcategory": "Soins naturels",
+    "image": "img/beurre de cacao02.png",
+    "gallery": ["img/beurre de cacao02.png", "img/beurre de cacao01.png", "img/beurre de pub.png", "img/beurre pub 02.png"],
+    "badge": "Transformation locale",
+    "popular": true,
+    "createdAt": "2026-07-03",
+    "description": "Beurre de cacao naturel pour les soins cosmétiques et les préparations artisanales.",
+    "longDescription": "Le beurre de cacao L’Or Brun est pressé à partir de fèves ivoiriennes torréfiées. Riche et fondant, il nourrit la peau et les cheveux, et entre dans la composition de préparations cosmétiques et gourmandes artisanales.",
+    "ingredients": "100 % beurre de cacao pur (Theobroma cacao).",
+    "allergens": "Issu du cacao. Éviter en cas d’allergie connue.",
+    "nutrition": [
+      {"label": "Matières grasses", "value": "100 g / 100 g"},
+      {"label": "dont acides gras saturés", "value": "60 g"}
+    ],
+    "usage": "Application cutanée ou utilisation culinaire. Faire fondre au bain-marie si nécessaire.",
+    "conservation": "Conserver au sec, à l’abri de la chaleur et de la lumière.",
+    "similar": ["poudre", "masse"],
+    "rating": {"average": 5, "count": 8},
+    "formats": [
+      {"id": "250g", "label": "250 g", "price": 3500, "stock": 18, "sku": "SCMC-BEU-250"}
+    ]
+  },
+  {
+    "id": "poudre",
+    "slug": "poudre-de-cacao",
+    "name": "Poudre de cacao",
+    "category": "Épicerie",
+    "subcategory": "Cacao à cuisiner",
+    "image": "img/poudre de cacao02.png",
+    "gallery": ["img/poudre de cacao02.png", "img/poudre de cacao01.png", "img/poudre pub.png", "img/scmc-poudre-cacao-carton.jpg"],
+    "badge": "100% naturel",
+    "popular": true,
+    "createdAt": "2026-07-01",
+    "description": "Poudre de cacao ivoirien naturelle et non sucrée, idéale pour les boissons et la pâtisserie.",
+    "longDescription": "La poudre de cacao L’Or Brun est issue de fèves ivoiriennes soigneusement sélectionnées et transformées localement par SCMC. Naturelle et non sucrée, elle conserve tout l’arôme du cacao et accompagne boissons chaudes, pâtisseries et préparations gourmandes.",
+    "ingredients": "100 % poudre de cacao ivoirien non sucrée.",
+    "allergens": "Peut contenir des traces de lait et de fruits à coque. Sans gluten.",
+    "nutrition": [
+      {"label": "Valeur énergétique", "value": "228 kcal / 100 g"},
+      {"label": "Protéines", "value": "20 g"},
+      {"label": "Glucides", "value": "14 g"},
+      {"label": "Matières grasses", "value": "11 g"}
+    ],
+    "usage": "1 à 2 cuillères à café dans une boisson chaude, un yaourt ou une préparation pâtissière.",
+    "conservation": "Conserver au sec, à l’abri de la lumière et de l’humidité.",
+    "similar": ["masse", "infusion"],
+    "rating": {"average": 4.5, "count": 21},
+    "formats": [
+      {"id": "250g", "label": "250 g", "price": 3000, "promoPrice": 2500, "stock": 24, "sku": "SCMC-PDR-250"}
+    ]
+  },
+  {
+    "id": "infusion",
+    "slug": "infusion-de-cacao",
+    "name": "Infusion de cacao",
+    "category": "Boissons",
+    "subcategory": "Infusions",
+    "image": "img/infusion de cacao.png",
+    "gallery": ["img/infusion de cacao.png", "img/scmc-infusion-cacao.jpg"],
+    "badge": "15 sachets",
+    "popular": false,
+    "createdAt": "2026-07-07",
+    "description": "Infusion aromatique préparée avec des coques de fèves de cacao torréfiées.",
+    "longDescription": "L’infusion de cacao L’Or Brun est préparée à partir des coques de fèves torréfiées, une valorisation astucieuse de la matière. Sans caféine excessive, elle offre une boisson chaude douce et aromatique, à savourer à tout moment de la journée.",
+    "ingredients": "Coques de fèves de cacao ivoirien torréfiées.",
+    "allergens": "Peut contenir des traces de fruits à coque. Sans gluten.",
+    "nutrition": [
+      {"label": "Valeur énergétique", "value": "2 kcal / tasse"},
+      {"label": "Théobromine", "value": "présence naturelle"}
+    ],
+    "usage": "Laisser infuser un sachet 4 à 6 minutes dans une eau frémissante.",
+    "conservation": "Conserver au sec, à l’abri de la lumière.",
+    "similar": ["jus", "poudre"],
+    "rating": {"average": 4, "count": 5},
+    "formats": [
+      {"id": "15-sachets", "label": "15 sachets - 75 g", "price": 3000, "stock": 30, "sku": "SCMC-INF-15"}
+    ]
+  },
+  {
+    "id": "masse",
+    "slug": "masse-de-cacao",
+    "name": "Masse de cacao",
+    "category": "Professionnels",
+    "subcategory": "Ingrédients pro",
+    "image": "img/masse de cacao02.png",
+    "gallery": ["img/masse de cacao02.png", "img/mase de cacao01.png", "img/masse pub .png", "img/masse noir pub.png"],
+    "badge": "Pur cacao",
+    "popular": true,
+    "createdAt": "2026-07-05",
+    "description": "Masse de cacao pure pour les chocolatiers, pâtissiers et professionnels.",
+    "longDescription": "La masse de cacao L’Or Brun (pâte de cacao 100 %) est destinée aux chocolatiers, pâtissiers et professionnels. Issue de fèves ivoiriennes transformées localement, elle constitue la base d’un chocolat de caractère et de préparations professionnelles exigeantes.",
+    "ingredients": "100 % masse de cacao ivoirien.",
+    "allergens": "Issu du cacao. Peut contenir des traces de lait et de fruits à coque.",
+    "nutrition": [
+      {"label": "Valeur énergétique", "value": "600 kcal / 100 g"},
+      {"label": "Matières grasses", "value": "52 g"},
+      {"label": "Protéines", "value": "13 g"}
+    ],
+    "usage": "Faire fondre au bain-marie pour vos préparations chocolatées et pâtissières.",
+    "conservation": "Conserver au sec, entre 15 et 18 °C, à l’abri de la lumière.",
+    "similar": ["beurre", "poudre"],
+    "rating": {"average": 5, "count": 9},
+    "formats": [
+      {"id": "1kg", "label": "1 kg", "price": 7500, "stock": 12, "sku": "SCMC-MAS-1KG"}
+    ]
+  }
+]

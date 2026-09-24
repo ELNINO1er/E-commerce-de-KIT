@@ -1,0 +1,86 @@
+<header class="page-head">
+  <div>
+    <h1>{{ 'audit.title' | t }}</h1>
+    <p>{{ 'audit.subtitle' | t }}</p>
+  </div>
+  <button type="button" class="btn btn--ghost" (click)="reload()" [disabled]="loading()">
+    <app-icon name="trend" [size]="17" />
+    {{ (loading() ? 'common.loading' : 'common.refresh') | t }}
+  </button>
+</header>
+
+@if (errorMessage(); as message) {
+  <p class="message message--error" role="alert">{{ message }}</p>
+}
+
+<section class="panel filters" [formGroup]="form">
+  <label class="filters__actor">
+    {{ 'audit.filters.actor' | t }}
+    <app-search-field
+      [placeholder]="'audit.filters.actorPlaceholder' | t"
+      (search)="onActorSearch($event)"
+    />
+  </label>
+
+  <label>
+    {{ 'audit.filters.method' | t }}
+    <app-select
+      formControlName="method"
+      [options]="methodOptions()"
+      [ariaLabel]="'audit.filters.method' | t"
+    />
+  </label>
+
+  <label>
+    {{ 'audit.filters.from' | t }}
+    <input type="date" formControlName="from" />
+  </label>
+
+  <label>
+    {{ 'audit.filters.to' | t }}
+    <input type="date" formControlName="to" />
+  </label>
+
+  <button type="button" class="btn btn--ghost" (click)="resetFilters()" [disabled]="!filtered()">
+    {{ 'common.reset' | t }}
+  </button>
+</section>
+
+<section class="panel">
+  <app-data-table
+    [loading]="loading()"
+    [isEmpty]="!logs().length"
+    [emptyMessage]="(filtered() ? 'audit.emptyFiltered' : 'audit.empty') | t"
+    [page]="page()"
+    [skeletonWidths]="['18%', '22%', '70px', '30%', '60px']"
+    [skeletonRowCount]="8"
+    (pageChange)="goToPage($event)"
+  >
+    <ng-container tableHeader>
+      <th>{{ 'audit.column.when' | t }}</th>
+      <th>{{ 'audit.column.actor' | t }}</th>
+      <th>{{ 'audit.column.method' | t }}</th>
+      <th>{{ 'audit.column.module' | t }}</th>
+      <th>{{ 'audit.column.status' | t }}</th>
+    </ng-container>
+
+    <ng-container tableBody>
+      @for (log of logs(); track log.id) {
+        <tr>
+          <td class="nowrap">{{ when(log) }}</td>
+          <td>{{ log.actor }}</td>
+          <td>
+            <span class="status" [class]="methodVariant(log)">{{ log.method }}</span>
+          </td>
+          <!-- Le chemin brut reste accessible au survol, pour le diagnostic. -->
+          <td [title]="log.path">{{ moduleLabel(log) }}</td>
+          <td>
+            <span class="status" [class]="statusVariant(log)" [attr.title]="log.status">
+              {{ statusLabel(log) }}
+            </span>
+          </td>
+        </tr>
+      }
+    </ng-container>
+  </app-data-table>
+</section>

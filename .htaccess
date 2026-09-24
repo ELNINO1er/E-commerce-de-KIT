@@ -1,0 +1,24 @@
+Options -MultiViews
+DirectoryIndex index.html
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^dashboard(?:/|$) - [R=404,L]
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)$ [NC]
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+RewriteCond %{HTTP_HOST} ^www\.kic-fr\.com$ [NC]
+RewriteRule ^ https://kic-fr.com%{REQUEST_URI} [R=301,L]
+RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
+RewriteRule ^(.+)\.html$ /$1 [R=301,L,NE]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.+?)/?$ $1.html [END]
+</IfModule>
+<IfModule mod_headers.c>
+Header always set X-Content-Type-Options "nosniff"
+Header always set X-Frame-Options "SAMEORIGIN"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+<FilesMatch "\.(?:html?|css|js)$">Header set Cache-Control "no-cache, must-revalidate"</FilesMatch>
+<FilesMatch "\.(?:png|jpe?g|webp|svg|woff2?)$">Header set Cache-Control "public, max-age=604800"</FilesMatch>
+</IfModule>
+

@@ -1,0 +1,67 @@
+.page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 16px;
+
+  h1 {
+    margin: 0 0 2px;
+    font-size: 31px;
+  }
+
+  p {
+    margin: 0;
+    color: var(--scmc-muted);
+    font-size: 14px;
+  }
+}
+
+.filters {
+  display: grid;
+  /* Quatre filtres et le bouton sur une ligne ; l'auteur, seul champ libre,
+     prend le plus de place. */
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 0.9fr) minmax(0, 0.9fr) auto;
+  gap: 16px;
+  align-items: end;
+  margin-bottom: 14px;
+
+  app-search-field,
+  app-select {
+    display: block;
+    margin-top: 6px;
+    --select-min-height: 42px;
+  }
+
+  input[type='date'] {
+    margin-top: 6px;
+  }
+
+  .btn {
+    /* Aligne le bouton sur la ligne de base des champs, pas sur celle des
+       intitules. */
+    height: 42px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 575px) {
+  .filters {
+    grid-template-columns: 1fr;
+  }
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+@media (max-width: 575px) {
+  .page-head {
+    flex-direction: column;
+  }
+}

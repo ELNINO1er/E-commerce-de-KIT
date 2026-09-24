@@ -1,0 +1,61 @@
+.page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 16px;
+
+  h1 {
+    margin: 0 0 2px;
+    font-size: 31px;
+  }
+
+  p {
+    margin: 0;
+    color: var(--scmc-muted);
+    font-size: 14px;
+  }
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: minmax(0, 320px) minmax(0, 240px);
+  gap: 16px;
+  align-items: start;
+  margin-bottom: 14px;
+
+  app-search-field,
+  app-select {
+    display: block;
+    margin-top: 6px;
+    --select-min-height: 42px;
+  }
+}
+
+.hint {
+  display: block;
+  margin-top: 5px;
+  color: var(--scmc-muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+@media (max-width: 700px) {
+  .filters {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* `.data__actions` est desormais global (styles.scss). */
+
+/* Le chevron du jeu d'icônes pointe vers le bas : un quart de tour l'oriente
+   vers la droite, sens attendu pour « ouvrir le détail ». */
+.open-icon {
+  transform: rotate(-90deg);
+}
+
+@media (max-width: 575px) {
+  .page-head {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,214 @@
+<div class="shell">
+  <aside class="sidebar" [attr.aria-busy]="booting()">
+    <a class="sidebar__brand" routerLink="/">
+      <img src="/images/kic-logo.png" alt="" width="34" height="34" />
+      <span>
+        <strong>KIC</strong>
+        <small>KIC</small>
+      </span>
+    </a>
+
+    @if (booting()) {
+      <div class="sidebar__nav sk-nav">
+        @for (row of navPlaceholders; track row) {
+          <div class="sk-nav__row">
+            <app-skeleton width="18px" height="18px" radius="5px" />
+            <app-skeleton [width]="row % 3 === 0 ? '54%' : '72%'" height="12px" />
+          </div>
+        }
+      </div>
+    } @else {
+      <nav class="sidebar__nav" aria-label="Navigation" appAutoHideScroll>
+        @for (group of nav; track group.label) {
+          <p class="group-label sidebar__group">{{ group.label | t }}</p>
+          <ul>
+            @for (item of group.items; track item.path) {
+              <li>
+                @if (item.available) {
+                  <a
+                    [routerLink]="item.path"
+                    routerLinkActive="is-active"
+                    [routerLinkActiveOptions]="{ exact: !!item.exact }"
+                  >
+                    <app-icon [name]="item.icon" [size]="18" />
+                    {{ item.label | t }}
+                    @if (badgeCount(item); as count) {
+                      <em class="count-badge">{{ count }}</em>
+                    }
+                  </a>
+                } @else {
+                  <span class="is-pending" aria-disabled="true">
+                    <app-icon [name]="item.icon" [size]="18" />
+                    {{ item.label | t }}
+                    @if (badgeCount(item); as count) {
+                      <em class="count-badge">{{ count }}</em>
+                    } @else {
+                      <em class="soon">{{ 'common.soon' | t }}</em>
+                    }
+                  </span>
+                }
+              </li>
+            }
+          </ul>
+        }
+      </nav>
+    }
+
+    <a class="sidebar__card" [href]="swaggerUrl" target="_blank" rel="noopener">
+      <span class="sidebar__card-icon" aria-hidden="true">
+        <app-icon name="audit" [size]="18" />
+      </span>
+      <strong>{{ 'sidebar.api.title' | t }}</strong>
+      <small>{{ 'sidebar.api.subtitle' | t }}</small>
+      <span class="sidebar__card-cta">{{ 'sidebar.api.cta' | t }}</span>
+    </a>
+  </aside>
+
+  <div class="main">
+    <header class="topbar" [attr.aria-busy]="booting()">
+      @if (booting()) {
+        <app-skeleton width="420px" height="42px" radius="12px" />
+        <div class="sk-profile">
+          <app-skeleton width="42px" height="42px" circle />
+          <div class="sk-profile__lines">
+            <app-skeleton width="118px" height="12px" />
+            <app-skeleton width="150px" height="10px" />
+          </div>
+        </div>
+      } @else {
+        <app-global-search />
+
+        <div class="profile" (keydown.escape)="closeMenu()">
+          <button
+            type="button"
+            class="profile__trigger"
+            (click)="toggleMenu()"
+            [attr.aria-label]="'common.profile.menu' | t"
+            [attr.aria-expanded]="menuOpen()"
+            aria-haspopup="menu"
+          >
+            <span class="topbar__avatar" aria-hidden="true">{{ initials() }}</span>
+            <span class="topbar__identity">
+              <strong>{{ displayName() }}</strong>
+              <small>{{ user()?.email }}</small>
+            </span>
+            <app-icon name="chevron" [size]="16" />
+          </button>
+
+          @if (menuOpen()) {
+            <!-- Voile transparent : un clic hors du menu le referme, sans avoir a
+                 poser d'ecouteur global sur le document. -->
+            <div class="profile__backdrop" (click)="closeMenu()"></div>
+
+            <div class="profile__menu" role="menu">
+              <p class="group-label profile__section">{{ 'common.language' | t }}</p>
+              @for (option of languages; track option) {
+                <button
+                  type="button"
+                  class="profile__item"
+                  role="menuitemradio"
+                  [attr.aria-checked]="language() === option"
+                  [class.is-active]="language() === option"
+                  (click)="switchLanguage(option)"
+                >
+                  {{ languageLabels[option] }}
+                  @if (language() === option) {
+                    <app-icon name="check" [size]="16" />
+                  }
+                </button>
+              }
+
+              <hr />
+
+              <button
+                type="button"
+                class="profile__item"
+                role="menuitem"
+                (click)="openProfileEditor()"
+              >
+                <app-icon name="edit" [size]="16" />
+                {{ 'profile.edit' | t }}
+              </button>
+
+              <button
+                type="button"
+                class="profile__item profile__item--danger"
+                role="menuitem"
+                (click)="logout()"
+              >
+                <app-icon name="logout" [size]="16" />
+                {{ 'common.logout' | t }}
+              </button>
+            </div>
+          }
+        </div>
+      }
+    </header>
+
+    @if (editingProfile()) {
+      <app-modal [title]="'profile.title' | t" (closed)="closeProfileEditor()">
+        <form class="profile-form" [formGroup]="profileForm" (ngSubmit)="saveProfile()" novalidate>
+          <label>
+            {{ 'profile.firstName' | t }}
+            <span class="req" aria-hidden="true" [title]="'common.requiredField' | t">*</span>
+            <input type="text" formControlName="firstName" aria-required="true" />
+            @if (profileForm.controls.firstName.touched && profileForm.controls.firstName.invalid) {
+              <small class="field-error">{{ 'profile.required' | t }}</small>
+            }
+          </label>
+
+          <label>
+            {{ 'profile.lastName' | t }}
+            <span class="req" aria-hidden="true" [title]="'common.requiredField' | t">*</span>
+            <input type="text" formControlName="lastName" aria-required="true" />
+            @if (profileForm.controls.lastName.touched && profileForm.controls.lastName.invalid) {
+              <small class="field-error">{{ 'profile.required' | t }}</small>
+            }
+          </label>
+
+          <label>
+            {{ 'profile.phone' | t }}
+            <input type="tel" formControlName="phone" />
+          </label>
+
+          <p class="hint">{{ 'profile.emailHint' | t }}</p>
+
+          <footer class="profile-actions">
+            <button type="button" class="btn btn--ghost" (click)="closeProfileEditor()">
+              {{ 'common.cancel' | t }}
+            </button>
+            <button type="submit" class="btn btn--primary" [disabled]="savingProfile()">
+              {{ (savingProfile() ? 'common.saving' : 'common.save') | t }}
+            </button>
+          </footer>
+        </form>
+      </app-modal>
+    }
+
+    <main class="content" [attr.aria-busy]="navigating()">
+      <div class="content__scroll" appAutoHideScroll>
+        @if (navigating()) {
+          <div class="sk-page">
+            <app-skeleton width="240px" height="30px" radius="10px" />
+            <app-skeleton width="360px" height="13px" />
+            <div class="sk-page__tiles">
+              @for (tile of tilePlaceholders; track tile) {
+                <app-skeleton height="112px" radius="16px" />
+              }
+            </div>
+            <div class="sk-page__panels">
+              <app-skeleton height="260px" radius="16px" />
+              <app-skeleton height="260px" radius="16px" />
+            </div>
+          </div>
+        }
+
+        <!-- Toujours monte : le routeur a besoin de l'outlet pour activer la route
+             d'arrivee. Pendant la navigation il est seulement masque. -->
+        <div class="content__outlet" [class.is-hidden]="navigating()">
+          <router-outlet />
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

@@ -1,0 +1,210 @@
+<header class="page-head">
+  <div>
+    <a class="back" routerLink="/produits">
+      <app-icon name="chevron" [size]="15" />
+      {{ 'products.title' | t }}
+    </a>
+    <h1>{{ (isEdit() ? 'products.form.edit' : 'products.form.new') | t }}</h1>
+  </div>
+</header>
+
+@if (errorMessage(); as message) {
+  <p class="message message--error" role="alert">{{ message }}</p>
+}
+@if (loading()) {
+  <section class="panel">
+    <app-skeleton width="220px" height="19px" />
+    <div class="sk-form">
+      <app-skeleton height="46px" radius="12px" />
+      <app-skeleton height="46px" radius="12px" />
+      <app-skeleton height="110px" radius="12px" />
+    </div>
+  </section>
+} @else {
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <section class="panel">
+      <div class="panel__head">
+        <h2>{{ 'products.form.section.info' | t }}</h2>
+      </div>
+
+      <div class="grid">
+        <label>
+          {{ 'products.form.name' | t }}
+          <span class="req" aria-hidden="true" [title]="'common.requiredField' | t">*</span>
+          <input type="text" formControlName="name" aria-required="true" />
+          @if (form.controls.name.touched && form.controls.name.invalid) {
+            <small class="field-error">{{ 'common.required' | t }}</small>
+          }
+          @if (serverFieldErrors()['name']; as serverError) {
+            <small class="field-error">{{ serverError }}</small>
+          }
+        </label>
+
+        <label>
+          {{ 'products.form.category' | t }}
+          <span class="req" aria-hidden="true" [title]="'common.requiredField' | t">*</span>
+          <app-select
+            formControlName="categoryId"
+            [options]="categoryOptions()"
+            [placeholder]="'products.form.categoryPlaceholder' | t"
+            [ariaLabel]="'products.form.category' | t"
+            [required]="true"
+          />
+          @if (form.controls.categoryId.touched && form.controls.categoryId.invalid) {
+            <small class="field-error">{{ 'common.required' | t }}</small>
+          }
+        </label>
+
+        <!-- Téléversement en deux temps : le fichier part d'abord vers l'API, qui
+             renvoie une URL absolue ; c'est elle qu'on enregistre dans imageUrl.
+             Le cadre lui-même est la zone cliquable — pas de bouton séparé. -->
+        <div class="field-image">
+          <span class="field-image__label">{{ 'products.form.image' | t }}</span>
+
+          <div class="drop">
+            <label class="drop__zone" [class.has-image]="!!form.controls.imageUrl.value">
+              @if (form.controls.imageUrl.value) {
+                <img [src]="form.controls.imageUrl.value" alt="" />
+              } @else {
+                <app-icon name="image" [size]="20" />
+                <span>{{ 'products.form.imageChoose' | t }}</span>
+              }
+
+              @if (uploading()) {
+                <span class="drop__status">{{ 'products.form.imageUploading' | t }}</span>
+              }
+
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                hidden
+                [disabled]="uploading()"
+                (change)="onImagePicked($event)"
+              />
+            </label>
+
+            <!-- Hors du label, sinon le clic rouvrirait le sélecteur de fichier. -->
+            @if (form.controls.imageUrl.value) {
+              <button
+                type="button"
+                class="drop__remove"
+                [attr.aria-label]="'products.form.imageRemove' | t"
+                (click)="removeImage()"
+              >
+                <app-icon name="trash" [size]="13" />
+              </button>
+            }
+          </div>
+
+          <small class="hint">{{ 'products.form.imageHint' | t }}</small>
+        </div>
+
+        <label class="grid__full">
+          {{ 'products.form.description' | t }}
+          <small class="hint">{{ 'common.optional' | t }}</small>
+          <textarea formControlName="description" rows="3"></textarea>
+        </label>
+      </div>
+    </section>
+
+    <section class="panel variants">
+      <div class="panel__head">
+        <h2>{{ 'products.variants.title' | t }}</h2>
+        <button type="button" class="pill-btn" (click)="addVariant()">
+          <app-icon name="plus" [size]="14" />
+          {{ 'products.variants.add' | t }}
+        </button>
+      </div>
+
+      <p class="hint">
+        {{ (isEdit() ? 'products.variants.hintEdit' : 'products.variants.hintCreate') | t }}
+      </p>
+
+      <div formArrayName="variants">
+        @for (group of variants.controls; track $index; let i = $index) {
+          <div class="variant" [formGroupName]="i">
+            <label>
+              {{ 'products.variants.format' | t }}
+              <span class="req" aria-hidden="true" [title]="'common.requiredField' | t">*</span>
+              <input
+                type="text"
+                formControlName="format"
+                aria-required="true"
+                [placeholder]="'products.variants.formatPlaceholder' | t"
+              />
+              @if (group.controls.format.touched && group.controls.format.invalid) {
+                <small class="field-error">{{ 'common.required' | t }}</small>
+              }
+            </label>
+            <label>
+              {{ 'products.variants.price' | t }}
+              <span class="req" aria-hidden="true" [title]="'common.requiredField' | t">*</span>
+              <input
+                type="number"
+                formControlName="price"
+                min="0"
+                step="100"
+                aria-required="true"
+              />
+              @if (group.controls.price.touched && group.controls.price.invalid) {
+                <small class="field-error">{{ 'products.variants.numberError' | t }}</small>
+              }
+            </label>
+            <label>
+              {{ 'products.variants.stock' | t }}
+              <span class="req" aria-hidden="true" [title]="'common.requiredField' | t">*</span>
+              <input type="number" formControlName="stock" min="0" aria-required="true" />
+              @if (group.controls.stock.touched && group.controls.stock.invalid) {
+                <small class="field-error">{{ 'products.variants.numberError' | t }}</small>
+              }
+            </label>
+            <label>
+              {{ 'products.variants.threshold' | t }}
+              <input type="number" formControlName="lowStockThreshold" min="0" />
+            </label>
+
+            <div class="variant__actions">
+              @if (isEdit()) {
+                <button
+                  type="button"
+                  class="btn btn--primary btn--sm"
+                  [disabled]="group.pristine || group.invalid"
+                  (click)="saveVariant(i)"
+                >
+                  {{ 'common.save' | t }}
+                </button>
+              }
+              <button
+                type="button"
+                class="icon-btn icon-btn--danger"
+                [disabled]="!isEdit() && variants.length === 1"
+                [attr.aria-label]="'products.variants.remove' | t"
+                (click)="requestVariantRemoval(i)"
+              >
+                <app-icon name="trash" [size]="16" />
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+
+    <div class="form-actions">
+      <a class="btn btn--ghost" routerLink="/produits">{{ 'common.cancel' | t }}</a>
+      <button type="submit" class="btn btn--primary" [disabled]="saving()">
+        {{ (saving() ? 'common.saving' : 'common.save') | t }}
+      </button>
+    </div>
+  </form>
+}
+
+@if (pendingVariantRemoval()) {
+  <app-confirm-dialog
+    [title]="'products.variants.delete.title' | t"
+    [message]="variantRemovalMessage()"
+    [confirmLabel]="'common.delete' | t"
+    [danger]="true"
+    (confirmed)="confirmVariantRemoval()"
+    (cancelled)="pendingVariantRemoval.set(null)"
+  />
+}

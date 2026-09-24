@@ -1,0 +1,120 @@
+<header class="page-head">
+  <div>
+    <a class="back" routerLink="/produits">
+      <app-icon name="chevron" [size]="15" class="back__icon" />
+      {{ 'products.backToList' | t }}
+    </a>
+    <h1>{{ product()?.name ?? '…' }}</h1>
+  </div>
+
+  @if (product()) {
+    <div class="page-head__actions">
+      <button type="button" class="btn btn--danger" (click)="confirmingDeletion.set(true)">
+        <app-icon name="trash" [size]="16" />
+        {{ 'common.delete' | t }}
+      </button>
+      <a class="btn btn--primary" [routerLink]="editLink()">
+        <app-icon name="edit" [size]="16" />
+        {{ 'common.edit' | t }}
+      </a>
+    </div>
+  }
+</header>
+
+@if (errorMessage(); as message) {
+  <p class="message message--error" role="alert">{{ message }}</p>
+}
+
+@if (loading()) {
+  <div class="sk">
+    <app-skeleton height="280px" radius="16px" />
+    <app-skeleton height="280px" radius="16px" />
+  </div>
+} @else if (product(); as data) {
+  <div class="layout">
+    <section class="panel media">
+      @if (data.imageUrl) {
+        <img [src]="data.imageUrl" [alt]="data.name" />
+      } @else {
+        <span class="media__placeholder" aria-hidden="true">
+          <app-icon name="box" [size]="34" />
+        </span>
+      }
+    </section>
+
+    <section class="panel">
+      <div class="panel__head">
+        <h2>{{ 'products.form.section.info' | t }}</h2>
+      </div>
+
+      <dl class="facts">
+        <div>
+          <dt>{{ 'products.column.category' | t }}</dt>
+          <dd>{{ data.category.name }}</dd>
+        </div>
+        <div>
+          <dt>{{ 'products.column.priceFrom' | t }}</dt>
+          <dd class="facts__price">{{ price(data.priceFrom) }}</dd>
+        </div>
+        <div>
+          <dt>{{ 'products.column.formats' | t }}</dt>
+          <dd>{{ data.variants.length }}</dd>
+        </div>
+        <div>
+          <dt>{{ 'products.column.stock' | t }}</dt>
+          <dd>{{ stockTotal() }}</dd>
+        </div>
+        <div>
+          <dt>{{ 'products.form.description' | t }}</dt>
+          <dd>{{ data.description || '—' }}</dd>
+        </div>
+      </dl>
+    </section>
+  </div>
+
+  <section class="panel">
+    <div class="panel__head">
+      <h2>{{ 'products.variants.title' | t }}</h2>
+    </div>
+
+    <div class="table-wrap">
+      <table class="data">
+        <thead>
+          <tr>
+            <th>{{ 'products.variants.format' | t }}</th>
+            <th>{{ 'products.variants.price' | t }}</th>
+            <th>{{ 'products.variants.stock' | t }}</th>
+            <th>{{ 'products.variants.threshold' | t }}</th>
+            <th>{{ 'products.column.stock' | t }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (variant of data.variants; track variant.id) {
+            <tr>
+              <td><strong>{{ variant.format }}</strong></td>
+              <td>{{ price(variant.price) }}</td>
+              <td>{{ variant.stock }}</td>
+              <td>{{ variant.lowStockThreshold }}</td>
+              <td>
+                <span class="status" [class]="stockVariant(variant)">
+                  {{ stockLabel(variant) }}
+                </span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+}
+
+@if (confirmingDeletion()) {
+  <app-confirm-dialog
+    [title]="'products.delete.title' | t"
+    [message]="deleteMessage()"
+    [confirmLabel]="'common.delete' | t"
+    [danger]="true"
+    (confirmed)="confirmDeletion()"
+    (cancelled)="confirmingDeletion.set(false)"
+  />
+}

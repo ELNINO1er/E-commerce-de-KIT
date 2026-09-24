@@ -1,0 +1,6 @@
+/dashboard/node_modules/
+/dashboard/.angular/
+/dashboard/dist/
+/api/.env
+/api/uploads/
+*.log

@@ -1,0 +1,181 @@
+<header class="page-head">
+  <div>
+    <h1>{{ 'discounts.title' | t }}</h1>
+    <p>{{ 'discounts.subtitle' | t }}</p>
+  </div>
+  <button type="button" class="btn btn--primary" (click)="openCreate()">
+    <app-icon name="plus" [size]="17" />
+    {{ 'discounts.new' | t }}
+  </button>
+</header>
+
+@if (errorMessage(); as message) {
+  <p class="message message--error" role="alert">{{ message }}</p>
+}
+
+<section class="panel">
+  <app-search-field
+    class="search"
+    [placeholder]="'discounts.search' | t"
+    (search)="search.set($event)"
+  />
+
+  <app-data-table
+    [loading]="loading()"
+    [isEmpty]="!codes().length"
+    [emptyMessage]="(search() ? 'common.searchEmpty' : 'discounts.empty') | t"
+    [skeletonWidths]="['18%', '14%', '24%', '16%', '90px']"
+    [skeletonRowCount]="5"
+  >
+    <ng-container tableHeader>
+      <th>{{ 'discounts.column.code' | t }}</th>
+      <th>{{ 'discounts.column.value' | t }}</th>
+      <th>{{ 'discounts.column.validity' | t }}</th>
+      <th>{{ 'discounts.column.minOrder' | t }}</th>
+      <th>{{ 'discounts.column.usage' | t }}</th>
+      <th>{{ 'discounts.column.state' | t }}</th>
+      <th class="data__actions">{{ 'discounts.column.actions' | t }}</th>
+    </ng-container>
+
+    <ng-container tableBody>
+      @for (code of codes(); track code.id) {
+        <tr>
+          <td><code class="code">{{ code.code }}</code></td>
+          <td><strong>{{ valueLabel(code) }}</strong></td>
+          <td>{{ validityLabel(code) }}</td>
+          <td>{{ minOrderLabel(code) }}</td>
+          <td>{{ usageLabel(code) }}</td>
+          <td>
+            <span class="status" [class]="stateVariant(code)">{{ stateLabel(code) }}</span>
+          </td>
+          <td class="data__actions">
+            <button
+              type="button"
+              class="icon-btn"
+              (click)="openEdit(code)"
+              [attr.aria-label]="'common.edit' | t"
+            >
+              <app-icon name="edit" [size]="16" />
+            </button>
+            <button
+              type="button"
+              class="icon-btn icon-btn--danger"
+              (click)="pendingDeletion.set(code)"
+              [attr.aria-label]="'common.delete' | t"
+            >
+              <app-icon name="trash" [size]="16" />
+            </button>
+          </td>
+        </tr>
+      }
+    </ng-container>
+  </app-data-table>
+</section>
+
+@if (editing()) {
+  <app-modal [title]="dialogTitle()" width="600px" (closed)="close()">
+    @if (formErrorMessage(); as message) {
+      <p class="message message--error" role="alert">{{ message }}</p>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="grid">
+        <label class="grid__full">
+          {{ 'discounts.form.code' | t }}
+          <span class="req" aria-hidden="true" [title]="'common.requiredField' | t">*</span>
+          <input
+            type="text"
+            formControlName="code"
+            aria-required="true"
+            placeholder="BIENVENUE10"
+            class="code-input"
+          />
+          @if (form.controls.code.touched && form.controls.code.invalid) {
+            <small class="field-error">{{ 'common.required' | t }}</small>
+          }
+          @if (serverFieldErrors()['code']; as serverError) {
+            <small class="field-error">{{ serverError }}</small>
+          }
+        </label>
+
+        <label>
+          {{ 'discounts.form.type' | t }}
+          <span class="req" aria-hidden="true" [title]="'common.requiredField' | t">*</span>
+          <app-select
+            formControlName="type"
+            [options]="typeOptions()"
+            [ariaLabel]="'discounts.form.type' | t"
+            [required]="true"
+          />
+        </label>
+
+        <label>
+          {{ 'discounts.form.value' | t }}
+          <span class="req" aria-hidden="true" [title]="'common.requiredField' | t">*</span>
+          <input type="number" formControlName="value" min="0" step="1" aria-required="true" />
+          <small class="hint">
+            {{
+              (form.controls.type.value === 'PERCENTAGE'
+                ? 'discounts.form.valueHintPercent'
+                : 'discounts.form.valueHintAmount'
+              ) | t
+            }}
+          </small>
+          @if (form.controls.value.touched && form.controls.value.invalid) {
+            <small class="field-error">{{ 'discounts.form.valueError' | t }}</small>
+          }
+        </label>
+
+        <label>
+          {{ 'discounts.form.validFrom' | t }}
+          <small class="hint">{{ 'common.optional' | t }}</small>
+          <input type="date" formControlName="validFrom" />
+        </label>
+
+        <label>
+          {{ 'discounts.form.validUntil' | t }}
+          <small class="hint">{{ 'common.optional' | t }}</small>
+          <input type="date" formControlName="validUntil" />
+        </label>
+
+        <label>
+          {{ 'discounts.form.minOrder' | t }}
+          <small class="hint">{{ 'common.optional' | t }}</small>
+          <input type="number" formControlName="minOrderAmount" min="0" step="500" />
+        </label>
+
+        <label>
+          {{ 'discounts.form.maxUses' | t }}
+          <small class="hint">{{ 'common.optional' | t }}</small>
+          <input type="number" formControlName="maxUses" min="1" step="1" />
+          <small class="hint">{{ 'discounts.form.maxUsesHint' | t }}</small>
+        </label>
+
+        <label class="grid__full check">
+          <input type="checkbox" formControlName="active" />
+          {{ 'discounts.form.active' | t }}
+        </label>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn--ghost" (click)="close()">
+          {{ 'common.cancel' | t }}
+        </button>
+        <button type="submit" class="btn btn--primary" [disabled]="saving()">
+          {{ (saving() ? 'common.saving' : 'common.save') | t }}
+        </button>
+      </div>
+    </form>
+  </app-modal>
+}
+
+@if (pendingDeletion()) {
+  <app-confirm-dialog
+    [title]="'discounts.delete.title' | t"
+    [message]="deleteMessage()"
+    [confirmLabel]="'common.delete' | t"
+    [danger]="true"
+    (confirmed)="confirmDeletion()"
+    (cancelled)="pendingDeletion.set(null)"
+  />
+}

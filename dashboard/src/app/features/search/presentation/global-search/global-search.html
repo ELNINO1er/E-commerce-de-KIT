@@ -1,0 +1,57 @@
+<div class="search" (keydown.escape)="close()">
+  <app-icon name="search" [size]="18" class="search__icon" />
+  <input
+    type="search"
+    [value]="term()"
+    (input)="onInput($event)"
+    (focus)="onFocus()"
+    [placeholder]="'common.search.placeholder' | t"
+    [attr.aria-label]="'common.search.label' | t"
+    [attr.aria-expanded]="open()"
+    aria-autocomplete="list"
+  />
+
+  @if (open()) {
+    <!-- Voile transparent : un clic hors du panneau le referme, sans ecouteur
+         global sur le document. -->
+    <div class="search__backdrop" (click)="close()"></div>
+
+    <div class="search__panel" role="listbox">
+      @if (!searchable()) {
+        <p class="search__hint">{{ 'search.minLength' | t }}</p>
+      } @else if (loading()) {
+        <p class="search__hint">{{ 'common.loading' | t }}</p>
+      } @else if (showEmpty()) {
+        <p class="search__hint">{{ 'search.empty' | t }}</p>
+      } @else {
+        @for (group of groups(); track group.kind) {
+          <p class="group-label search__section">
+            <app-icon [name]="kindIcon(group.kind)" [size]="14" />
+            {{ kindLabel(group.kind) | t }}
+          </p>
+
+          @for (result of group.results; track result.key) {
+            <a
+              class="search__item"
+              role="option"
+              [routerLink]="result.link"
+              [queryParams]="result.queryParams ?? null"
+              (click)="close()"
+            >
+              <strong>{{ result.title }}</strong>
+              @if (result.subtitle) {
+                <small>{{ result.subtitle }}</small>
+              }
+            </a>
+          }
+
+          @if (group.total > group.results.length) {
+            <p class="search__more">
+              {{ 'search.more' | t: { count: group.total - group.results.length } }}
+            </p>
+          }
+        }
+      }
+    </div>
+  }
+</div>

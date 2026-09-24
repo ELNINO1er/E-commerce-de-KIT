@@ -1,0 +1,93 @@
+.page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 16px;
+
+  h1 {
+    margin: 0 0 2px;
+    font-size: 31px;
+  }
+
+  p {
+    margin: 0;
+    color: var(--scmc-muted);
+    font-size: 14px;
+  }
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: minmax(0, 240px);
+  gap: 16px;
+  align-items: start;
+  margin-bottom: 14px;
+
+  app-select {
+    display: block;
+    margin-top: 6px;
+    --select-min-height: 42px;
+  }
+}
+
+/* Le motif est libre et souvent long : il occupe la colonne large et se coupe
+   plutot que d'etirer le tableau. La demande complete reste lisible dans la
+   fenetre de traitement. */
+.reason {
+  max-width: 340px;
+  overflow-wrap: anywhere;
+}
+
+.hint {
+  display: block;
+  margin-top: 8px;
+  color: var(--scmc-muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.facts {
+  margin: 0 0 18px;
+
+  div {
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr);
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--scmc-track);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  dt {
+    margin: 0;
+    color: var(--scmc-muted);
+    font-size: 13px;
+  }
+
+  dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+@media (max-width: 720px) {
+  .filters {
+    grid-template-columns: 1fr;
+  }
+
+  .facts div {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}

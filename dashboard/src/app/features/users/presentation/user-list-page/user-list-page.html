@@ -1,0 +1,112 @@
+<header class="page-head">
+  <div>
+    <h1>{{ 'users.title' | t }}</h1>
+    <p>{{ 'users.subtitle' | t }}</p>
+  </div>
+</header>
+
+@if (errorMessage(); as message) {
+  <p class="message message--error" role="alert">{{ message }}</p>
+}
+
+<section class="panel filters">
+  <label>
+    {{ 'common.search' | t }}
+    <app-search-field
+      [placeholder]="'users.search' | t"
+      [initialValue]="q()"
+      (search)="onSearch($event)"
+    />
+  </label>
+
+  <label>
+    {{ 'users.filters.role' | t }}
+    <app-select
+      [formControl]="roleControl"
+      [options]="roleOptions()"
+      [ariaLabel]="'users.filters.role' | t"
+    />
+  </label>
+</section>
+
+<section class="panel">
+  <app-data-table
+    [loading]="loading()"
+    [isEmpty]="!accounts().length"
+    [emptyMessage]="
+      (search() ? 'common.searchEmpty' : role() ? 'users.emptyFiltered' : 'users.empty') | t
+    "
+    [page]="page()"
+    [skeletonWidths]="['30%', '24%', '16%', '90px', '90px', '80px']"
+    (pageChange)="goToPage($event)"
+  >
+    <ng-container tableHeader>
+      <th>{{ 'users.column.account' | t }}</th>
+      <th>{{ 'users.column.email' | t }}</th>
+      <th>{{ 'users.column.phone' | t }}</th>
+      <th>{{ 'users.column.role' | t }}</th>
+      <th>{{ 'users.column.state' | t }}</th>
+      <th class="data__actions"></th>
+    </ng-container>
+
+    <ng-container tableBody>
+      @for (account of accounts(); track account.id) {
+        <tr>
+          <td>
+            <div class="cell-account">
+              <span class="avatar" aria-hidden="true">{{ initials(account) }}</span>
+              <strong>{{ name(account) }}</strong>
+            </div>
+          </td>
+          <td>
+            <a [href]="'mailto:' + account.email">{{ account.email }}</a>
+          </td>
+          <td>
+            @if (account.phone) {
+              <a [href]="'tel:' + account.phone">{{ account.phone }}</a>
+            } @else {
+              —
+            }
+          </td>
+          <td>
+            <span class="status" [class]="account.role === 'ADMIN' ? 'status--info' : 'status--neutral'">
+              {{ roleLabel(account) }}
+            </span>
+          </td>
+          <td>
+            <span class="status" [class]="account.enabled ? 'status--success' : 'status--danger'">
+              {{ (account.enabled ? 'users.state.enabled' : 'users.state.disabled') | t }}
+            </span>
+          </td>
+          <td class="data__actions">
+            @if (!isSelf(account)) {
+              <button
+                type="button"
+                class="icon-btn"
+                (click)="toggleRole(account)"
+                [disabled]="saving()"
+                [attr.aria-label]="roleActionLabel(account)"
+                [title]="roleActionLabel(account)"
+              >
+                <app-icon name="users" [size]="16" />
+              </button>
+              <button
+                type="button"
+                class="icon-btn"
+                [class.icon-btn--danger]="account.enabled"
+                (click)="toggleStatus(account)"
+                [disabled]="saving()"
+                [attr.aria-label]="statusActionLabel(account)"
+                [title]="statusActionLabel(account)"
+              >
+                <app-icon [name]="account.enabled ? 'trash' : 'check'" [size]="16" />
+              </button>
+            } @else {
+              <span class="self">{{ 'users.you' | t }}</span>
+            }
+          </td>
+        </tr>
+      }
+    </ng-container>
+  </app-data-table>
+</section>

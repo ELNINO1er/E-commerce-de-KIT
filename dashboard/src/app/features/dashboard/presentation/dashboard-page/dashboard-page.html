@@ -1,0 +1,152 @@
+<header class="page-head">
+  <div>
+    <h1>{{ 'dashboard.title' | t }}</h1>
+    <p>{{ 'dashboard.subtitle' | t }}</p>
+  </div>
+  <button type="button" class="btn btn--ghost" (click)="reload()" [disabled]="loading()">
+    <app-icon name="trend" [size]="17" />
+    {{ (loading() ? 'common.loading' : 'common.refresh') | t }}
+  </button>
+</header>
+
+@if (errorMessage(); as message) {
+  <p class="message message--error" role="alert">{{ message }}</p>
+}
+
+@if (stats(); as data) {
+  <section class="kpis" [attr.aria-label]="'dashboard.kpis.label' | t">
+    <article class="kpi kpi--featured">
+      <header>
+        <span>{{ 'dashboard.kpi.revenue' | t }}</span>
+        <span class="kpi__mark"><app-icon name="money" [size]="17" /></span>
+      </header>
+      <strong>{{ revenue() }}</strong>
+      <small>{{ 'dashboard.kpi.revenue.caption' | t }}</small>
+    </article>
+
+    <article class="kpi">
+      <header>
+        <span>{{ 'dashboard.kpi.orders' | t }}</span>
+        <span class="kpi__mark"><app-icon name="orders" [size]="17" /></span>
+      </header>
+      <strong>{{ data.totalOrders }}</strong>
+      <small>{{ 'dashboard.kpi.orders.caption' | t }}</small>
+    </article>
+
+    <article class="kpi">
+      <header>
+        <span>{{ 'dashboard.kpi.customers' | t }}</span>
+        <span class="kpi__mark"><app-icon name="users" [size]="17" /></span>
+      </header>
+      <strong>{{ data.totalUsers }}</strong>
+      <small>{{ 'dashboard.kpi.customers.caption' | t }}</small>
+    </article>
+
+    <article class="kpi">
+      <header>
+        <span>{{ 'dashboard.kpi.products' | t }}</span>
+        <span class="kpi__mark"><app-icon name="box" [size]="17" /></span>
+      </header>
+      <strong>{{ data.totalProducts }}</strong>
+      <small>{{ 'dashboard.kpi.products.caption' | t }}</small>
+    </article>
+
+    <article class="kpi" [class.kpi--alert]="data.lowStockVariants > 0">
+      <header>
+        <span>{{ 'dashboard.kpi.lowStock' | t }}</span>
+        <span class="kpi__mark"><app-icon name="alert" [size]="17" /></span>
+      </header>
+      <strong>{{ data.lowStockVariants }}</strong>
+      <small>{{ 'dashboard.kpi.lowStock.caption' | t }}</small>
+    </article>
+  </section>
+
+  <div class="panels">
+    <section class="panel">
+      <div class="panel__head">
+        <h2>{{ 'dashboard.bestSellers.title' | t }}</h2>
+        <span class="pill-btn">{{ 'dashboard.bestSellers.badge' | t }}</span>
+      </div>
+      @if (bestSellerBars().length) {
+        <app-bar-chart [data]="bestSellerBars()" />
+      } @else {
+        <p class="empty">{{ 'dashboard.bestSellers.empty' | t }}</p>
+      }
+    </section>
+
+    <div class="panels__side">
+      <section class="panel">
+        <div class="panel__head">
+          <h2>{{ 'dashboard.distribution.title' | t }}</h2>
+        </div>
+        @if (statusSlices().length) {
+          <app-donut-chart
+            [data]="statusSlices()"
+            [caption]="'dashboard.distribution.caption' | t"
+          />
+        } @else {
+          <p class="empty">{{ 'dashboard.distribution.empty' | t }}</p>
+        }
+      </section>
+
+      <section class="panel panel--dark tracker">
+        <div class="panel__head">
+          <h2>{{ 'dashboard.pending.title' | t }}</h2>
+          <span class="tracker__dot" aria-hidden="true"></span>
+        </div>
+        <strong class="tracker__value">{{ pendingOrders() }}</strong>
+        <p class="tracker__caption">
+          {{ (pendingOrders() > 1 ? 'dashboard.pending.many' : 'dashboard.pending.one') | t }}
+        </p>
+      </section>
+    </div>
+  </div>
+} @else if (loading()) {
+  <div class="sk-dashboard" [attr.aria-busy]="true" [attr.aria-label]="'dashboard.loading' | t">
+    <div class="kpis">
+      @for (tile of tilePlaceholders; track tile) {
+        <div class="kpi">
+          <header>
+            <app-skeleton width="58%" height="13px" />
+            <app-skeleton width="32px" height="32px" circle />
+          </header>
+          <app-skeleton width="72%" height="30px" radius="10px" />
+          <app-skeleton width="86%" height="11px" />
+        </div>
+      }
+    </div>
+
+    <div class="panels">
+      <section class="panel">
+        <div class="panel__head">
+          <app-skeleton width="180px" height="19px" />
+          <app-skeleton width="140px" height="32px" radius="999px" />
+        </div>
+        @for (row of [0, 1, 2]; track row) {
+          <div class="sk-dashboard__bar">
+            <app-skeleton width="46%" height="13px" />
+            <app-skeleton height="16px" radius="8px" />
+          </div>
+        }
+      </section>
+
+      <div class="panels__side">
+        <section class="panel">
+          <div class="panel__head">
+            <app-skeleton width="130px" height="19px" />
+          </div>
+          <div class="sk-dashboard__donut">
+            <app-skeleton width="148px" height="148px" circle />
+            <div class="sk-dashboard__legend">
+              @for (row of [0, 1, 2]; track row) {
+                <app-skeleton height="12px" />
+              }
+            </div>
+          </div>
+        </section>
+
+        <app-skeleton height="176px" radius="16px" />
+      </div>
+    </div>
+  </div>
+}

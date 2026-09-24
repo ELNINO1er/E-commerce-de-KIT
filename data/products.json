@@ -1,0 +1,167 @@
+[
+  {
+    "id": "beurre",
+    "slug": "beurre-de-cacao",
+    "name": "Beurre de cacao",
+    "category": "Ingrédients cacao",
+    "image": "img/beurre-cacao-pub.png",
+    "badge": "Qualité professionnelle",
+    "description": "Beurre de cacao traçable pour chocolaterie, pâtisserie et transformation professionnelle.",
+    "longDescription": "Un beurre de cacao sélectionné par KIC pour les professionnels en France et en Europe.",
+    "formats": [
+      {
+        "id": "1kg",
+        "label": "1 kg",
+        "price": 4000,
+        "stock": 30,
+        "sku": "KIC-BEU-1KG"
+      }
+    ],
+    "gallery": [
+      "img/beurre-cacao-pub.png"
+    ],
+    "popular": true,
+    "ingredients": "Informations disponibles sur demande.",
+    "allergens": "Fiche technique disponible sur demande.",
+    "nutrition": [],
+    "usage": "Usage professionnel.",
+    "conservation": "Conserver selon les indications de la fiche technique.",
+    "similar": [],
+    "rating": {
+      "average": 0,
+      "count": 0
+    }
+  },
+  {
+    "id": "poudre",
+    "slug": "poudre-de-cacao",
+    "name": "Poudre de cacao",
+    "category": "Ingrédients cacao",
+    "image": "img/poudre-cacao-pub.png",
+    "badge": "Usage polyvalent",
+    "description": "Poudre de cacao pour boissons, desserts, glaces, biscuits et recettes professionnelles.",
+    "longDescription": "Une poudre de cacao polyvalente issue de filières durables et traçables.",
+    "formats": [
+      {
+        "id": "1kg",
+        "label": "1 kg",
+        "price": 1500,
+        "stock": 45,
+        "sku": "KIC-PDR-1KG"
+      }
+    ],
+    "gallery": [
+      "img/poudre-cacao-pub.png"
+    ],
+    "popular": true,
+    "ingredients": "Informations disponibles sur demande.",
+    "allergens": "Fiche technique disponible sur demande.",
+    "nutrition": [],
+    "usage": "Usage professionnel.",
+    "conservation": "Conserver selon les indications de la fiche technique.",
+    "similar": [],
+    "rating": {
+      "average": 0,
+      "count": 0
+    }
+  },
+  {
+    "id": "masse",
+    "slug": "masse-de-cacao",
+    "name": "Masse de cacao",
+    "category": "Ingrédients cacao",
+    "image": "img/masse-cacao-pub.png",
+    "badge": "Pur cacao",
+    "description": "Masse de cacao pure destinée aux chocolatiers et transformateurs.",
+    "longDescription": "Base intense pour chocolats, ganaches, couvertures et recettes professionnelles.",
+    "formats": [
+      {
+        "id": "1kg",
+        "label": "1 kg",
+        "price": 2500,
+        "stock": 12,
+        "sku": "KIC-MAS-1KG"
+      }
+    ],
+    "gallery": [
+      "img/masse-cacao-pub.png"
+    ],
+    "popular": true,
+    "ingredients": "Informations disponibles sur demande.",
+    "allergens": "Fiche technique disponible sur demande.",
+    "nutrition": [],
+    "usage": "Usage professionnel.",
+    "conservation": "Conserver selon les indications de la fiche technique.",
+    "similar": [],
+    "rating": {
+      "average": 0,
+      "count": 0
+    }
+  },
+  {
+    "id": "infusion",
+    "slug": "infusion-de-cacao",
+    "name": "Infusion de cacao",
+    "category": "Boissons cacao",
+    "image": "img/infusion-cacao-01.png",
+    "badge": "15 sachets",
+    "description": "Infusion aromatique à base de coques de fèves de cacao torréfiées.",
+    "longDescription": "Une boisson chaude destinée aux épiceries, hôtels, salons de thé et distributeurs spécialisés.",
+    "formats": [
+      {
+        "id": "15-sachets",
+        "label": "15 sachets — 75 g",
+        "price": 1200,
+        "stock": 40,
+        "sku": "KIC-INF-15"
+      }
+    ],
+    "gallery": [
+      "img/infusion-cacao-01.png"
+    ],
+    "popular": true,
+    "ingredients": "Informations disponibles sur demande.",
+    "allergens": "Fiche technique disponible sur demande.",
+    "nutrition": [],
+    "usage": "Usage professionnel.",
+    "conservation": "Conserver selon les indications de la fiche technique.",
+    "similar": [],
+    "rating": {
+      "average": 0,
+      "count": 0
+    }
+  },
+  {
+    "id": "jus",
+    "slug": "jus-de-cacao",
+    "name": "Jus de cacao",
+    "category": "Boissons cacao",
+    "image": "img/jus-cacao.jpg",
+    "badge": "Pulpe de cacao",
+    "description": "Boisson fruitée issue de la pulpe du fruit du cacaoyer.",
+    "longDescription": "Un profil frais et fruité pour la distribution, la restauration et les concepts de boissons originales.",
+    "formats": [
+      {
+        "id": "250ml",
+        "label": "250 ml",
+        "price": 450,
+        "stock": 50,
+        "sku": "KIC-JUS-250"
+      }
+    ],
+    "gallery": [
+      "img/jus-cacao.jpg"
+    ],
+    "popular": true,
+    "ingredients": "Informations disponibles sur demande.",
+    "allergens": "Fiche technique disponible sur demande.",
+    "nutrition": [],
+    "usage": "Usage professionnel.",
+    "conservation": "Conserver selon les indications de la fiche technique.",
+    "similar": [],
+    "rating": {
+      "average": 0,
+      "count": 0
+    }
+  }
+]

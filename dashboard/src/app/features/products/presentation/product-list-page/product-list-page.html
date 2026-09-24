@@ -1,0 +1,170 @@
+<header class="page-head">
+  <div>
+    <h1>{{ 'products.title' | t }}</h1>
+    <p>{{ 'products.subtitle' | t }}</p>
+  </div>
+  <a class="btn btn--primary" routerLink="/produits/nouveau">
+    <app-icon name="plus" [size]="17" />
+    {{ 'products.new' | t }}
+  </a>
+</header>
+
+@if (errorMessage(); as message) {
+  <p class="message message--error" role="alert">{{ message }}</p>
+}
+
+<section class="panel filters">
+  <!-- Aucun `ngSubmit` : les filtres s'appliquent a la saisie. -->
+  <form [formGroup]="filters">
+    <label class="filters__search">
+      {{ 'products.filters.search' | t }}
+      <app-search-field
+        [placeholder]="'products.filters.searchPlaceholder' | t"
+        (search)="onSearch($event)"
+      />
+    </label>
+
+    <label>
+      {{ 'products.filters.category' | t }}
+      <app-select
+        formControlName="categoryId"
+        [options]="categoryOptions()"
+        [ariaLabel]="'products.filters.category' | t"
+      />
+    </label>
+
+    <label>
+      {{ 'products.filters.format' | t }}
+      <input
+        type="text"
+        formControlName="format"
+        [placeholder]="'products.filters.formatPlaceholder' | t"
+      />
+    </label>
+
+    <label>
+      {{ 'products.filters.minPrice' | t }}
+      <input type="number" formControlName="minPrice" min="0" step="100" />
+    </label>
+
+    <label>
+      {{ 'products.filters.maxPrice' | t }}
+      <input type="number" formControlName="maxPrice" min="0" step="100" />
+    </label>
+
+    <div class="filters__checks">
+      <label class="filters__check">
+        <input type="checkbox" formControlName="inStock" />
+        {{ 'products.filters.inStock' | t }}
+      </label>
+      <label class="filters__check">
+        <input type="checkbox" formControlName="lowStock" />
+        {{ 'products.filters.lowStock' | t }}
+      </label>
+    </div>
+
+    @if (hasActiveFilter()) {
+      <div class="filters__actions">
+        <button type="button" class="btn btn--ghost btn--sm" (click)="resetFilters()">
+          {{ 'products.filters.reset' | t }}
+        </button>
+      </div>
+    }
+  </form>
+</section>
+
+<section class="panel">
+  <app-data-table
+    [loading]="loading()"
+    [isEmpty]="!products().length"
+    [emptyMessage]="(hasActiveFilter() ? 'products.emptyFiltered' : 'products.empty') | t"
+    [page]="page()"
+    [skeletonWidths]="['46px', '30%', '18%', '14%', '80px']"
+    (pageChange)="goToPage($event)"
+  >
+    <ng-container tableHeader>
+      <th>{{ 'products.column.product' | t }}</th>
+      <th>{{ 'products.column.category' | t }}</th>
+      <th>{{ 'products.column.formats' | t }}</th>
+      <th>
+        <button
+          type="button"
+          class="sort"
+          [class.sort--active]="sort() !== 'id,desc'"
+          (click)="togglePriceSort()"
+          [attr.aria-label]="priceSortLabel()"
+          [title]="priceSortLabel()"
+        >
+          {{ 'products.column.priceFrom' | t }}
+          <app-icon
+            name="chevron"
+            [size]="14"
+            class="sort__icon"
+            [class.sort__icon--asc]="sort() === 'priceFrom,asc'"
+          />
+        </button>
+      </th>
+      <th class="cell-stock-col">{{ 'products.column.stock' | t }}</th>
+      <th class="data__actions">{{ 'products.column.actions' | t }}</th>
+    </ng-container>
+
+    <ng-container tableBody>
+      @for (product of products(); track product.id) {
+        <tr>
+              <td>
+                <div class="cell-product">
+                  @if (product.imageUrl) {
+                    <img [src]="product.imageUrl" [alt]="" loading="lazy" />
+                  } @else {
+                    <span class="cell-product__placeholder" aria-hidden="true">
+                      <app-icon name="box" [size]="18" />
+                    </span>
+                  }
+                  <div>
+                    <strong>{{ product.name }}</strong>
+                    @if (product.description) {
+                      <small>{{ product.description }}</small>
+                    }
+                  </div>
+                </div>
+              </td>
+              <td>{{ product.category.name }}</td>
+              <td>{{ variantCount(product) }}</td>
+              <td class="cell-price">{{ price(product) }}</td>
+              <td class="cell-stock-col">
+                <span class="status" [class]="stockVariant(product)">{{ stockLabel(product) }}</span>
+                <small class="cell-stock">{{ stockTotal(product) }}</small>
+              </td>
+              <td class="data__actions">
+                <a
+                  class="icon-btn"
+                  [routerLink]="['/produits', product.id]"
+                  [attr.aria-label]="'products.open' | t"
+                >
+                  <app-icon name="chevron" [size]="16" class="open-icon" />
+                </a>
+                <button
+                  type="button"
+                  class="icon-btn icon-btn--danger"
+                  (click)="pendingDeletion.set(product)"
+                  [attr.aria-label]="'common.delete' | t"
+                >
+                  <app-icon name="trash" [size]="16" />
+                </button>
+              </td>
+            </tr>
+          }
+    </ng-container>
+  </app-data-table>
+</section>
+
+@if (pendingDeletion(); as product) {
+  <app-confirm-dialog
+    [title]="'products.delete.title' | t"
+    [message]="deleteMessage()"
+    [confirmLabel]="'common.delete' | t"
+    [danger]="true"
+    (confirmed)="confirmDeletion()"
+    (cancelled)="pendingDeletion.set(null)"
+  />
+}

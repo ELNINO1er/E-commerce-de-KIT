@@ -1,0 +1,175 @@
+<header class="page-head">
+  <div>
+    <h1>{{ 'delivery.title' | t }}</h1>
+    <p>{{ 'delivery.subtitle' | t }}</p>
+  </div>
+  <button type="button" class="btn btn--primary" (click)="openCreate()">
+    <app-icon name="plus" [size]="17" />
+    {{ 'delivery.new' | t }}
+  </button>
+</header>
+
+@if (errorMessage(); as message) {
+  <p class="message message--error" role="alert">{{ message }}</p>
+}
+
+<section class="panel">
+  <app-search-field
+    class="search"
+    [placeholder]="'delivery.search' | t"
+    (search)="search.set($event)"
+  />
+
+  <app-data-table
+    [loading]="loading()"
+    [isEmpty]="!zones().length"
+    [emptyMessage]="(search() ? 'common.searchEmpty' : 'delivery.empty') | t"
+    [skeletonWidths]="['26%', '18%', '14%', '16%', '90px']"
+    [skeletonRowCount]="5"
+  >
+    <ng-container tableHeader>
+      <th>{{ 'delivery.column.zone' | t }}</th>
+      <th>{{ 'delivery.column.city' | t }}</th>
+      <th>{{ 'delivery.column.fee' | t }}</th>
+      <th>{{ 'delivery.column.delay' | t }}</th>
+      <th>{{ 'delivery.column.state' | t }}</th>
+      <th class="data__actions">{{ 'delivery.column.actions' | t }}</th>
+    </ng-container>
+
+    <ng-container tableBody>
+      @for (zone of zones(); track zone.id) {
+        <tr>
+          <td><strong>{{ zone.name }}</strong></td>
+          <td>{{ zone.city }}</td>
+          <td>
+            <strong [class.free]="zone.fee === 0">{{ feeLabel(zone) }}</strong>
+          </td>
+          <td>{{ zone.estimatedDelivery }}</td>
+          <td>
+            <span class="status" [class]="zone.active ? 'status--success' : 'status--neutral'">
+              {{ stateLabel(zone) }}
+            </span>
+          </td>
+          <td class="data__actions">
+            <button
+              type="button"
+              class="icon-btn"
+              (click)="openEdit(zone)"
+              [attr.aria-label]="'common.edit' | t"
+            >
+              <app-icon name="edit" [size]="16" />
+            </button>
+            <button
+              type="button"
+              class="icon-btn icon-btn--danger"
+              (click)="pendingDeletion.set(zone)"
+              [attr.aria-label]="'common.delete' | t"
+            >
+              <app-icon name="trash" [size]="16" />
+            </button>
+          </td>
+        </tr>
+      }
+    </ng-container>
+  </app-data-table>
+</section>
+
+@if (editing()) {
+  <app-modal [title]="dialogTitle()" width="580px" (closed)="close()">
+    @if (formErrorMessage(); as message) {
+      <p class="message message--error" role="alert">{{ message }}</p>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="grid">
+        <label>
+          {{ 'delivery.form.name' | t }}
+          <span class="req" aria-hidden="true" [title]="'common.requiredField' | t">*</span>
+          <input type="text" formControlName="name" aria-required="true" placeholder="Cocody" />
+          @if (form.controls.name.touched && form.controls.name.invalid) {
+            <small class="field-error">{{ 'common.required' | t }}</small>
+          }
+          @if (serverFieldErrors()['name']; as serverError) {
+            <small class="field-error">{{ serverError }}</small>
+          }
+        </label>
+
+        <label>
+          {{ 'delivery.form.city' | t }}
+          <span class="req" aria-hidden="true" [title]="'common.requiredField' | t">*</span>
+          <input type="text" formControlName="city" aria-required="true" placeholder="Nice" />
+          @if (form.controls.city.touched && form.controls.city.invalid) {
+            <small class="field-error">{{ 'common.required' | t }}</small>
+          }
+          @if (serverFieldErrors()['city']; as serverError) {
+            <small class="field-error">{{ serverError }}</small>
+          }
+        </label>
+
+        <label class="grid__full">
+          {{ 'delivery.form.fee' | t }}
+          <span class="req" aria-hidden="true" [title]="'common.requiredField' | t">*</span>
+          <input type="number" formControlName="fee" min="0" step="500" aria-required="true" />
+          <small class="hint">{{ 'delivery.form.feeHint' | t }}</small>
+          @if (form.controls.fee.touched && form.controls.fee.invalid) {
+            <small class="field-error">{{ 'delivery.form.feeError' | t }}</small>
+          }
+        </label>
+
+        <label>
+          {{ 'delivery.form.daysMin' | t }}
+          <span class="req" aria-hidden="true" [title]="'common.requiredField' | t">*</span>
+          <input
+            type="number"
+            formControlName="estimatedDaysMin"
+            min="1"
+            step="1"
+            aria-required="true"
+          />
+        </label>
+
+        <label>
+          {{ 'delivery.form.daysMax' | t }}
+          <span class="req" aria-hidden="true" [title]="'common.requiredField' | t">*</span>
+          <input
+            type="number"
+            formControlName="estimatedDaysMax"
+            min="1"
+            step="1"
+            aria-required="true"
+          />
+        </label>
+
+        @if (form.errors?.['daysRange'] && form.controls.estimatedDaysMax.touched) {
+          <small class="field-error grid__full">{{ 'delivery.form.daysRangeError' | t }}</small>
+        }
+
+        <label class="grid__full check">
+          <input type="checkbox" formControlName="active" />
+          {{ 'delivery.form.active' | t }}
+        </label>
+        <small class="hint grid__full">{{ 'delivery.form.activeHint' | t }}</small>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn--ghost" (click)="close()">
+          {{ 'common.cancel' | t }}
+        </button>
+        <button type="submit" class="btn btn--primary" [disabled]="saving()">
+          {{ (saving() ? 'common.saving' : 'common.save') | t }}
+        </button>
+      </div>
+    </form>
+  </app-modal>
+}
+
+@if (pendingDeletion()) {
+  <app-confirm-dialog
+    [title]="'delivery.delete.title' | t"
+    [message]="deleteMessage()"
+    [confirmLabel]="'common.delete' | t"
+    [danger]="true"
+    (confirmed)="confirmDeletion()"
+    (cancelled)="pendingDeletion.set(null)"
+  />
+}

@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /commande
+Disallow: /confirmation
+
+Sitemap: https://kic-fr.com/sitemap.xml

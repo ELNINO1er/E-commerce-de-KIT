@@ -1,0 +1,85 @@
+<header class="page-head">
+  <div>
+    <h1>{{ 'orders.title' | t }}</h1>
+    <p>{{ 'orders.subtitle' | t }}</p>
+  </div>
+  <button type="button" class="btn btn--ghost" (click)="exportCsv()" [disabled]="exporting()">
+    <app-icon name="download" [size]="17" />
+    {{ (exporting() ? 'orders.exporting' : 'orders.export') | t }}
+  </button>
+</header>
+
+@if (errorMessage(); as message) {
+  <p class="message message--error" role="alert">{{ message }}</p>
+}
+
+<section class="panel filters">
+  <label>
+    {{ 'common.search' | t }}
+    <app-search-field [placeholder]="'orders.search' | t" (search)="onSearch($event)" />
+  </label>
+
+  <label>
+    {{ 'orders.filters.status' | t }}
+    <app-select
+      [formControl]="statusControl"
+      [options]="statusOptions()"
+      [ariaLabel]="'orders.filters.status' | t"
+    />
+  </label>
+</section>
+
+<section class="panel">
+  <app-data-table
+    [loading]="loading()"
+    [isEmpty]="!orders().length"
+    [emptyMessage]="
+      (search() ? 'common.searchEmpty' : status() ? 'orders.emptyFiltered' : 'orders.empty') | t
+    "
+    [page]="page()"
+    [skeletonWidths]="['16%', '20%', '24%', '14%', '80px']"
+    (pageChange)="goToPage($event)"
+  >
+    <ng-container tableHeader>
+      <th>{{ 'orders.column.number' | t }}</th>
+      <th>{{ 'orders.column.date' | t }}</th>
+      <th>{{ 'orders.column.customer' | t }}</th>
+      <th>{{ 'orders.column.delivery' | t }}</th>
+      <th>{{ 'orders.column.total' | t }}</th>
+      <th>{{ 'orders.column.status' | t }}</th>
+      <th class="data__actions"></th>
+    </ng-container>
+
+    <ng-container tableBody>
+      @for (order of orders(); track order.orderNumber) {
+        <tr>
+              <td><strong>{{ order.orderNumber }}</strong></td>
+              <td>{{ date(order) }}</td>
+              <td>
+                {{ order.recipientName }}
+                <small>{{ order.contactEmail }}</small>
+              </td>
+              <td>
+                {{ deliveryLabel(order) }}
+                @if (order.deliveryZoneName) {
+                  <small>{{ order.deliveryZoneName }}</small>
+                }
+              </td>
+              <td><strong>{{ total(order) }}</strong></td>
+              <td>
+                <span class="status" [class]="statusVariant(order)">{{ statusLabel(order) }}</span>
+              </td>
+              <td class="data__actions">
+                <a
+                  class="icon-btn"
+                  [routerLink]="['/commandes', order.orderNumber]"
+                  [attr.aria-label]="'orders.open' | t"
+                >
+                  <app-icon name="chevron" [size]="16" class="open-icon" />
+                </a>
+              </td>
+            </tr>
+          }
+    </ng-container>
+  </app-data-table>
+</section>

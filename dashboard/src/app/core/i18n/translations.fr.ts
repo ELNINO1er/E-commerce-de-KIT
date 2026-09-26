@@ -201,7 +201,7 @@ export const FR = {
   'products.variants.hintCreate':
     'Au moins un format est nécessaire. Prix en centimes d’euro, stock en unités.',
   'products.variants.hintEdit':
-    'Chaque format est enregistré séparément, dès sa modification.',
+    'Modifiez les formats puis utilisez le bouton Enregistrer en bas de la page.',
   'products.variants.format': 'Format',
   'products.variants.formatPlaceholder': '250 g',
   'products.variants.price': 'Prix (€)',

@@ -17,6 +17,7 @@ import {
 } from '../../domain/models/product.model';
 import { MEDIA_REPOSITORY } from '../../domain/ports/media-repository.port';
 import { PRODUCT_REPOSITORY } from '../../domain/ports/product-repository.port';
+import { forkJoin, Observable } from 'rxjs';
 
 /** Une ligne de format dans le formulaire. `id` a `null` = format pas encore cree. */
 type VariantGroup = FormGroup<{
@@ -145,34 +146,6 @@ export class ProductFormPage {
     });
   }
 
-  /** Enregistre un format isolément (mode modification uniquement). */
-  protected saveVariant(index: number): void {
-    const group = this.variants.at(index);
-    const productId = this.productId();
-    if (group.invalid || productId === null) {
-      // Meme raison que dans `submit()` : ne jamais laisser un clic sans effet.
-      group.markAllAsTouched();
-      this.toast.error(this.i18n.t('products.form.invalid'));
-      return;
-    }
-
-    const request = this.toVariantRequest(group);
-    const variantId = group.controls.id.value;
-    const call =
-      variantId === null
-        ? this.repository.addVariant(productId, request)
-        : this.repository.updateVariant(variantId, request);
-
-    call.subscribe({
-      next: (variant: ProductVariant) => {
-        group.controls.id.setValue(variant.id);
-        group.markAsPristine();
-        this.toast.successKey('products.variants.saved');
-      },
-      error: (error: unknown) => this.toast.apiError(error),
-    });
-  }
-
   // --- Image ---------------------------------------------------------------
 
   protected onImagePicked(event: Event): void {
@@ -255,17 +228,46 @@ export class ProductFormPage {
     }
 
     this.repository.update(id, base).subscribe({
-      next: () => {
-        this.saving.set(false);
-        this.form.markAsPristine();
-        this.toast.successKey('products.form.updated');
-        this.closeForm();
-      },
+      next: () => this.saveEditedVariants(id),
       error: (error: unknown) => {
         this.error.set(error);
         this.saving.set(false);
       },
     });
+  }
+
+  /** Le bouton principal enregistre maintenant le produit et tous ses formats. */
+  private saveEditedVariants(productId: number): void {
+    const calls: Observable<ProductVariant>[] = this.variants.controls
+      .filter((group) => group.dirty || group.controls.id.value === null)
+      .map((group) => {
+        const variantId = group.controls.id.value;
+        const request = this.toVariantRequest(group);
+        return variantId === null
+          ? this.repository.addVariant(productId, request)
+          : this.repository.updateVariant(variantId, request);
+      });
+
+    if (!calls.length) {
+      this.finishUpdate();
+      return;
+    }
+
+    forkJoin(calls).subscribe({
+      next: () => this.finishUpdate(),
+      error: (error: unknown) => {
+        this.error.set(error);
+        this.saving.set(false);
+        this.toast.apiError(error);
+      },
+    });
+  }
+
+  private finishUpdate(): void {
+    this.saving.set(false);
+    this.form.markAsPristine();
+    this.toast.successKey('products.form.updated');
+    this.closeForm();
   }
 
   /** Enregistrement reussi : on referme le formulaire sur la liste. */

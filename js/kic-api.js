@@ -15,6 +15,7 @@
   }
   global.KICAPI={
     products:function(){return request('/products?size=100');},
+    product:function(slug){return request('/products/slug/'+encodeURIComponent(slug));},
     zones:function(){return request('/delivery-zones');},
     add:function(variantId,quantity){return request('/cart/items',{method:'POST',body:JSON.stringify({variantId:Number(variantId),quantity:quantity||1})});},
     cart:function(){return request('/cart');},

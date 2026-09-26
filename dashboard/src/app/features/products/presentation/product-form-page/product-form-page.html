@@ -165,16 +165,6 @@
             </label>
 
             <div class="variant__actions">
-              @if (isEdit()) {
-                <button
-                  type="button"
-                  class="btn btn--primary btn--sm"
-                  [disabled]="group.pristine || group.invalid"
-                  (click)="saveVariant(i)"
-                >
-                  {{ 'common.save' | t }}
-                </button>
-              }
               <button
                 type="button"
                 class="icon-btn icon-btn--danger"

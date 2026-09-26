@@ -1,0 +1,1 @@
+import{b as t}from"./chunk-E4TIAFFV.js";import"./chunk-KL6OKPL4.js";import"./chunk-EF7JBISB.js";import"./chunk-4ZTPFOER.js";import"./chunk-7CGTOI24.js";var i=[{path:"",canActivate:[t],title:"title.login",loadComponent:()=>import("./chunk-3XJE3WMW.js").then(o=>o.LoginPage)}];export{i as AUTH_ROUTES};

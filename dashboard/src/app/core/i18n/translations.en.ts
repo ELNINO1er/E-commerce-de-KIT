@@ -195,7 +195,7 @@ export const EN: Record<TranslationKey, string> = {
   // --- Variants ---
   'products.variants.title': 'Formats and stock',
   'products.variants.hintCreate': 'At least one format is required. Price in euro cents, stock in units.',
-  'products.variants.hintEdit': 'Each format is saved separately, as soon as you change it.',
+  'products.variants.hintEdit': 'Edit the formats, then use the Save button at the bottom of the page.',
   'products.variants.format': 'Format',
   'products.variants.formatPlaceholder': '250 g',
   'products.variants.price': 'Price (€)',

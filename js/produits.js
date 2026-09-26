@@ -74,12 +74,7 @@
   }
 
   function detailUrl(product) {
-    var pages = {
-      'beurre-de-cacao': 'beurre-de-cacao.html',
-      'poudre-de-cacao': 'poudre-de-cacao.html',
-      'masse-de-cacao': 'masse-de-cacao.html'
-    };
-    return pages[product.slug] || '';
+    return 'produit.html?slug=' + encodeURIComponent(product.slug || slug(product.name));
   }
 
   function productCard(product) {
@@ -93,7 +88,7 @@
     var details = detailUrl(product);
     var unavailable = !variant || stock < 1;
     var badge = product.badge || (unavailable ? 'Indisponible' : 'Disponible');
-    var more = details ? '<a class="kic-favorite" href="' + escapeHtml(details) + '">En savoir plus</a>' : '';
+    var more = '<a class="kic-favorite" href="' + escapeHtml(details) + '">Voir le produit</a>';
 
     return '<article class="kic-card" id="' + escapeHtml(product.slug || slug(product.name)) + '"' +
       ' data-category="' + escapeHtml(categorySlug) + '" data-price="' + (price == null ? '' : price / 100) + '"' +

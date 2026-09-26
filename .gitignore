@@ -3,4 +3,5 @@
 /dashboard/dist/
 /api/.env
 /api/uploads/
+/api/storage/backups/
 *.log

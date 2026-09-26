@@ -208,7 +208,6 @@
   box-shadow: 0 26px 44px rgba(0, 0, 0, .38);
 }
 .kic-card[hidden] { display: none; }
-.kic-card:nth-last-child(-n + 2) { grid-column: span 3; }
 .kic-card__visual { position: relative; }
 .kic-media--card {
   aspect-ratio: 4 / 3;
@@ -402,8 +401,7 @@
 @media (max-width: 1080px) {
   .kic-pro__inner { grid-template-columns: 1fr; gap: 40px; }
   .kic-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .kic-card,
-  .kic-card:nth-last-child(-n + 2) { grid-column: span 1; }
+  .kic-card { grid-column: span 1; }
 }
 @media (max-width: 900px) {
   .kic-decor--head { display: none; }

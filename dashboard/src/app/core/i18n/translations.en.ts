@@ -198,7 +198,7 @@ export const EN: Record<TranslationKey, string> = {
   'products.variants.hintEdit': 'Each format is saved separately, as soon as you change it.',
   'products.variants.format': 'Format',
   'products.variants.formatPlaceholder': '250 g',
-  'products.variants.price': 'Price',
+  'products.variants.price': 'Price (€)',
   'products.variants.stock': 'Stock',
   'products.variants.threshold': 'Alert threshold',
   'products.variants.add': 'Add a format',

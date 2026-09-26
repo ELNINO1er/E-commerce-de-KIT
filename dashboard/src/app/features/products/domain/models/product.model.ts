@@ -36,6 +36,7 @@ export interface Product {
 /** Corps d'une variante en creation ou modification (`ProductVariantRequest`). */
 export interface ProductVariantRequest {
   format: string;
+  /** Montant transmis à l'API en centimes d'euro. */
   price: number;
   stock: number;
   /** Defaut serveur : 10. */

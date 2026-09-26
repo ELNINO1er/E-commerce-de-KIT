@@ -204,7 +204,7 @@ export const FR = {
     'Chaque format est enregistré séparément, dès sa modification.',
   'products.variants.format': 'Format',
   'products.variants.formatPlaceholder': '250 g',
-  'products.variants.price': 'Prix',
+  'products.variants.price': 'Prix (€)',
   'products.variants.stock': 'Stock',
   'products.variants.threshold': "Seuil d'alerte",
   'products.variants.add': 'Ajouter un format',

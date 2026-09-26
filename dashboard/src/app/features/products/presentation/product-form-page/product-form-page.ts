@@ -306,7 +306,8 @@ export class ProductFormPage {
     return this.formBuilder.nonNullable.group({
       id: this.formBuilder.control<number | null>(variant?.id ?? null),
       format: [variant?.format ?? '', [Validators.required]],
-      price: [variant?.price ?? 0, [Validators.required, Validators.min(0)]],
+      // L'API manipule des centimes, mais l'administrateur saisit un montant en euros.
+      price: [variant ? variant.price / 100 : 0, [Validators.required, Validators.min(0)]],
       stock: [variant?.stock ?? 0, [Validators.required, Validators.min(0)]],
       lowStockThreshold: [variant?.lowStockThreshold ?? 10, [Validators.min(0)]],
     }) as VariantGroup;
@@ -316,7 +317,8 @@ export class ProductFormPage {
     const value = group.getRawValue();
     return {
       format: value.format.trim(),
-      price: Number(value.price),
+      // Convertit 4,50 € en 450 centimes et evite les erreurs binaires des decimales.
+      price: Math.round(Number(value.price) * 100),
       stock: Number(value.stock),
       lowStockThreshold: Number(value.lowStockThreshold),
     };

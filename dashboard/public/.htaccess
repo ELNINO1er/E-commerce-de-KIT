@@ -1,4 +1,4 @@
-# Back-office SCMC — hebergement Apache (Hostinger mutualise).
+# Back-office KIC — hebergement Apache (Hostinger mutualise).
 #
 # Ce fichier vit dans `public/` : il est donc **copie a chaque build** dans
 # `dist/e-commerce/browser/`. Le poser a la main dans le dossier du
@@ -6,7 +6,7 @@
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteBase /
+  RewriteBase /admin/
 
   # Routage SPA : toute URL qui ne correspond ni a un fichier ni a un dossier
   # existant est servie par index.html, et c'est Angular qui route ensuite.
@@ -14,7 +14,7 @@
   RewriteRule ^index\.html$ - [L]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . /index.html [L]
+  RewriteRule . /admin/index.html [L]
 </IfModule>
 
 <IfModule mod_headers.c>

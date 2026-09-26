@@ -354,6 +354,14 @@ h1, h2, h3 { margin: 0; }
   color: var(--kic-cream);
   text-shadow: 0 30px 80px rgba(0, 0, 0, .55);
 }
+.kic-hero__brand {
+  display: block;
+  margin-bottom: 10px;
+  font: 800 clamp(15px, 1.8vw, 24px)/1 var(--kic-font-body);
+  letter-spacing: .34em;
+  color: var(--kic-gold);
+  text-shadow: none;
+}
 
 .kic-media--hero {
   position: relative;

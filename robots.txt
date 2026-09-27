@@ -6,3 +6,6 @@ Disallow: /commande
 Disallow: /confirmation
 
 Sitemap: https://kic-fr.com/sitemap.xml
+
+# Flux catalogue Google Merchant Center
+# https://kic-fr.com/merchant-feed.xml

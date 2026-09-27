@@ -84,7 +84,28 @@
     document.getElementById('kic-product-schema').textContent = JSON.stringify({
       '@context': 'https://schema.org', '@type': 'Product', name: product.name, description: description,
       image: image, category: category.name, brand: { '@type': 'Brand', name: 'KIC' },
-      offers: variants.map(function (item) { return { '@type': 'Offer', priceCurrency: 'EUR', price: (variantPrice(item) / 100).toFixed(2), availability: Number(item.stock) > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock', url: canonical }; })
+      offers: variants.map(function (item) { return {
+        '@type': 'Offer', priceCurrency: 'EUR', price: (variantPrice(item) / 100).toFixed(2),
+        availability: Number(item.stock) > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+        itemCondition: 'https://schema.org/NewCondition', url: canonical,
+        seller: { '@type': 'Organization', name: 'KIC — Konan Industrie et Chocolaterie' },
+        shippingDetails: {
+          '@type': 'OfferShippingDetails',
+          shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'FR' },
+          shippingRate: { '@type': 'MonetaryAmount', value: '12.00', currency: 'EUR' },
+          deliveryTime: {
+            '@type': 'ShippingDeliveryTime',
+            handlingTime: { '@type': 'QuantitativeValue', minValue: 0, maxValue: 2, unitCode: 'DAY' },
+            transitTime: { '@type': 'QuantitativeValue', minValue: 2, maxValue: 5, unitCode: 'DAY' }
+          }
+        },
+        hasMerchantReturnPolicy: {
+          '@type': 'MerchantReturnPolicy', applicableCountry: 'FR', merchantReturnDays: 14,
+          returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+          returnMethod: 'https://schema.org/ReturnByMail',
+          returnFees: 'https://schema.org/ReturnFeesCustomerResponsibility'
+        }
+      }; })
     });
   }
 

@@ -1,0 +1,10 @@
+.kic-content { padding: 72px 0 96px; background: #fbf5e8; color: var(--kic-cacao-900); }
+.kic-content__inner { width: min(920px, calc(100% - 40px)); margin: 0 auto; }
+.kic-content h1 { margin: 0 0 18px; font: 900 clamp(2.5rem, 7vw, 5rem)/.96 var(--kic-font-display); letter-spacing: -.05em; }
+.kic-content h2 { margin: 42px 0 12px; font: 800 clamp(1.35rem, 3vw, 2rem)/1.15 var(--kic-font-display); }
+.kic-content p, .kic-content li { line-height: 1.8; color: #654c3e; }
+.kic-content a { color: #7a3d14; text-decoration: underline; text-underline-offset: 3px; }
+.kic-content__intro { max-width: 62ch; font-size: 1.12rem; }
+.kic-content__card { margin: 28px 0; padding: 24px; border: 1px solid rgba(70,38,24,.14); border-radius: 18px; background: #fff; }
+.kic-content__meta { color: #8a5a2b; font-weight: 700; }
+

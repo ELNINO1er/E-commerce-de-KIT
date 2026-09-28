@@ -7,4 +7,7 @@
 .kic-content__intro { max-width: 62ch; font-size: 1.12rem; }
 .kic-content__card { margin: 28px 0; padding: 24px; border: 1px solid rgba(70,38,24,.14); border-radius: 18px; background: #fff; }
 .kic-content__meta { color: #8a5a2b; font-weight: 700; }
-
+.kic-content__grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 18px; margin: 36px 0; }
+.kic-content__grid .kic-content__card { margin: 0; }
+.kic-content__grid h2 { margin-top: 10px; font-size: 1.45rem; }
+@media (max-width: 760px) { .kic-content__grid { grid-template-columns: 1fr; } }

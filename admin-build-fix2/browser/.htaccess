@@ -1,0 +1,42 @@
+# Back-office SCMC — hebergement Apache (Hostinger mutualise).
+#
+# Ce fichier vit dans `public/` : il est donc **copie a chaque build** dans
+# `dist/e-commerce/browser/`. Le poser a la main dans le dossier du
+# sous-domaine reviendrait a le reperdre au prochain deploiement.
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Routage SPA : toute URL qui ne correspond ni a un fichier ni a un dossier
+  # existant est servie par index.html, et c'est Angular qui route ensuite.
+  # Sans cela, rafraichir /commandes/SCMC-000021 renvoie un 404 Apache.
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Content-Security-Policy "frame-ancestors 'none'; object-src 'none'; base-uri 'self'"
+  # Les fichiers JS/CSS portent une empreinte dans leur nom (`outputHashing`) :
+  # un contenu different a un nom different, ils peuvent donc etre caches sans
+  # limite.
+  <FilesMatch "\.(js|css|woff2?|jpg|jpeg|png|svg|webp|ico)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # index.html, lui, n'est pas empreinte : c'est lui qui designe les fichiers
+  # courants. Le mettre en cache figerait le dashboard sur une version ancienne
+  # apres chaque mise en ligne.
+  <FilesMatch "^index\.html$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml
+</IfModule>

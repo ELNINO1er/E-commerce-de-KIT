@@ -1,0 +1,1 @@
+function t(e){return e.toLocaleLowerCase("fr").normalize("NFD").replace(new RegExp("\\p{Diacritic}","gu"),"")}function o(e,...i){let n=t(e.trim());return n?i.some(r=>!!r&&t(r).includes(n)):!0}export{o as a};

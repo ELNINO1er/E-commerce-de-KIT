@@ -34,6 +34,8 @@ return [
     'app_env' => env_value('APP_ENV', 'production'),
     'app_url' => rtrim((string) env_value('APP_URL', 'http://localhost/kic-main'), '/'),
     'app_key' => (string) env_value('APP_KEY', ''),
+    // Vide par défaut : Hostinger doit activer explicitement le destinataire.
+    'order_notification_email' => (string) env_value('ORDER_NOTIFICATION_EMAIL', ''),
     'allowed_origins' => array_values(array_filter(array_map('trim', explode(',', (string) env_value('ALLOWED_ORIGINS', 'http://localhost'))))),
     'db' => [
         'host' => env_value('DB_HOST', 'localhost'),

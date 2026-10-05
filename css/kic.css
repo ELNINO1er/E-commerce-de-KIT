@@ -783,6 +783,31 @@ body.is-leaving .kic-page-loader {
   .kic-page-loader__line::after { animation: none; }
 }
 
+.kic-whatsapp-float {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 9990;
+  min-height: 52px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 20px;
+  border: 1px solid rgba(255,255,255,.24);
+  border-radius: 999px;
+  color: #fff;
+  background: #168a49;
+  box-shadow: 0 14px 38px rgba(10,67,36,.32);
+  font: 800 13px/1 var(--kic-font-body);
+  letter-spacing: .04em;
+  transition: transform .18s ease, background-color .18s ease;
+}
+.kic-whatsapp-float:hover { color: #fff; background: #10763d; transform: translateY(-3px); }
+.kic-whatsapp-float span { font-size: 23px; color: #dcffe9; }
+@media (max-width: 520px) {
+  .kic-whatsapp-float { right: 14px; bottom: 14px; min-height: 48px; padding: 0 15px; }
+}
+
 .kic-media--news {
   flex: 0 1 240px;
   min-width: 180px;

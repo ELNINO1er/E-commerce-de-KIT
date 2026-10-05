@@ -62,3 +62,44 @@
   .kic-product-purchase { grid-template-columns: 1fr; }
   .kic-product-purchase .kic-btn { width: 100%; justify-content: center; }
 }
+
+.kic-commerce-detail { padding: 88px 0; color: var(--kic-cacao-900); background: #f4ead8; }
+.kic-commerce-detail__inner { width: min(1180px, calc(100% - 44px)); margin: 0 auto; }
+.kic-commerce-detail__head { max-width: 760px; margin-bottom: 34px; }
+.kic-commerce-detail__head h2,
+.kic-faq h2,
+.kic-review-invite h2 { margin: 0 0 16px; font: 900 clamp(2rem, 4vw, 3.7rem)/1 var(--kic-font-display); letter-spacing: -.04em; }
+.kic-commerce-detail__head p,
+.kic-review-invite p { line-height: 1.75; color: #654c3e; }
+.kic-commerce-detail__grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
+.kic-info-card { padding: 28px; border: 1px solid rgba(70,38,24,.13); border-radius: 22px; background: rgba(255,255,255,.72); }
+.kic-info-card h3 { margin: 0 0 12px; font: 800 1.12rem/1.2 var(--kic-font-display); }
+.kic-info-card h3:not(:first-child) { margin-top: 26px; }
+.kic-info-card p, .kic-info-card li { line-height: 1.7; color: #654c3e; }
+.kic-info-card ul { margin: 0; padding-left: 20px; }
+.kic-info-card__note { margin-bottom: 0; font-size: .9rem; }
+.kic-order-panel { display: grid; grid-template-columns: minmax(220px,.7fr) 1.3fr; gap: 24px; align-items: end; margin: 24px 0 64px; padding: 28px; border-radius: 24px; color: var(--kic-cream); background: var(--kic-cacao-900); box-shadow: 0 20px 50px rgba(51,25,14,.18); }
+.kic-order-panel label { display: block; margin-bottom: 9px; color: var(--kic-gold); font: 800 11px/1 var(--kic-font-body); letter-spacing: .11em; text-transform: uppercase; }
+.kic-order-panel select { width: 100%; min-height: 50px; padding: 0 42px 0 14px; border: 1px solid rgba(255,255,255,.22); border-radius: 12px; color: #fff; background: #321b11; }
+.kic-order-panel__price { display: block; margin-top: 12px; font: 900 1.8rem/1 var(--kic-font-display); }
+.kic-order-panel__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; }
+.kic-btn--light { color: var(--kic-cacao-900); background: var(--kic-cream); }
+.kic-faq { max-width: 900px; margin: 0 auto 64px; }
+.kic-faq details { border-bottom: 1px solid rgba(70,38,24,.18); }
+.kic-faq summary { position: relative; padding: 22px 42px 22px 0; cursor: pointer; font-weight: 800; list-style: none; }
+.kic-faq summary::after { content: '+'; position: absolute; right: 8px; font-size: 1.5rem; color: #8a5a2b; }
+.kic-faq details[open] summary::after { content: '−'; }
+.kic-faq details p { max-width: 70ch; margin: 0 0 22px; color: #654c3e; line-height: 1.75; }
+.kic-review-invite { display: grid; grid-template-columns: 1fr auto; gap: 30px; align-items: center; padding: 32px; border-radius: 24px; background: #fff; }
+.kic-review-invite h2 { font-size: clamp(1.8rem,3vw,2.7rem); }
+@media (max-width: 760px) {
+  .kic-commerce-detail__grid, .kic-order-panel, .kic-review-invite { grid-template-columns: 1fr; }
+  .kic-order-panel__actions { justify-content: flex-start; }
+  .kic-review-invite .kic-btn { width: 100%; justify-content: center; }
+}
+@media (max-width: 520px) {
+  .kic-commerce-detail__inner { width: min(100% - 32px,1180px); }
+  .kic-commerce-detail { padding: 68px 0; }
+  .kic-info-card, .kic-order-panel, .kic-review-invite { padding: 22px; }
+  .kic-order-panel__actions .kic-btn { width: 100%; justify-content: center; }
+}

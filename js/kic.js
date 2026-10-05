@@ -137,4 +137,25 @@
 
     footerObserver.observe(footer);
   }
+
+  /* ------------------------------------------------------------------------
+     6. Contact WhatsApp permanent et mesurable
+     ---------------------------------------------------------------------- */
+  if (!document.querySelector('.kic-whatsapp-float')) {
+    var pageTitle = document.querySelector('h1');
+    var subject = pageTitle ? pageTitle.textContent.replace(/\s+/g, ' ').trim() : 'les produits KIC';
+    var whatsapp = document.createElement('a');
+    whatsapp.className = 'kic-whatsapp-float';
+    whatsapp.href = 'https://wa.me/33745908778?text=' + encodeURIComponent(
+      'Bonjour KIC, je souhaite obtenir des informations sur ' + subject + '.'
+    );
+    whatsapp.target = '_blank';
+    whatsapp.rel = 'noopener noreferrer';
+    whatsapp.setAttribute('aria-label', 'Contacter KIC sur WhatsApp');
+    whatsapp.innerHTML = '<span aria-hidden="true">●</span><strong>WhatsApp</strong>';
+    whatsapp.addEventListener('click', function () {
+      if (window.gtag) window.gtag('event', 'click_whatsapp', { page_title: document.title });
+    });
+    document.body.appendChild(whatsapp);
+  }
 })();

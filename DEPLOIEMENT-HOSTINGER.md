@@ -9,7 +9,7 @@
 
 ## Configuration privée
 
-Créer `public_html/api/.env` depuis `api/.env.example`. Renseigner `APP_KEY`, `DB_NAME`, `DB_USER` et `DB_PASSWORD`. Le fichier est bloqué par Apache et ignoré par Git.
+Créer `public_html/api/.env` depuis `api/.env.example`. Renseigner `APP_KEY`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` et `ORDER_NOTIFICATION_EMAIL`. Le fichier est bloqué par Apache et ignoré par Git. Cette dernière adresse reçoit une alerte sans donnée personnelle à chaque nouvelle commande.
 
 ## Initialisation
 
@@ -18,6 +18,7 @@ Créer `public_html/api/.env` depuis `api/.env.example`. Renseigner `APP_KEY`, `
 3. Créer l’administrateur avec `php api/scripts/create-admin.php email mot-de-passe Prenom Nom`.
 4. Vérifier `https://kic-fr.com/api/health`.
 5. Ouvrir `https://kic-fr.com/admin/`.
+6. Ajouter `https://kic-fr.com/merchant-feed.xml` comme source de données dans Google Merchant Center.
 
 Aucune table ni passerelle de paiement n’est utilisée. Les montants sont stockés en centimes d’euro.
 

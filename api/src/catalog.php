@@ -37,7 +37,7 @@ function product_response(array $row, bool $shop = false): array
     $base['gallery'] = array_map(function($item) use ($config) {
         return preg_match('#^https?://#i', $item) ? $item : $config['app_url'].'/'.ltrim($item, '/');
     }, $details['gallery'] ?? []);
-    foreach (['badge','popular','ingredients','allergens','nutrition','usage','conservation','similar','rating'] as $key) {
+    foreach (['badge','popular','origin','ingredients','allergens','nutrition','usage','conservation','professionalPricing','similar','rating'] as $key) {
         if (array_key_exists($key, $details)) $base[$key] = $details[$key];
     }
     $base['formats'] = array_map(fn($v) => [

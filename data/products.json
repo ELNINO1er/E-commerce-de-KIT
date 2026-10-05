@@ -21,16 +21,24 @@
       "img/beurre-cacao-pub.png"
     ],
     "popular": true,
-    "ingredients": "Informations disponibles sur demande.",
-    "allergens": "Fiche technique disponible sur demande.",
-    "nutrition": [],
-    "usage": "Usage professionnel.",
-    "conservation": "Conserver selon les indications de la fiche technique.",
+    "ingredients": "Beurre de cacao. Spécification et composition garanties par la fiche technique du lot.",
+    "allergens": "Consulter la déclaration d’allergènes du lot avant toute utilisation professionnelle.",
+    "nutrition": [
+      "Valeurs nutritionnelles certifiées disponibles sur la fiche technique du lot."
+    ],
+    "usage": "Chocolaterie, pâtisserie, biscuiterie, glaces, enrobages et préparations cosmétiques selon la référence.",
+    "conservation": "Conserver fermé, au sec, à l’abri de la chaleur, de l’humidité, de la lumière et des odeurs.",
     "similar": [],
     "rating": {
       "average": 0,
       "count": 0
-    }
+    },
+    "origin": "Cacao issu de filières sélectionnées par KIC; origine et lot précisés sur la fiche technique.",
+    "professionalPricing": [
+      "1 kg : 40 €",
+      "À partir de 5 kg : devis professionnel",
+      "À partir de 10 kg : tarif personnalisé"
+    ]
   },
   {
     "id": "poudre",
@@ -54,16 +62,24 @@
       "img/poudre-cacao-pub.png"
     ],
     "popular": true,
-    "ingredients": "Informations disponibles sur demande.",
-    "allergens": "Fiche technique disponible sur demande.",
-    "nutrition": [],
-    "usage": "Usage professionnel.",
-    "conservation": "Conserver selon les indications de la fiche technique.",
+    "ingredients": "Poudre de cacao. Caractéristiques techniques précisées sur la fiche du lot.",
+    "allergens": "Consulter la déclaration d’allergènes du lot avant toute utilisation professionnelle.",
+    "nutrition": [
+      "Valeurs nutritionnelles certifiées disponibles sur la fiche technique du lot."
+    ],
+    "usage": "Boissons, pâtisserie, biscuiterie, glaces, desserts, sauces et préparations chocolatées.",
+    "conservation": "Conserver fermé dans un endroit frais et sec, à l’abri de l’humidité, de la lumière et des odeurs.",
     "similar": [],
     "rating": {
       "average": 0,
       "count": 0
-    }
+    },
+    "origin": "Cacao issu de filières sélectionnées par KIC; origine et lot précisés sur la fiche technique.",
+    "professionalPricing": [
+      "1 kg : 15 €",
+      "À partir de 5 kg : devis professionnel",
+      "À partir de 10 kg : tarif personnalisé"
+    ]
   },
   {
     "id": "masse",
@@ -87,16 +103,24 @@
       "img/masse-cacao-pub.png"
     ],
     "popular": true,
-    "ingredients": "Informations disponibles sur demande.",
-    "allergens": "Fiche technique disponible sur demande.",
-    "nutrition": [],
-    "usage": "Usage professionnel.",
-    "conservation": "Conserver selon les indications de la fiche technique.",
+    "ingredients": "Masse de cacao. Spécification exacte disponible sur la fiche technique du lot.",
+    "allergens": "Consulter la déclaration d’allergènes du lot avant toute utilisation professionnelle.",
+    "nutrition": [
+      "Valeurs nutritionnelles certifiées disponibles sur la fiche technique du lot."
+    ],
+    "usage": "Tablettes, couvertures, ganaches, fourrages, sauces et recettes de chocolaterie.",
+    "conservation": "Conserver fermé, au sec, à température stable, à l’abri de la chaleur, de la lumière et des odeurs.",
     "similar": [],
     "rating": {
       "average": 0,
       "count": 0
-    }
+    },
+    "origin": "Cacao issu de filières sélectionnées par KIC; origine et lot précisés sur la fiche technique.",
+    "professionalPricing": [
+      "1 kg : 25 €",
+      "À partir de 5 kg : devis professionnel",
+      "À partir de 10 kg : tarif personnalisé"
+    ]
   },
   {
     "id": "infusion",
@@ -120,16 +144,24 @@
       "img/infusion-cacao-01.png"
     ],
     "popular": true,
-    "ingredients": "Informations disponibles sur demande.",
-    "allergens": "Fiche technique disponible sur demande.",
-    "nutrition": [],
-    "usage": "Usage professionnel.",
-    "conservation": "Conserver selon les indications de la fiche technique.",
+    "ingredients": "Coques de fèves de cacao torréfiées. Vérifier la fiche du lot pour la composition réglementaire complète.",
+    "allergens": "Consulter l’étiquetage et la déclaration d’allergènes du lot avant consommation.",
+    "nutrition": [
+      "Valeurs nutritionnelles disponibles sur l’emballage et la fiche technique."
+    ],
+    "usage": "Infusion chaude ou froide pour hôtels, salons de thé, épiceries et restauration.",
+    "conservation": "Conserver les sachets au sec, à l’abri de la chaleur, de la lumière et des odeurs.",
     "similar": [],
     "rating": {
       "average": 0,
       "count": 0
-    }
+    },
+    "origin": "Coques de fèves de cacao sélectionnées; origine et lot précisés sur la fiche technique.",
+    "professionalPricing": [
+      "Boîte de 15 sachets : 12 €",
+      "À partir de 6 boîtes : devis professionnel",
+      "Distribution : tarif personnalisé"
+    ]
   },
   {
     "id": "jus",
@@ -153,15 +185,23 @@
       "img/jus-cacao.jpg"
     ],
     "popular": true,
-    "ingredients": "Informations disponibles sur demande.",
-    "allergens": "Fiche technique disponible sur demande.",
-    "nutrition": [],
-    "usage": "Usage professionnel.",
-    "conservation": "Conserver selon les indications de la fiche technique.",
+    "ingredients": "Boisson à base de pulpe de cacao. Se référer à l’étiquette du lot pour la liste réglementaire complète.",
+    "allergens": "Consulter l’étiquetage et la déclaration d’allergènes du lot avant consommation.",
+    "nutrition": [
+      "Valeurs nutritionnelles disponibles sur l’emballage du produit."
+    ],
+    "usage": "Boisson fraîche, cocktails sans alcool, restauration, hôtellerie et distribution spécialisée.",
+    "conservation": "Respecter les conditions et la date indiquées sur l’emballage; conserver au frais après ouverture.",
     "similar": [],
     "rating": {
       "average": 0,
       "count": 0
-    }
+    },
+    "origin": "Pulpe de cacao sélectionnée; origine, fabrication et lot précisés sur l’étiquetage.",
+    "professionalPricing": [
+      "250 ml : 4,50 €",
+      "À partir de 12 unités : devis professionnel",
+      "Distribution : tarif personnalisé"
+    ]
   }
 ]

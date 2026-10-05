@@ -2,6 +2,7 @@ Options -MultiViews
 DirectoryIndex index.html
 <IfModule mod_rewrite.c>
 RewriteEngine On
+RewriteRule ^merchant-feed\.xml$ merchant-feed.php [END]
 RewriteRule ^dashboard(?:/|$) - [R=404,L]
 RewriteCond %{HTTPS} !=on
 RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)$ [NC]

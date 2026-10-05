@@ -14,7 +14,7 @@ function seed_catalogue(): array
             $q = $pdo->prepare('INSERT INTO categories(name,slug) VALUES(?,?) ON DUPLICATE KEY UPDATE name=VALUES(name),id=LAST_INSERT_ID(id)');
             $q->execute([$categoryName, slugify($categoryName)]);
             $categoryId = (int) $pdo->lastInsertId();
-            $details = array_intersect_key($product, array_flip(['gallery','badge','popular','ingredients','allergens','nutrition','usage','conservation','similar','rating']));
+            $details = array_intersect_key($product, array_flip(['gallery','badge','popular','origin','ingredients','allergens','nutrition','usage','conservation','professionalPricing','similar','rating']));
             $q = $pdo->prepare('INSERT INTO products(legacy_id,name,slug,description,long_description,image_url,details_json,category_id) VALUES(?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE name=VALUES(name),description=VALUES(description),long_description=VALUES(long_description),image_url=VALUES(image_url),details_json=VALUES(details_json),category_id=VALUES(category_id),id=LAST_INSERT_ID(id)');
             $q->execute([$product['id'],$product['name'],$product['slug'],$product['description']??null,$product['longDescription']??null,$product['image']??null,json_encode($details,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES),$categoryId]);
             $productId = (int) $pdo->lastInsertId();

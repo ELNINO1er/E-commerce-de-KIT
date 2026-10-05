@@ -1,0 +1,17 @@
+file 'C:\wamp64\www\kic-main\publicite-kic\01-slide.png'
+duration 4.54
+file 'C:\wamp64\www\kic-main\publicite-kic\02-slide.png'
+duration 4.54
+file 'C:\wamp64\www\kic-main\publicite-kic\03-slide.png'
+duration 4.54
+file 'C:\wamp64\www\kic-main\publicite-kic\04-slide.png'
+duration 4.54
+file 'C:\wamp64\www\kic-main\publicite-kic\05-slide.png'
+duration 4.54
+file 'C:\wamp64\www\kic-main\publicite-kic\06-slide.png'
+duration 4.54
+file 'C:\wamp64\www\kic-main\publicite-kic\07-slide.png'
+duration 4.54
+file 'C:\wamp64\www\kic-main\publicite-kic\08-slide.png'
+duration 4.54
+file 'C:\wamp64\www\kic-main\publicite-kic\08-slide.png'

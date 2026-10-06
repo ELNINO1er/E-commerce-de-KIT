@@ -5,7 +5,8 @@ function stripe_request(string $path, array $fields): array
 {
     global $config;
     $key = (string)($config['stripe_secret_key'] ?? '');
-    if (!str_starts_with($key, 'sk_test_') && !str_starts_with($key, 'sk_live_')) {
+    $validPrefixes = ['sk_test_', 'sk_live_', 'rk_test_', 'rk_live_'];
+    if ($key === '' || !array_filter($validPrefixes, static fn(string $prefix): bool => str_starts_with($key, $prefix))) {
         fail(503, 'PAYMENT_CONFIGURATION_ERROR', 'Stripe n’est pas encore configuré.');
     }
     if (!function_exists('curl_init')) fail(503, 'PAYMENT_UNAVAILABLE', 'Le module de paiement est indisponible.');

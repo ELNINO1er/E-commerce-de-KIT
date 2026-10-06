@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="css/header-tools.css">
 
 <link rel="stylesheet" href="css/produits.css">
-<link rel="stylesheet" href="css/commerce.css">
+<link rel="stylesheet" href="css/commerce.css?v=20261006-checkout">
 </head>
 <body>
 
@@ -47,17 +47,17 @@
 <main>
 <section class="kic-page-head"><div class="kic-page-head__inner"><nav class="kic-crumb" aria-label="Fil d’Ariane"><a href="index.html">Accueil</a><span>/</span><a href="produits.html">Produits</a><span>/</span><span aria-current="page">Commander</span></nav><p class="kic-eyebrow">Paiement sécurisé</p><h1 class="kic-page-head__title">Finaliser votre commande</h1><p class="kic-page-head__intro">Vérifiez vos coordonnées puis payez par carte sur la page sécurisée Stripe. KIC ne reçoit et ne conserve aucune donnée bancaire.</p></div></section>
 <section class="kic-commerce"><div class="kic-commerce__inner"><div class="kic-commerce__grid">
-<form class="kic-checkout-form" id="kic-checkout-form"><h2>Coordonnées et livraison</h2><p class="kic-checkout-note">Vous recevrez une confirmation commerciale avec le montant définitif et les modalités de règlement.</p><div class="kic-form-grid">
+<form class="kic-checkout-form" id="kic-checkout-form"><div class="kic-checkout-heading"><span class="kic-checkout-step">01</span><div><p class="kic-eyebrow">Informations de commande</p><h2>Coordonnées et livraison</h2></div></div><p class="kic-checkout-note">Renseignez vos coordonnées, choisissez votre mode de réception, puis accédez au paiement sécurisé Stripe.</p><div class="kic-form-grid">
 <label class="kic-field"><span>Nom ou société *</span><input name="recipientName" autocomplete="organization" required maxlength="190"></label>
 <label class="kic-field"><span>E-mail professionnel *</span><input name="contactEmail" type="email" autocomplete="email" required></label>
 <label class="kic-field"><span>Téléphone *</span><input name="phone" type="tel" autocomplete="tel" required></label>
 <label class="kic-field"><span>Ville *</span><input name="city" autocomplete="address-level2" required></label>
 <label class="kic-field kic-field--wide"><span>Adresse de livraison *</span><input name="addressLine" autocomplete="street-address" required></label>
-<label class="kic-field"><span>Mode de réception *</span><select name="deliveryMethod"><option value="DELIVERY">Livraison</option><option value="PICKUP">Retrait au siège KIC à Nice</option></select></label>
-<label class="kic-field"><span>Zone de livraison *</span><select name="deliveryZoneId" id="kic-zone" required><option value="">Chargement…</option></select></label>
+<label class="kic-field"><span>Mode de réception *</span><span class="kic-select"><select name="deliveryMethod" id="kic-delivery-method"><option value="DELIVERY">Livraison à votre adresse</option><option value="PICKUP">Retrait au siège KIC à Nice</option></select></span></label>
+<label class="kic-field" id="kic-zone-field"><span>Zone de livraison *</span><span class="kic-select"><select name="deliveryZoneId" id="kic-zone" required><option value="">Chargement…</option></select></span></label>
 <label class="kic-field"><span>Code promotionnel</span><input name="discountCode" autocomplete="off"></label>
-<label class="kic-field"><span>Pays</span><input name="country" value="France" autocomplete="country-name"></label>
-</div><button class="kic-btn kic-btn--gold" type="submit">Payer ma commande <span class="kic-arrow">→</span></button><p class="kic-checkout-note">Paiement sécurisé par Stripe. Les informations de carte sont saisies uniquement sur l’interface Stripe.</p><p class="kic-form-feedback" id="kic-checkout-feedback" role="alert"></p></form>
+<label class="kic-field"><span>Pays *</span><span class="kic-select"><select name="country" autocomplete="country-name" required><option value="France">France</option><option value="Belgique">Belgique</option><option value="Luxembourg">Luxembourg</option><option value="Allemagne">Allemagne</option><option value="Espagne">Espagne</option><option value="Italie">Italie</option><option value="Pays-Bas">Pays-Bas</option><option value="Suisse">Suisse</option></select></span></label>
+</div><button class="kic-payment-button" type="submit"><span class="kic-payment-button__icon" aria-hidden="true">↗</span><span><strong>Payer ma commande</strong><small>Redirection vers Stripe sécurisé</small></span><span class="kic-payment-button__arrow" aria-hidden="true">→</span></button><div class="kic-payment-trust"><span>🔒 Paiement chiffré</span><span>Cartes bancaires</span><span>Propulsé par Stripe</span></div><p class="kic-form-feedback" id="kic-checkout-feedback" role="alert"></p></form>
 <aside class="kic-order-summary"><p class="kic-eyebrow">Votre sélection</p><h2>Récapitulatif</h2><div class="kic-summary-list" id="kic-summary"></div><div class="kic-summary-total"><span>Total indicatif</span><strong id="kic-summary-total">0,00 €</strong></div><p class="kic-checkout-note">Les produits « sur devis » et les frais professionnels spécifiques seront confirmés par KIC.</p></aside>
 </div></div></section></main><footer class="kic-footer">
   <div class="kic-footer__grid">

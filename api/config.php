@@ -36,6 +36,8 @@ return [
     'app_key' => (string) env_value('APP_KEY', ''),
     // Vide par défaut : Hostinger doit activer explicitement le destinataire.
     'order_notification_email' => (string) env_value('ORDER_NOTIFICATION_EMAIL', ''),
+    'stripe_secret_key' => (string) env_value('STRIPE_SECRET_KEY', ''),
+    'stripe_webhook_secret' => (string) env_value('STRIPE_WEBHOOK_SECRET', ''),
     'allowed_origins' => array_values(array_filter(array_map('trim', explode(',', (string) env_value('ALLOWED_ORIGINS', 'http://localhost'))))),
     'db' => [
         'host' => env_value('DB_HOST', 'localhost'),

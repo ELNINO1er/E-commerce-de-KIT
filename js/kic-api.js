@@ -20,6 +20,7 @@
     add:function(variantId,quantity){return request('/cart/items',{method:'POST',body:JSON.stringify({variantId:Number(variantId),quantity:quantity||1})});},
     cart:function(){return request('/cart');},
     checkout:function(data){return request('/orders',{method:'POST',headers:{'Idempotency-Key':crypto.randomUUID().replace(/-/g,'')},body:JSON.stringify(data)});},
+    stripeCheckout:function(orderNumber,accessToken){return request('/payments/stripe/checkout',{method:'POST',headers:{'X-Order-Token':accessToken},body:JSON.stringify({orderNumber:orderNumber})});},
     token:token,
     money:function(cents){return new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'}).format(Number(cents||0)/100);}
   };

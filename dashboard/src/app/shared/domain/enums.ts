@@ -40,7 +40,7 @@ export const PAYMENT_METHOD_KEYS: Record<PaymentMethod, TranslationKey> = {
 };
 
 /** Passerelle ayant traite le paiement. */
-export type PaymentProvider = 'MOCK' | 'CINETPAY' | 'PAYDUNYA' | 'FLUTTERWAVE';
+export type PaymentProvider = 'STRIPE' | 'MOCK' | 'CINETPAY' | 'PAYDUNYA' | 'FLUTTERWAVE';
 
 /** Etat d'un paiement. */
 export type PaymentStatus = 'PENDING' | 'SUCCESS' | 'FAILED' | 'CANCELLED';

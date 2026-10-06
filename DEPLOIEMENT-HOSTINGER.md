@@ -9,7 +9,7 @@
 
 ## Configuration privée
 
-Créer `public_html/api/.env` depuis `api/.env.example`. Renseigner `APP_KEY`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` et `ORDER_NOTIFICATION_EMAIL`. Le fichier est bloqué par Apache et ignoré par Git. Cette dernière adresse reçoit une alerte sans donnée personnelle à chaque nouvelle commande.
+Créer `public_html/api/.env` depuis `api/.env.example`. Renseigner `APP_KEY`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `ORDER_NOTIFICATION_EMAIL`, `STRIPE_SECRET_KEY` et `STRIPE_WEBHOOK_SECRET`. Le fichier est bloqué par Apache et ignoré par Git. Commencer avec les clés Stripe de test.
 
 ## Initialisation
 
@@ -20,7 +20,16 @@ Créer `public_html/api/.env` depuis `api/.env.example`. Renseigner `APP_KEY`, `
 5. Ouvrir `https://kic-fr.com/admin/`.
 6. Ajouter `https://kic-fr.com/merchant-feed.xml` comme source de données dans Google Merchant Center.
 
-Aucune table ni passerelle de paiement n’est utilisée. Les montants sont stockés en centimes d’euro.
+## Paiement Stripe
+
+1. Importer `api/migrations/20261006_stripe_payments.sql` dans la base existante.
+2. Dans Stripe, créer un webhook vers `https://kic-fr.com/api/payments/webhook/stripe`.
+3. Sélectionner les événements `checkout.session.completed`, `checkout.session.expired` et `checkout.session.async_payment_failed`.
+4. Copier la clé secrète de test et le secret de signature dans `api/.env`.
+5. Effectuer une commande test avec la carte Stripe `4242 4242 4242 4242`, une date future et un CVC quelconque.
+6. Vérifier que la commande passe automatiquement de `PENDING` à `PAID` dans le dashboard.
+
+Les montants sont stockés en centimes d’euro. Les données de carte restent exclusivement chez Stripe.
 
 ## Sauvegardes automatiques
 

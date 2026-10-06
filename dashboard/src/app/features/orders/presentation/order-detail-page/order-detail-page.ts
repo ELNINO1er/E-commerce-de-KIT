@@ -5,6 +5,8 @@ import { TranslatePipe } from '../../../../core/i18n/t.pipe';
 import { TranslationService } from '../../../../core/i18n/translation.service';
 import {
   DELIVERY_METHOD_KEYS,
+  PAYMENT_STATUS_KEYS,
+  PAYMENT_STATUS_VARIANT,
 } from '../../../../shared/domain/enums';
 import {
   ORDER_STATUS_KEYS,
@@ -63,6 +65,16 @@ export class OrderDetailPage {
   protected readonly deliveryLabel = computed(() => {
     const order = this.order();
     return order ? this.i18n.t(DELIVERY_METHOD_KEYS[order.deliveryMethod]) : '';
+  });
+
+  protected readonly paymentStatusLabel = computed(() => {
+    const payment = this.order()?.payment;
+    return payment ? this.i18n.t(PAYMENT_STATUS_KEYS[payment.status]) : '';
+  });
+
+  protected readonly paymentStatusVariant = computed(() => {
+    const payment = this.order()?.payment;
+    return payment ? PAYMENT_STATUS_VARIANT[payment.status] : '';
   });
 
   constructor() {

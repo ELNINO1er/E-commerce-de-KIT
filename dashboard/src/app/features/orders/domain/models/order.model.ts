@@ -1,4 +1,4 @@
-import { DeliveryMethod } from '../../../../shared/domain/enums';
+import { DeliveryMethod, PaymentMethod, PaymentProvider, PaymentStatus } from '../../../../shared/domain/enums';
 import { OrderStatus } from '../../../../shared/domain/order-status';
 
 /** Une ligne de commande (`OrderItemResponse`). */
@@ -18,6 +18,15 @@ export interface Order {
   orderNumber: string;
   status: OrderStatus;
   items: OrderItem[];
+  payment: {
+    provider: PaymentProvider;
+    method: PaymentMethod;
+    status: PaymentStatus;
+    reference: string;
+    amount: number;
+    currency: string;
+    paidAt: string | null;
+  } | null;
 
   subtotal: number;
   deliveryFee: number;

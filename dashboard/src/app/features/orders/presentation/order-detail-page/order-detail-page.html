@@ -137,6 +137,22 @@
     <aside class="layout__side">
       <section class="panel">
         <div class="panel__head">
+          <h2>{{ 'orders.payment.title' | t }}</h2>
+        </div>
+        @if (data.payment; as payment) {
+          <dl class="facts">
+            <div><dt>Prestataire</dt><dd>{{ payment.provider }}</dd></div>
+            <div><dt>{{ 'orders.payment.status' | t }}</dt><dd><span class="status" [class]="paymentStatusVariant()">{{ paymentStatusLabel() }}</span></dd></div>
+            <div><dt>Montant</dt><dd>{{ money(payment.amount) }}</dd></div>
+            <div><dt>{{ 'orders.payment.reference' | t }}</dt><dd class="reference">{{ payment.reference }}</dd></div>
+          </dl>
+        } @else {
+          <p class="hint">{{ 'orders.payment.none' | t }}</p>
+        }
+      </section>
+
+      <section class="panel">
+        <div class="panel__head">
           <h2>{{ 'orders.status.title' | t }}</h2>
         </div>
         <app-select

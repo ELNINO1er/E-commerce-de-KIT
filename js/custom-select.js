@@ -26,16 +26,44 @@
     root.appendChild(button);
     root.appendChild(menu);
 
+    var valueEl = button.querySelector('.kic-custom-select__value');
+    var typeahead = '';
+    var typeaheadTimer = 0;
+
+    function items() {
+      return Array.prototype.slice.call(menu.querySelectorAll('.kic-custom-select__option'));
+    }
+
     function close(focus) {
+      if (menu.hidden) return;
       menu.hidden = true;
       button.setAttribute('aria-expanded', 'false');
       if (focus) button.focus();
     }
 
+    function open() {
+      document.querySelectorAll('.kic-custom-select__menu:not([hidden])').forEach(function (other) { other.hidden = true; });
+      document.querySelectorAll('.kic-custom-select__trigger[aria-expanded="true"]').forEach(function (other) { other.setAttribute('aria-expanded', 'false'); });
+      menu.hidden = false;
+      button.setAttribute('aria-expanded', 'true');
+      var active = menu.querySelector('.is-selected') || menu.querySelector('.kic-custom-select__option:not([disabled])');
+      if (active) { active.focus(); active.scrollIntoView({ block: 'nearest' }); }
+    }
+
+    function focusByOffset(current, step) {
+      var list = items().filter(function (el) { return !el.disabled; });
+      if (!list.length) return;
+      var idx = list.indexOf(current);
+      var next = list[Math.min(list.length - 1, Math.max(0, idx + step))];
+      if (next) { next.focus(); next.scrollIntoView({ block: 'nearest' }); }
+    }
+
     function render() {
       var options = Array.prototype.slice.call(select.options);
       var selected = options[select.selectedIndex] || options[0];
-      button.querySelector('.kic-custom-select__value').textContent = selected ? selected.textContent : 'Sélectionner';
+      var text = selected ? selected.textContent : 'Sélectionner';
+      valueEl.textContent = text;
+      valueEl.classList.toggle('is-placeholder', !selected || selected.value === '');
       button.disabled = select.disabled;
       menu.innerHTML = '';
       options.forEach(function (option) {
@@ -60,20 +88,44 @@
 
     button.addEventListener('click', function () {
       if (button.disabled) return;
-      var opening = menu.hidden;
-      document.querySelectorAll('.kic-custom-select__menu:not([hidden])').forEach(function (other) { other.hidden = true; });
-      document.querySelectorAll('.kic-custom-select__trigger[aria-expanded="true"]').forEach(function (other) { other.setAttribute('aria-expanded', 'false'); });
-      menu.hidden = !opening;
-      button.setAttribute('aria-expanded', String(opening));
-      if (opening) {
-        var active = menu.querySelector('.is-selected') || menu.querySelector('.kic-custom-select__option');
-        if (active) { active.focus(); active.scrollIntoView({ block: 'nearest' }); }
+      if (menu.hidden) open(); else close(false);
+    });
+
+    button.addEventListener('keydown', function (event) {
+      if (button.disabled) return;
+      if (event.key === 'ArrowDown' || event.key === 'ArrowUp' || event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        if (menu.hidden) open();
       }
     });
 
-    root.addEventListener('keydown', function (event) {
-      if (event.key === 'Escape') close(true);
+    menu.addEventListener('keydown', function (event) {
+      var current = document.activeElement;
+      if (!current || !current.classList.contains('kic-custom-select__option')) current = menu.querySelector('.is-selected');
+      switch (event.key) {
+        case 'ArrowDown': event.preventDefault(); focusByOffset(current, 1); break;
+        case 'ArrowUp': event.preventDefault(); focusByOffset(current, -1); break;
+        case 'Home': event.preventDefault(); focusByOffset(current, -items().length); break;
+        case 'End': event.preventDefault(); focusByOffset(current, items().length); break;
+        case 'Escape': event.preventDefault(); close(true); break;
+        case 'Tab': close(false); break;
+        case 'Enter':
+        case ' ':
+          event.preventDefault();
+          if (current) current.click();
+          break;
+        default:
+          if (event.key.length === 1) {
+            typeahead += event.key.toLowerCase();
+            clearTimeout(typeaheadTimer);
+            typeaheadTimer = setTimeout(function () { typeahead = ''; }, 600);
+            var match = items().filter(function (el) { return !el.disabled; })
+              .find(function (el) { return el.textContent.toLowerCase().indexOf(typeahead) === 0; });
+            if (match) { match.focus(); match.scrollIntoView({ block: 'nearest' }); }
+          }
+      }
     });
+
     select.addEventListener('change', render);
     new MutationObserver(render).observe(select, { childList: true, attributes: true, subtree: true });
     render();

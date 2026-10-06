@@ -3,10 +3,10 @@
     <h1>{{ 'dashboard.title' | t }}</h1>
     <p>{{ 'dashboard.subtitle' | t }}</p>
   </div>
-  <button type="button" class="btn btn--ghost" (click)="reload()" [disabled]="loading()">
-    <app-icon name="trend" [size]="17" />
-    {{ (loading() ? 'common.loading' : 'common.refresh') | t }}
-  </button>
+  <div class="live-status" role="status" aria-live="polite">
+    <span class="live-status__dot" [class.is-updating]="loading()"></span>
+    {{ (loading() ? 'dashboard.autoRefresh.updating' : 'dashboard.autoRefresh.active') | t }}
+  </div>
 </header>
 
 @if (errorMessage(); as message) {

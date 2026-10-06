@@ -19,6 +19,35 @@
   }
 }
 
+.live-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid var(--scmc-border);
+  border-radius: var(--scmc-radius-pill);
+  color: var(--scmc-success);
+  background: var(--scmc-success-bg);
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.live-status__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 4px rgba(47, 107, 67, .12);
+}
+
+.live-status__dot.is-updating { animation: live-pulse 1s ease-in-out infinite; }
+
+@keyframes live-pulse {
+  50% { opacity: .35; transform: scale(.78); }
+}
+
 /* --- Tuiles d'indicateurs --- */
 
 .kpis {

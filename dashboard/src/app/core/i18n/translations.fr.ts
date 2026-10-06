@@ -115,6 +115,8 @@ export const FR = {
   'dashboard.title': 'Tableau de bord',
   'dashboard.subtitle': "Suivez l'activité de votre boutique en un seul coup d'œil",
   'dashboard.loading': 'Chargement des indicateurs…',
+  'dashboard.autoRefresh.active': 'Mise à jour automatique',
+  'dashboard.autoRefresh.updating': 'Synchronisation en cours…',
   'dashboard.kpis.label': 'Indicateurs clés',
   'dashboard.kpi.revenue': "Chiffre d'affaires",
   'dashboard.kpi.revenue.caption': 'Sur les commandes confirmées',

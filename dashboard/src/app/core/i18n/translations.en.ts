@@ -111,6 +111,8 @@ export const EN: Record<TranslationKey, string> = {
   'dashboard.title': 'Dashboard',
   'dashboard.subtitle': 'Keep an eye on your shop at a glance',
   'dashboard.loading': 'Loading metrics…',
+  'dashboard.autoRefresh.active': 'Automatic updates',
+  'dashboard.autoRefresh.updating': 'Syncing…',
   'dashboard.kpis.label': 'Key metrics',
   'dashboard.kpi.revenue': 'Revenue',
   'dashboard.kpi.revenue.caption': 'From paid orders',

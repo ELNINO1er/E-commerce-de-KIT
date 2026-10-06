@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, computed, inject } from '@angular/core';
 import { TranslatePipe } from '../../../../core/i18n/t.pipe';
 import { TranslationService } from '../../../../core/i18n/translation.service';
 import {
@@ -22,6 +22,8 @@ import { DashboardStore } from '../../application/dashboard.store';
 export class DashboardPage {
   private readonly store = inject(DashboardStore);
   private readonly i18n = inject(TranslationService);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly refreshIntervalMs = 15_000;
 
   protected readonly stats = this.store.stats;
   protected readonly loading = this.store.loading;
@@ -51,7 +53,18 @@ export class DashboardPage {
     })),
   );
 
-  protected reload(): void {
-    this.store.load(true);
+  constructor() {
+    const intervalId = window.setInterval(() => {
+      if (document.visibilityState === 'visible') {
+        this.store.load(true);
+      }
+    }, this.refreshIntervalMs);
+
+    const refreshOnFocus = () => this.store.load(true);
+    window.addEventListener('focus', refreshOnFocus);
+    this.destroyRef.onDestroy(() => {
+      window.clearInterval(intervalId);
+      window.removeEventListener('focus', refreshOnFocus);
+    });
   }
 }

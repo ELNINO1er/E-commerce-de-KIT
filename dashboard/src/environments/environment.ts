@@ -1,11 +1,2 @@
-/**
- * API de **production** — la seule cible du dashboard.
- *
- * `environment.development.ts` porte volontairement la meme URL : meme lance
- * en `ng serve`, le back-office interroge l'API de production. Il n'existe
- * donc plus de cible locale.
- */
-export const environment = {
-  production: true,
-  apiUrl: 'https://kic-fr.com/api',
-};
+/** Déploiement sur le domaine courant, à la racine ou dans un sous-dossier. */
+export const environment = { production: true, apiUrl: new URL('../api', document.baseURI).href.replace(/\/$/, '') };

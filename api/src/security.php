@@ -32,10 +32,20 @@ function checkout_existing(string $number): ?array
 
 function validate_checkout(array $body): void
 {
-    foreach(['contactEmail'=>190,'recipientName'=>190,'phone'=>40,'city'=>120,'addressLine'=>255,'cartToken'=>64] as $field=>$limit){
+    foreach(['contactEmail'=>190,'recipientName'=>190,'phone'=>40,'city'=>120,'addressLine'=>255,'postalCode'=>20,'country'=>100] as $field=>$limit){
         if(!is_string($body[$field]??null)||strlen($body[$field])>$limit)fail(422,'VALIDATION_ERROR','Champ invalide : '.$field);
     }
-    if(!filter_var($body['contactEmail'],FILTER_VALIDATE_EMAIL)||!in_array($body['deliveryMethod'],['PICKUP','DELIVERY'],true))fail(422,'VALIDATION_ERROR','Coordonnees ou livraison invalides.');
+    foreach(['contactEmail','recipientName','phone'] as $field)if(trim($body[$field])==='')fail(422,'VALIDATION_ERROR','Champ obligatoire : '.$field);
+    if(!filter_var($body['contactEmail'],FILTER_VALIDATE_EMAIL)||!in_array($body['deliveryMethod']??'', ['PICKUP','DELIVERY'],true))fail(422,'VALIDATION_ERROR','Coordonnées ou livraison invalides.');
+    if($body['deliveryMethod']==='DELIVERY')foreach(['city','addressLine','postalCode','country'] as $field)if(trim($body[$field])==='')fail(422,'VALIDATION_ERROR','Champ obligatoire : '.$field);
+}
+
+function with_order_lock(string $identity,callable $callback): mixed
+{
+    $pdo=db();$name='kic:'.substr(hash('sha256',$identity),0,50);
+    $q=$pdo->prepare('SELECT GET_LOCK(?,5)');$q->execute([$name]);
+    if((int)$q->fetchColumn()!==1)fail(409,'ORDER_BUSY','Cette commande est déjà en cours de traitement. Réessayez dans quelques secondes.');
+    try{return $callback();}finally{$pdo->prepare('SELECT RELEASE_LOCK(?)')->execute([$name]);}
 }
 
 function validate_catalog_amounts(array $body): void
@@ -48,16 +58,17 @@ function validate_catalog_amounts(array $body): void
 
 function admin_change_order_status(array $order,string $target): void
 {
+    if($target==='CANCELLED'){cancel_order_safe($order);return;}
+    if($target==='PAID')fail(409,'PAYMENT_CONFIRMATION_REQUIRED','Le statut Payée est attribué uniquement après confirmation du paiement.');
     $pdo=db();$pdo->beginTransaction();
     try{
-        $q=$pdo->prepare('SELECT status FROM orders WHERE id=? FOR UPDATE');$q->execute([$order['id']]);$previous=$q->fetchColumn();
-        $transitions=['PENDING'=>['PAID','CANCELLED'],'PAID'=>['SHIPPED'],'SHIPPED'=>['DELIVERED'],'DELIVERED'=>[],'CANCELLED'=>[]];
-        if($previous===$target){$pdo->commit();return;}
-        if(!in_array($target,$transitions[$previous]??[],true))fail(409,'INVALID_ORDER_STATE','Transition de commande interdite.');
-        if($target==='CANCELLED'){
-            $q=$pdo->prepare('SELECT variant_id,quantity FROM order_items WHERE order_id=?');$q->execute([$order['id']]);
-            foreach($q->fetchAll() as $item)$pdo->prepare('UPDATE product_variants SET stock=stock+? WHERE id=?')->execute([$item['quantity'],$item['variant_id']]);
-        }
+        $q=$pdo->prepare('SELECT * FROM orders WHERE id=? FOR UPDATE');$q->execute([$order['id']]);$locked=$q->fetch();
+        if(!$locked)fail(404,'NOT_FOUND','Commande introuvable.');
+        if($locked['status']===$target){$pdo->commit();return;}
+        $allowed=['PAID'=>['SHIPPED'],'SHIPPED'=>['DELIVERED']];
+        if(!in_array($target,$allowed[$locked['status']]??[],true))fail(409,'INVALID_ORDER_STATE','Transition de commande interdite.');
+        $q=$pdo->prepare("SELECT COUNT(*) FROM payments WHERE order_id=? AND (status<>'SUCCESS' OR reconciliation_required=1) AND status IN ('SUCCESS','REFUNDED','PARTIALLY_REFUNDED')");$q->execute([$order['id']]);
+        if($q->fetchColumn())fail(409,'PAYMENT_REVIEW_REQUIRED','Vérifiez le remboursement ou le paiement signalé avant expédition.');
         $pdo->prepare('UPDATE orders SET status=? WHERE id=?')->execute([$target,$order['id']]);$pdo->commit();
     }catch(Throwable $e){if($pdo->inTransaction())$pdo->rollBack();throw $e;}
 }

@@ -189,10 +189,14 @@ function cors(): void
 
 set_exception_handler(function (Throwable $error): void {
     if ($error instanceof ApiException) {
-        respond(['code' => $error->errorCode, 'message' => $error->getMessage(), 'errors' => $error->errors], $error->status);
+        $fields=[];
+        foreach ($error->errors as $field=>$messages) {
+            foreach ((array)$messages as $message) $fields[]=['field'=>(string)$field,'message'=>(string)$message];
+        }
+        respond(['status'=>$error->status,'code'=>$error->errorCode,'title'=>$error->getMessage(),'detail'=>$error->getMessage(),'message'=>$error->getMessage(),'errors'=>$fields], $error->status);
     }
     error_log((string) $error);
-    respond(['code' => 'INTERNAL_ERROR', 'message' => 'Une erreur interne est survenue.'], 500);
+    respond(['status'=>500,'code' => 'INTERNAL_ERROR', 'detail'=>'Le service est temporairement indisponible. Réessayez plus tard ou contactez KIC.','message' => 'Le service est temporairement indisponible. Réessayez plus tard ou contactez KIC.','errors'=>[]], 500);
 });
 
 require __DIR__.'/security.php';

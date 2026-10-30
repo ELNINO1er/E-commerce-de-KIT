@@ -27,7 +27,7 @@
 
 <header class="kic-header">
   <a class="kic-logo" href="index.html">
-    <span class="kic-logo__image"><img src="img/Logo%20KIC%2001.png" alt="KIC ? Konan Industries &amp; Chocolaterie" width="1254" height="1254" decoding="async"></span>
+    <span class="kic-logo__image"><img src="img/Logo%20KIC%2001.png" alt="KIC — Konan Industries &amp; Chocolaterie" width="1254" height="1254" decoding="async"></span>
     <span class="kic-logo__tag">Konan Industrie et Chocolaterie</span>
   </a>
   <button class="kic-burger" type="button" aria-expanded="false" aria-controls="kic-nav" aria-label="Ouvrir le menu"><span></span><span></span><span></span></button>
@@ -127,8 +127,8 @@
             </label>
           </div>
           <label><span>Votre message *</span><textarea name="message" rows="6" required placeholder="Présentez votre activité, le volume recherché, le lieu de livraison et votre échéance."></textarea></label>
-          <label class="kic-contact-consent"><input type="checkbox" required><span>J’accepte que KIC utilise ces informations pour répondre à ma demande.</span></label>
-          <button class="kic-contact-submit" type="submit">Envoyer ma demande<span aria-hidden="true">→</span></button>
+          <label class="kic-contact-consent"><input name="consent" type="checkbox" required><span>J’accepte que KIC utilise ces informations pour répondre à ma demande.</span></label>
+          <label class="kic-honeypot" aria-hidden="true">Site web<input name="website" tabindex="-1" autocomplete="off"></label><button class="kic-contact-submit" type="submit">Envoyer ma demande<span aria-hidden="true">→</span></button>
           <p class="kic-contact-feedback" role="status" aria-live="polite"></p>
         </form>
       </div>
@@ -139,7 +139,7 @@
 <footer class="kic-footer">
   <div class="kic-footer__grid">
     <div class="kic-footer__brand">
-      <a class="kic-footer__logo" href="index.html" aria-label="KIC ? Accueil"><img src="img/Logo%20KIC%2001.png" alt="Konan Industries &amp; Chocolaterie" width="1254" height="1254" loading="lazy" decoding="async"></a>
+      <a class="kic-footer__logo" href="index.html" aria-label="KIC — Accueil"><img src="img/Logo%20KIC%2001.png" alt="Konan Industries &amp; Chocolaterie" width="1254" height="1254" loading="lazy" decoding="async"></a>
       <p class="kic-footer__about">KIC accompagne les artisans-transformateurs, distributeurs et professionnels de l’agroalimentaire avec une sélection de produits cacao traçables, adaptés à leurs usages et distribués en France et en Europe.</p>
       <div class="kic-footer-actions">
         <a class="kic-footer-action" href="tel:+33745908778"><span aria-hidden="true">☎</span> Appeler KIC</a>
@@ -152,13 +152,13 @@
     <div class="kic-footer__col"><h2 class="kic-footer__head">Siège social</h2><address class="kic-footer__address">18, rue Masséna<br>06000 Nice<br>France</address></div>
   </div>
   <div class="kic-footer__wave"><figure class="kic-media kic-media--cover"><img src="img/kic-footer-wave.jpg" alt="Vague de cacao liquide" loading="lazy"></figure><div class="kic-footer__wave-veil" aria-hidden="true"></div></div>
-  <div class="kic-footer__bottom"><span>KIC — Konan Industrie et Chocolaterie</span><div class="kic-footer__legal"><a href="contact.html">Mentions légales</a><a href="contact.html">Politique de confidentialité</a></div></div>
+  <div class="kic-footer__bottom"><span>KIC — Konan Industrie et Chocolaterie</span><div class="kic-footer__legal"><a href="mentions-legales.html">Mentions légales</a><a href="conditions-commande.html">Conditions de commande</a><a href="confidentialite.html">Politique de confidentialité</a></div></div>
 </footer>
 
-<script src="js/kic.js" defer></script>
-<script src="js/kic-api.js?v=20261006-stripe" defer></script>
-<script src="js/header-tools.js?v=20261006-stripe" defer></script>
-<script src="js/contact.js" defer></script>
-<script src="js/page-loader.js" defer></script>
-<script src="js/analytics-consent.js" defer></script></body>
+<script src="js/kic-api.js?v=20261030" defer></script><script src="js/site.js?v=20261030" defer></script><script src="js/kic.js?v=20261030" defer></script>
+
+<script src="js/header-tools.js?v=20261030" defer></script>
+<script src="js/contact.js?v=20261030" defer></script>
+<script src="js/page-loader.js?v=20261030" defer></script>
+<script src="js/analytics-consent.js?v=20261030" defer></script></body>
 </html>

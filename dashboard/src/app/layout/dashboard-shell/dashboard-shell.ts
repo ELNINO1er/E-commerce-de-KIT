@@ -81,6 +81,7 @@ const NAV: readonly NavGroup[] = [
         available: true,
         badge: 'pendingOrders',
       },
+      { label: 'nav.requests', path: '/demandes', icon: 'orders', available: true },
       { label: 'nav.returns', path: '/retours', icon: 'box', available: true },
     ],
   },

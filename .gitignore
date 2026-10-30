@@ -5,3 +5,12 @@
 /api/uploads/
 /api/storage/backups/
 *.log
+
+/admin-build-readiness/
+/api/storage/releases/
+
+/admin-build-local/
+
+/.tmp-video-analysis/
+/migration-kic-*.zip
+/migration-kic-*-verification.csv

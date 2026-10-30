@@ -1,3 +1,7 @@
+# Mise à jour paiement du 30 octobre 2026
+
+Suivre en priorité [PAIEMENT-SANDBOX.md](PAIEMENT-SANDBOX.md). Le paiement reste activé en sandbox. Les anciennes instructions sans passerelle ci-dessous sont historiques et ne décrivent plus le parcours actuel.
+
 # Déploiement KIC sur Hostinger
 
 ## Contenu publié

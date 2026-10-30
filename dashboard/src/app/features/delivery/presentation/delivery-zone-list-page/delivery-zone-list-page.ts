@@ -82,6 +82,7 @@ export class DeliveryZoneListPage {
   protected readonly form = this.formBuilder.nonNullable.group(
     {
       name: ['', [Validators.required]],
+      scope: ['MANUAL', [Validators.required]],
       city: ['', [Validators.required]],
       fee: this.formBuilder.control<number | null>(null, [
         Validators.required,
@@ -144,6 +145,7 @@ export class DeliveryZoneListPage {
       estimatedDaysMin: zone.estimatedDaysMin,
       estimatedDaysMax: zone.estimatedDaysMax,
       active: zone.active,
+      scope: zone.scope ?? 'MANUAL',
     });
     this.editing.set(zone);
   }
@@ -163,6 +165,7 @@ export class DeliveryZoneListPage {
     const value = this.form.getRawValue();
     const request = {
       name: value.name.trim(),
+      scope: value.scope,
       city: value.city.trim(),
       fee: value.fee ?? 0,
       estimatedDaysMin: value.estimatedDaysMin ?? 1,

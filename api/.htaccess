@@ -1,5 +1,6 @@
 Options -Indexes
 RewriteEngine On
+RewriteRule ^(?:src|scripts|tests|migrations|storage)(?:/|$) - [F,L,NC]
 
 # Les fichiers televerses restent servis directement par Apache.
 RewriteCond %{REQUEST_FILENAME} -f [OR]

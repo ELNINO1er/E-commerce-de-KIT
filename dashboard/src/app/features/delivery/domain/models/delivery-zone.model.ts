@@ -1,10 +1,11 @@
 /** Zone de livraison (`DeliveryZoneResponse`). */
 export interface DeliveryZone {
   id: number;
-  /** Libelle de la zone : « Abidjan — Cocody », « Interieur du pays »… */
+  /** Libelle de la zone : « France métropolitaine », « Union européenne »… */
   name: string;
+  scope: string;
   city: string;
-  /** Tarif en FCFA ; `0` = livraison offerte sur cette zone. */
+  /** Tarif en centimes d’euro ; `0` = livraison offerte sur cette zone. */
   fee: number;
   estimatedDaysMin: number;
   estimatedDaysMax: number;
@@ -16,6 +17,7 @@ export interface DeliveryZone {
 
 export interface DeliveryZoneRequest {
   name: string;
+  scope: string;
   city: string;
   fee: number;
   estimatedDaysMin: number;

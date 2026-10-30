@@ -6,6 +6,7 @@
   var main = document.getElementById('produit');
   var errorBox = document.querySelector('.kic-product-error');
 
+  function escapeText(value) { var node = document.createElement('span'); node.textContent = String(value || ''); return node.innerHTML; }
   function textAll(selector, value) {
     document.querySelectorAll(selector).forEach(function (node) { node.textContent = value; });
   }
@@ -57,7 +58,7 @@
       purchase.hidden = false;
       select.innerHTML = variants.map(function (item, index) {
         var disabled = Number(item.stock) < 1 ? ' disabled' : '';
-        return '<option value="' + index + '"' + disabled + '>' + (item.label || item.format) + (disabled ? ' — Indisponible' : '') + '</option>';
+        return '<option value="' + index + '"' + disabled + '>' + escapeText(item.label || item.format) + (disabled ? ' — Indisponible' : '') + '</option>';
       }).join('');
       var firstAvailable = variants.findIndex(function (item) { return Number(item.stock) > 0; });
       if (firstAvailable >= 0) select.value = String(firstAvailable);
@@ -107,6 +108,7 @@
         }
       }; })
     });
+    if(window.KICStripTestOffers)window.KICStripTestOffers();
   }
 
   function showError() {

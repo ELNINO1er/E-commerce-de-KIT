@@ -70,6 +70,9 @@ export const FR = {
   'title.categories': 'Catégories — KIC Admin',
 
   // --- Navigation ---
+  'nav.requests': 'Demandes et paiement',
+  'paymentStatus.PARTIALLY_REFUNDED': 'Partiellement remboursé',
+  'paymentStatus.REFUNDED': 'Remboursé',
   'nav.group.menu': 'Menu',
   'nav.group.commerce': 'Commerce',
   'nav.group.general': 'Général',
@@ -119,7 +122,7 @@ export const FR = {
   'dashboard.autoRefresh.updating': 'Synchronisation en cours…',
   'dashboard.kpis.label': 'Indicateurs clés',
   'dashboard.kpi.revenue': "Chiffre d'affaires",
-  'dashboard.kpi.revenue.caption': 'Sur les commandes confirmées',
+  'dashboard.kpi.revenue.caption': 'Encaissements réels nets de remboursements',
   'dashboard.kpi.orders': 'Commandes',
   'dashboard.kpi.orders.caption': 'Tous statuts confondus',
   'dashboard.kpi.customers': 'Clients',
@@ -315,7 +318,7 @@ export const FR = {
   'orders.tracking.placeholder': 'N° de colis, transporteur, point de retrait…',
   'orders.tracking.hint': 'Visible par le client sur le suivi de sa commande.',
   'orders.trackingUpdated': 'Note de suivi enregistrée.',
-  'orders.invoice': 'Facture PDF',
+  'orders.invoice': 'Récapitulatif PDF',
   'orders.invoiceDownloading': 'Génération…',
 
   // --- Codes promo ---
@@ -461,7 +464,7 @@ export const FR = {
 
   // --- Statuts de commande ---
   'status.PENDING': 'En attente',
-  'status.PAID': 'Confirmée',
+  'status.PAID': 'Payée',
   'status.SHIPPED': 'Expédiée',
   'status.DELIVERED': 'Livrée',
   'status.CANCELLED': 'Annulée',

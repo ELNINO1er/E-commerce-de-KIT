@@ -16,6 +16,10 @@ export interface OrderItem {
 export interface Order {
   /** Reference metier, de la forme `KIC-000013` — c'est elle qui sert d'identifiant. */
   orderNumber: string;
+  mode?: 'REQUEST'|'PAYMENT';
+  paymentEnvironment?: 'sandbox'|'live'|'legacy';
+  postalCode?: string;
+  taxMode?: string;
   status: OrderStatus;
   items: OrderItem[];
   payment: {
@@ -26,6 +30,8 @@ export interface Order {
     amount: number;
     currency: string;
     paidAt: string | null;
+    refundedAmount?: number;
+    requiresReview?: boolean;
   } | null;
 
   subtotal: number;
@@ -63,7 +69,7 @@ export interface UpdateTrackingRequest {
 
 /** Adresse de livraison sur une ligne, en sautant les champs absents. */
 export function formatAddress(order: Order): string {
-  return [order.addressLine, order.commune, order.city, order.country]
+  return [order.addressLine, order.postalCode, order.commune, order.city, order.country]
     .filter((part): part is string => !!part)
     .join(', ');
 }

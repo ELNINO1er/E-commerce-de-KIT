@@ -38,6 +38,13 @@ return [
     'order_notification_email' => (string) env_value('ORDER_NOTIFICATION_EMAIL', ''),
     'stripe_secret_key' => (string) env_value('STRIPE_SECRET_KEY', ''),
     'stripe_webhook_secret' => (string) env_value('STRIPE_WEBHOOK_SECRET', ''),
+    // Activation explicite uniquement, après recette Stripe et validation commerciale.
+    'payments_enabled' => filter_var(env_value('PAYMENTS_ENABLED', 'true'), FILTER_VALIDATE_BOOLEAN),
+    'payment_mode' => strtolower((string) env_value('PAYMENT_MODE', 'sandbox')),
+    'price_tax_mode' => strtoupper((string) env_value('PRICE_TAX_MODE', 'UNCONFIRMED')),
+    'seller_registration' => trim((string) env_value('SELLER_REGISTRATION', '')),
+    'sales_terms_confirmed' => filter_var(env_value('SALES_TERMS_CONFIRMED', 'false'), FILTER_VALIDATE_BOOLEAN),
+    'contact_notification_email' => (string) env_value('CONTACT_NOTIFICATION_EMAIL', ''),
     'allowed_origins' => array_values(array_filter(array_map('trim', explode(',', (string) env_value('ALLOWED_ORIGINS', 'http://localhost'))))),
     'db' => [
         'host' => env_value('DB_HOST', 'localhost'),

@@ -9,7 +9,7 @@ function ok(bool $value,string $label): void {global $checks;if(!$value)throw ne
 function rejected(callable $fn,string $code): void {try{$fn();}catch(RuntimeException $e){ok($e->getMessage()===$code,$code);return;}throw new RuntimeException('Rejet attendu : '.$code);}
 validate_catalog_amounts(['price'=>0,'stock'=>2]);ok(true,'montants euro en centimes');
 rejected(fn()=>validate_catalog_amounts(['price'=>-1]),'VALIDATION_ERROR');
-$body=['contactEmail'=>'client@example.fr','recipientName'=>'Entreprise Test','phone'=>'+33700000000','city'=>'Nice','addressLine'=>'1 rue Test','cartToken'=>str_repeat('a',64),'deliveryMethod'=>'DELIVERY'];
+$body=['contactEmail'=>'client@example.fr','recipientName'=>'Entreprise Test','phone'=>'+33700000000','city'=>'Nice','addressLine'=>'1 rue Test','postalCode'=>'75001','country'=>'France','cartToken'=>str_repeat('a',64),'deliveryMethod'=>'DELIVERY'];
 validate_checkout($body);ok(true,'commande France valide');
 rejected(fn()=>validate_checkout(array_merge($body,['contactEmail'=>'invalide'])),'VALIDATION_ERROR');
 rejected(fn()=>validate_checkout(array_merge($body,['deliveryMethod'=>'PAYMENT'])),'VALIDATION_ERROR');

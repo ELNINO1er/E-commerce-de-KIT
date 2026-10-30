@@ -1304,3 +1304,5 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--kic-gold); outl
   .kic-page-loader { animation: kic-loader-fallback 0s 2.5s forwards !important; }
   body.is-leaving .kic-page-loader { animation: none !important; }
 }
+.kic-environment { margin:0; padding:10px 20px; background:#fff0b8; color:#3b2419; text-align:center; font:700 13px/1.5 var(--kic-font-body); }
+.kic-privacy-preferences { border:0; background:transparent; color:inherit; padding:8px 4px; min-height:44px; cursor:pointer; text-decoration:underline; font:inherit; }

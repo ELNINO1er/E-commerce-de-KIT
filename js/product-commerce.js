@@ -53,6 +53,7 @@
         }
       };
       script.textContent = JSON.stringify(data);
+      if(window.KICStripTestOffers)window.KICStripTestOffers();
     } catch (error) { /* Le balisage statique reste disponible. */ }
   }
 

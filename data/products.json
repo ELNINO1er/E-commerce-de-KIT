@@ -4,7 +4,7 @@
     "slug": "beurre-de-cacao",
     "name": "Beurre de cacao",
     "category": "Ingrédients cacao",
-    "image": "img/beurre-cacao-pub.png",
+    "image": "img/kic-cat-beurre.jpg",
     "badge": "Qualité professionnelle",
     "description": "Beurre de cacao traçable pour chocolaterie, pâtisserie et transformation professionnelle.",
     "longDescription": "Un beurre de cacao sélectionné par KIC pour les professionnels en France et en Europe.",
@@ -18,7 +18,7 @@
       }
     ],
     "gallery": [
-      "img/beurre-cacao-pub.png"
+      "img/kic-cat-beurre.jpg"
     ],
     "popular": true,
     "ingredients": "Beurre de cacao. Spécification et composition garanties par la fiche technique du lot.",
@@ -26,7 +26,7 @@
     "nutrition": [
       "Valeurs nutritionnelles certifiées disponibles sur la fiche technique du lot."
     ],
-    "usage": "Chocolaterie, pâtisserie, biscuiterie, glaces, enrobages et préparations cosmétiques selon la référence.",
+    "usage": "Usage alimentaire ou cosmétique à confirmer exclusivement selon la fiche technique du lot proposé par KIC avant commande réelle.",
     "conservation": "Conserver fermé, au sec, à l’abri de la chaleur, de l’humidité, de la lumière et des odeurs.",
     "similar": [],
     "rating": {

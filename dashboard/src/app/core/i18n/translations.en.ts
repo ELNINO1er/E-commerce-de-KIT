@@ -66,6 +66,9 @@ export const EN: Record<TranslationKey, string> = {
   'title.categories': 'Categories — KIC Admin',
 
   // --- Navigation ---
+  'nav.requests': 'Requests and payments',
+  'paymentStatus.PARTIALLY_REFUNDED': 'Partially refunded',
+  'paymentStatus.REFUNDED': 'Refunded',
   'nav.group.menu': 'Menu',
   'nav.group.commerce': 'Commerce',
   'nav.group.general': 'General',
@@ -115,7 +118,7 @@ export const EN: Record<TranslationKey, string> = {
   'dashboard.autoRefresh.updating': 'Syncing…',
   'dashboard.kpis.label': 'Key metrics',
   'dashboard.kpi.revenue': 'Revenue',
-  'dashboard.kpi.revenue.caption': 'From paid orders',
+  'dashboard.kpi.revenue.caption': 'Live payments net of refunds',
   'dashboard.kpi.orders': 'Orders',
   'dashboard.kpi.orders.caption': 'All statuses combined',
   'dashboard.kpi.customers': 'Customers',
@@ -309,7 +312,7 @@ export const EN: Record<TranslationKey, string> = {
   'orders.tracking.placeholder': 'Parcel number, carrier, pickup point…',
   'orders.tracking.hint': 'Visible to the customer when tracking their order.',
   'orders.trackingUpdated': 'Tracking note saved.',
-  'orders.invoice': 'PDF invoice',
+  'orders.invoice': 'PDF order summary',
   'orders.invoiceDownloading': 'Generating…',
 
   // --- Discount codes ---
@@ -454,7 +457,7 @@ export const EN: Record<TranslationKey, string> = {
 
   // --- Order statuses ---
   'status.PENDING': 'Pending',
-  'status.PAID': 'Confirmed',
+  'status.PAID': 'Paid',
   'status.SHIPPED': 'Shipped',
   'status.DELIVERED': 'Delivered',
   'status.CANCELLED': 'Cancelled',

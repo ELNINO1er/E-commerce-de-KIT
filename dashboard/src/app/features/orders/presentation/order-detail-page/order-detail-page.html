@@ -4,7 +4,7 @@
       <app-icon name="chevron" [size]="15" class="back__icon" />
       {{ 'orders.backToList' | t }}
     </a>
-    <h1>{{ orderNumber() }}</h1>
+    <h1>{{ orderNumber() }}</h1>@if(order()?.paymentEnvironment === "sandbox"){<p role="status"><strong>TEST SANDBOX — aucun encaissement réel</strong></p>}@if(order()?.payment?.requiresReview){<p class="message message--error" role="alert">Transaction à rapprocher dans Stripe avant toute expédition.</p>}
     @if (order(); as data) {
       <p>
         <span class="status" [class]="statusVariant()">{{ statusLabel() }}</span>

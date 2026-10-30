@@ -26,8 +26,11 @@ function seed_catalogue(): array
         foreach (($commerce['deliveryZones'] ?? []) as $zone) {
             preg_match_all('/\d+/', $zone['delay'], $matches);
             $days = $matches[0] ?: [1,2];
-            $q = $pdo->prepare('INSERT INTO delivery_zones(code,name,city,fee,express_fee,estimated_days_min,estimated_days_max) VALUES(?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE name=VALUES(name),fee=VALUES(fee),express_fee=VALUES(express_fee),estimated_days_min=VALUES(estimated_days_min),estimated_days_max=VALUES(estimated_days_max)');
-            $q->execute([$zone['id'],$zone['label'],$zone['city']??'France',$zone['standard'],$zone['express'],(int)$days[0],(int)($days[1]??$days[0])]);
+            $q = $pdo->prepare('INSERT INTO delivery_zones(code,name,city,fee,express_fee,estimated_days_min,estimated_days_max,scope) VALUES(?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE name=VALUES(name),fee=VALUES(fee),express_fee=VALUES(express_fee),estimated_days_min=VALUES(estimated_days_min),estimated_days_max=VALUES(estimated_days_max),scope=VALUES(scope)');
+            $q->execute([$zone['id'],$zone['label'],$zone['city']??'France',$zone['standard'],$zone['express'],(int)$days[0],(int)($days[1]??$days[0]),['france-metropolitaine'=>'FR_MAINLAND','corse'=>'FR_CORSE','europe'=>'EU','retrait-nice'=>'PICKUP'][$zone['id']]??'MANUAL']);
+        }
+        foreach($commerce['promoCodes']??[] as $promo){
+            $pdo->prepare('INSERT IGNORE INTO discount_codes(code,type,value,active,min_order_amount) VALUES(?,?,?,?,?)')->execute([$promo['code'],$promo['type']==='percent'?'PERCENTAGE':'FIXED_AMOUNT',$promo['value'],(int)$promo['active'],$promo['minimum']??null]);
         }
         $pdo->commit();
         return ['products'=>count($products),'deliveryZones'=>count($commerce['deliveryZones'] ?? [])];

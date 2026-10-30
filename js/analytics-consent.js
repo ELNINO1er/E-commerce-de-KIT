@@ -3,13 +3,16 @@
 
   var measurementId = 'G-92WFM8XF0H';
   var consentKey = 'kic_analytics_consent';
-  var existing = window.localStorage.getItem(consentKey);
+  var existing = null;
+  try { existing = window.localStorage.getItem(consentKey); } catch (_) {}
+  window.KICPrivacy = { reopen: function () { if (!document.querySelector('.kic-consent')) showBanner(); } };
 
   function loadAnalytics() {
     if (window.__kicAnalyticsLoaded) return;
     window.__kicAnalyticsLoaded = true;
     window.dataLayer = window.dataLayer || [];
     window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag('consent', 'default', { analytics_storage: 'granted', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
     window.gtag('js', new Date());
     window.gtag('config', measurementId, {
       anonymize_ip: true,
@@ -21,6 +24,7 @@
     script.async = true;
     script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(measurementId);
     document.head.appendChild(script);
+    window.dispatchEvent(new CustomEvent('kic:analytics-ready'));
   }
 
   function closeBanner(banner) {
@@ -29,7 +33,9 @@
   }
 
   function saveChoice(value, banner) {
-    window.localStorage.setItem(consentKey, value);
+    try { window.localStorage.setItem(consentKey, value); } catch (_) {}
+    if (window.gtag) window.gtag('consent', 'update', { analytics_storage: value === 'accepted' ? 'granted' : 'denied' });
+    if (value === 'declined') { window['ga-disable-' + measurementId] = true; } else { window['ga-disable-' + measurementId] = false; }
     if (value === 'accepted') loadAnalytics();
     closeBanner(banner);
   }

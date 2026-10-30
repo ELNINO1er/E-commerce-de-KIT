@@ -44,7 +44,7 @@ export class OrderDetailPage {
   protected readonly trackingControl = new FormControl('', { nonNullable: true });
 
   protected readonly statusOptions = computed<SelectOption[]>(() =>
-    ORDER_STATUSES.map((value) => ({ value, label: this.i18n.t(ORDER_STATUS_KEYS[value]) })),
+    ORDER_STATUSES.filter(value => value !== 'PAID' || this.order()?.status === 'PAID').map((value) => ({ value, label: this.i18n.t(ORDER_STATUS_KEYS[value]) })),
   );
 
   protected readonly statusLabel = computed(() => {

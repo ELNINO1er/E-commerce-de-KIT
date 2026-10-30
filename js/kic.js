@@ -112,8 +112,11 @@
         return;
       }
 
-      feedback.textContent = 'Merci ! Votre demande a bien été enregistrée. KIC vous recontactera prochainement.';
-      form.reset();
+      if (!window.KICAPI) { feedback.textContent = 'Le service est indisponible. Contactez KIC.'; return; }
+      var button = form.querySelector('[type=submit]'); if (button) button.disabled = true;
+      KICAPI.request('/newsletter', { method: 'POST', body: JSON.stringify({ email: value }) }).then(function () {
+        feedback.textContent = 'Votre inscription est enregistrée.'; form.reset();
+      }).catch(function (error) { feedback.textContent = error.message; }).finally(function () { if (button) button.disabled = false; });
     });
   }
 

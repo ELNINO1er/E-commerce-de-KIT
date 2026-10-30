@@ -81,11 +81,11 @@
     }
 
     <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
-      <div class="grid">
+      <div class="grid"><label class="grid__full">Périmètre de livraison<select formControlName="scope"><option value="MANUAL">Sur devis uniquement</option><option value="FR_MAINLAND">France métropolitaine hors Corse</option><option value="FR_CORSE">Corse</option><option value="EU">Union européenne hors France</option><option value="PICKUP">Retrait à Nice</option></select></label>
         <label>
           {{ 'delivery.form.name' | t }}
           <span class="req" aria-hidden="true" [title]="'common.requiredField' | t">*</span>
-          <input type="text" formControlName="name" aria-required="true" placeholder="Cocody" />
+          <input type="text" formControlName="name" aria-required="true" placeholder="France métropolitaine" />
           @if (form.controls.name.touched && form.controls.name.invalid) {
             <small class="field-error">{{ 'common.required' | t }}</small>
           }
@@ -109,7 +109,7 @@
         <label class="grid__full">
           {{ 'delivery.form.fee' | t }}
           <span class="req" aria-hidden="true" [title]="'common.requiredField' | t">*</span>
-          <input type="number" formControlName="fee" min="0" step="500" aria-required="true" />
+          <input type="number" formControlName="fee" min="0" step="1" aria-required="true" />
           <small class="hint">{{ 'delivery.form.feeHint' | t }}</small>
           @if (form.controls.fee.touched && form.controls.fee.invalid) {
             <small class="field-error">{{ 'delivery.form.feeError' | t }}</small>

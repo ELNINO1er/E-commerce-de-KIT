@@ -5,7 +5,7 @@ Plateforme e-commerce B2B de **KIC — Konan Industrie et Chocolaterie**, destin
 ## Architecture
 
 - Boutique publique HTML/CSS/JavaScript : design KIC historique conservé.
-- Commande professionnelle sans paiement en ligne : `commande.html`.
+- Commande avec paiement Stripe en sandbox : `commande.html`.
 - Dashboard Angular 21 compilé dans `admin/` et accessible à `/admin/`.
 - API PHP/MySQL compatible avec un hébergement mutualisé Hostinger : `api/`.
 - Catalogue et zones françaises d'initialisation : `data/`.
@@ -30,4 +30,4 @@ Le paquet publié est compilé avec une base `/admin/`. Voir `DEPLOIEMENT-HOSTIN
 
 ## Commerce
 
-Les prix sont stockés en centimes d'euro. Une commande réserve le stock et arrive dans le dashboard. KIC confirme ensuite les conditions commerciales et transmet séparément les modalités de règlement. Aucune passerelle ni donnée de paiement n'est intégrée.
+Les prix sont stockés en centimes d'euro. Stripe Checkout fonctionne en sandbox par défaut ; les clés de test et le webhook sont nécessaires. Les cartes sont saisies chez Stripe. Voir PAIEMENT-SANDBOX.md pour les migrations, les tests et le futur passage en production.

@@ -31,13 +31,13 @@ function login(): never
 function register_user(): never
 {
     security_rate_limit('register', 5, 300);
-    $body=json_body(); require_fields($body,['email','password','firstName','lastName']);
+    $body=json_body(); require_fields($body,['email','password','firstName']);
     $email=strtolower(trim($body['email']));
     if (!filter_var($email,FILTER_VALIDATE_EMAIL)) fail(422,'VALIDATION_ERROR','Adresse e-mail invalide.',['email'=>['Adresse e-mail invalide.']]);
-    if (strlen((string)$body['password'])<8) fail(422,'VALIDATION_ERROR','Le mot de passe doit contenir au moins 8 caracteres.',['password'=>['8 caracteres minimum.']]);
+    if (strlen((string)$body['password'])<12) fail(422,'VALIDATION_ERROR','Le mot de passe doit contenir au moins 12 caractères.',['password'=>['12 caractères minimum.']]);
     try {
         $query=db()->prepare("INSERT INTO users(email,password_hash,first_name,last_name,phone,role) VALUES(?,?,?,?,?,'USER')");
-        $query->execute([$email,password_hash((string)$body['password'],PASSWORD_DEFAULT),trim($body['firstName']),trim($body['lastName']),$body['phone']??null]);
+        $query->execute([$email,password_hash((string)$body['password'],PASSWORD_DEFAULT),trim($body['firstName']),trim((string)($body['lastName']??'')),$body['phone']??null]);
     } catch (PDOException $e) { if ((int)$e->errorInfo[1]===1062) fail(409,'EMAIL_EXISTS','Cette adresse e-mail est deja utilisee.'); throw $e; }
     $query=db()->prepare('SELECT * FROM users WHERE id=?'); $query->execute([(int)db()->lastInsertId()]);
     respond(session_response($query->fetch()),201);

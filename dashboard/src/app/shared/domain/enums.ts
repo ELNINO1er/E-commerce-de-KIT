@@ -43,7 +43,7 @@ export const PAYMENT_METHOD_KEYS: Record<PaymentMethod, TranslationKey> = {
 export type PaymentProvider = 'STRIPE' | 'MOCK' | 'CINETPAY' | 'PAYDUNYA' | 'FLUTTERWAVE';
 
 /** Etat d'un paiement. */
-export type PaymentStatus = 'PENDING' | 'SUCCESS' | 'FAILED' | 'CANCELLED';
+export type PaymentStatus = 'PENDING' | 'SUCCESS' | 'FAILED' | 'CANCELLED' | 'REFUNDED' | 'PARTIALLY_REFUNDED';
 export const PAYMENT_STATUSES: readonly PaymentStatus[] = [
   'PENDING',
   'SUCCESS',
@@ -51,6 +51,8 @@ export const PAYMENT_STATUSES: readonly PaymentStatus[] = [
   'CANCELLED',
 ];
 export const PAYMENT_STATUS_KEYS: Record<PaymentStatus, TranslationKey> = {
+  REFUNDED: 'paymentStatus.REFUNDED',
+  PARTIALLY_REFUNDED: 'paymentStatus.PARTIALLY_REFUNDED',
   PENDING: 'paymentStatus.PENDING',
   SUCCESS: 'paymentStatus.SUCCESS',
   FAILED: 'paymentStatus.FAILED',
@@ -58,6 +60,8 @@ export const PAYMENT_STATUS_KEYS: Record<PaymentStatus, TranslationKey> = {
 };
 /** Suffixe de la classe utilitaire `.status--*`. */
 export const PAYMENT_STATUS_VARIANT: Record<PaymentStatus, string> = {
+  REFUNDED: 'status--neutral',
+  PARTIALLY_REFUNDED: 'status--info',
   PENDING: '',
   SUCCESS: 'status--success',
   FAILED: 'status--danger',

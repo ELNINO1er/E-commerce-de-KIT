@@ -25,11 +25,13 @@ function product_response(array $row, bool $shop = false): array
     $category = ['id'=>(int)$row['category_id'], 'name'=>$row['category_name'], 'slug'=>$row['category_slug'],
         'parentId'=>$row['category_parent_id'] === null ? null : (int)$row['category_parent_id']];
     $image = $row['image_url'];
+    if($row['slug']==='beurre-de-cacao'&&str_contains((string)$image,'beurre-cacao-pub.png'))$image='img/kic-cat-beurre.jpg';
     if ($image && !preg_match('#^https?://#i', $image)) $image = $config['app_url'] . '/' . ltrim($image, '/');
     $details = json_decode($row['details_json'] ?? '{}', true) ?: [];
+    if($row['slug']==='beurre-de-cacao'){$details['usage']='Usage alimentaire ou cosmétique à confirmer selon la fiche technique du lot proposé avant commande réelle.';$details['gallery']=['img/kic-cat-beurre.jpg'];}
     $base = ['id'=>(int)$row['id'], 'name'=>$row['name'], 'slug'=>$row['slug'],
         'description'=>$row['description'], 'imageUrl'=>$image, 'category'=>$category,
-        'priceFrom'=>$variantsRaw ? min(array_map(fn($v)=>(int)($v['promo_price'] ?: $v['price']), $variantsRaw)) : null,
+        'priceFrom'=>$variantsRaw ? min(array_map(fn($v)=>(int)($v['promo_price'] ?? $v['price']), $variantsRaw)) : null,
         'variants'=>array_map('variant_response', $variantsRaw)];
     if (!$shop) return $base;
     $base['legacyId'] = $row['legacy_id'];

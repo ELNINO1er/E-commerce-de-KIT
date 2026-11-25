@@ -2,10 +2,11 @@
 declare(strict_types=1);
 if(PHP_SAPI!=='cli')exit(1);
 $name='kic_test_'.gmdate('YmdHis').'_'.bin2hex(random_bytes(3));
-$server=new PDO('mysql:host=127.0.0.1;port=3306;charset=utf8mb4','root','',[PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION]);
+$testPort=(int)(getenv('KIC_TEST_DB_PORT')?:3306);
+$server=new PDO('mysql:host=127.0.0.1;port='.$testPort.';charset=utf8mb4','root','',[PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION]);
 if(!preg_match('/^kic_test_[a-zA-Z0-9_]+$/',$name))exit(1);
 $server->exec('CREATE DATABASE `'.$name.'` CHARACTER SET utf8mb4');
-foreach(['DB_HOST'=>'127.0.0.1','DB_NAME'=>$name,'DB_USER'=>'root','DB_PASSWORD'=>'','APP_ENV'=>'development','APP_URL'=>'http://localhost/kic-main','APP_KEY'=>bin2hex(random_bytes(32)),'PAYMENT_MODE'=>'sandbox','PAYMENTS_ENABLED'=>'true','STRIPE_SECRET_KEY'=>'sk_test_'.str_repeat('x',24),'STRIPE_WEBHOOK_SECRET'=>'whsec_local_test_only','PRICE_TAX_MODE'=>'UNCONFIRMED'] as $k=>$v)putenv($k.'='.$v);
+foreach(['ORDER_NOTIFICATION_EMAIL'=>'','CONTACT_NOTIFICATION_EMAIL'=>'','DB_HOST'=>'127.0.0.1','DB_PORT'=>(string)$testPort,'DB_NAME'=>$name,'DB_USER'=>'root','DB_PASSWORD'=>'','APP_ENV'=>'development','APP_URL'=>'http://localhost/kic-main','APP_KEY'=>bin2hex(random_bytes(32)),'PAYMENT_MODE'=>'sandbox','PAYMENTS_ENABLED'=>'true','STRIPE_SECRET_KEY'=>'sk_test_'.str_repeat('x',24),'STRIPE_WEBHOOK_SECRET'=>'whsec_local_test_only','PRICE_TAX_MODE'=>'UNCONFIRMED'] as $k=>$v)putenv($k.'='.$v);
 require dirname(__DIR__).'/src/bootstrap.php';
 require dirname(__DIR__).'/src/catalog.php';
 require dirname(__DIR__).'/src/commerce.php';
@@ -76,6 +77,19 @@ try{
     $message=['name'=>'Test','email'=>'test@example.invalid','subject'=>'devis','message'=>'Demande de test sans transmission','consent'=>true];$messageKey=bin2hex(random_bytes(16));
     $a=contact_request_data($message,$messageKey);$b=contact_request_data($message,$messageKey);ok($a===$b,'contact enregistré sans doublon');
     ok(str_starts_with(summary_pdf(find_order($order['orderNumber'],true)),'%PDF-1.4'),'récapitulatif PDF généré');
+    $config['payments_enabled']=true;$config['price_tax_mode']='TTC';$config['vat_rate_bps']=550;$config['seller_vat_number']='FR_TEST_FIXTURE';$config['delivery_included_france']=true;
+    $frenchQuote=quote_order($body);ok($frenchQuote['total']===4000&&$frenchQuote['deliveryFee']===0,'40 EUR livrés en France');
+    ok($frenchQuote['taxBreakdown']['vatAmount']===209,'TVA comprise à 5,5 %');
+    $taxOrder=create_order_data(prepared($body),bin2hex(random_bytes(16)));
+    ok($taxOrder['taxBreakdown']['netAmount']===3791,'TVA enregistrée dans la commande');
+    $taxSession=checkout_payment_data(find_order($taxOrder['orderNumber'],true));
+    ok((int)$sessions[$taxSession['reference']]['amount_total']===4000,'Stripe reçoit 40 EUR sans TVA ajoutée');
+    $config['vat_rate_bps']=2000;
+    ok(order_response(find_order($taxOrder['orderNumber'],true))['taxBreakdown']['rateBps']===550,'Historique fiscal immuable');
+    $config['vat_rate_bps']=550;
+    $euBody=array_merge($body,['country'=>'Belgique','postalCode'=>'1000','deliveryZoneId'=>4]);
+    $euQuote=quote_order($euBody);ok($euQuote['total']===6800&&$euQuote['deliveryFee']===2800,'Livraison UE facturée séparément');
+    ok(order_response(find_order($order['orderNumber'],true))['taxBreakdown']===null,'Aucune TVA inventée sur une ancienne commande');
     echo "$checks contrôles métier réussis. Stripe simulé, aucune donnée réelle.\n";
 }catch(Throwable $e){fwrite(STDERR,(string)$e."\n");$failed=true;}
 finally{$server->exec('DROP DATABASE `'.$name.'`');}

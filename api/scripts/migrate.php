@@ -7,6 +7,7 @@ if($apply&&$config['app_env']==='production'&&!in_array('--allow-production',$ar
 $pdo=db();
 $columns=[
  'orders'=>[
+  'tax_snapshot'=>'TEXT NULL',
   'checkout_key'=>'CHAR(64) NULL UNIQUE','request_hash'=>'CHAR(64) NULL',
   'order_mode'=>"ENUM('REQUEST','PAYMENT') NOT NULL DEFAULT 'PAYMENT'",
   'payment_environment'=>"ENUM('sandbox','live','legacy') NOT NULL DEFAULT 'legacy'",

@@ -25,7 +25,7 @@
   function label() {
     var pay = !config || config.paymentsEnabled;
     button.textContent = busy ? 'Traitement en cours…' : pay ? (config && config.paymentMode === 'sandbox' ? 'Tester le paiement Stripe' : 'Payer ma commande') : 'Envoyer ma demande';
-    button.disabled = busy;
+    button.disabled = busy || !config || (config.paymentsEnabled && !config.paymentReady);
   }
   function appendLine(name, amount, strong) {
     var row = document.createElement('div'); row.className = 'kic-summary-item';
@@ -36,6 +36,7 @@
     quote = value; summary.replaceChildren();
     value.items.forEach(function (i) { appendLine(i.quantity + ' × ' + i.productName + ' · ' + i.format, i.lineTotal, true); });
     appendLine('Sous-total', value.subtotal); appendLine('Livraison', value.deliveryFee);
+    if (value.taxBreakdown) appendLine('Dont TVA (' + String(value.taxBreakdown.rateBps / 100).replace('.', ',') + ' %)', value.taxBreakdown.vatAmount);
     if (value.discountCode) appendLine('Remise ' + value.discountCode, -value.discountAmount);
     total.textContent = api.money(value.total);
     document.getElementById('kic-summary-tax').textContent = config && config.paymentMode === 'sandbox' ? 'Montants de test — aucun encaissement réel.' : value.taxMode === 'TTC' ? 'Prix TTC.' : value.taxMode === 'VAT_EXEMPT' ? 'TVA non applicable selon le régime confirmé par KIC.' : 'Montant indicatif, qualification fiscale et conditions confirmées par devis.';
@@ -47,7 +48,10 @@
     var rows = zones.filter(function (z) { return z.scope === scope; });
     zone.replaceChildren();
     if (pickup) { zone.add(new Option('Retrait à Nice — gratuit', '')); }
-    else rows.forEach(function (z) { zone.add(new Option(z.name + ' — ' + api.money(z.fee), String(z.id))); });
+    else rows.forEach(function (z) {
+      var included = config && config.deliveryIncludedFrance && ['FR_MAINLAND', 'FR_CORSE'].indexOf(z.scope) !== -1;
+      zone.add(new Option(z.name + ' — ' + (included ? 'comprise dans le prix' : api.money(z.fee)), String(z.id)));
+    });
     if (rows.some(function (z) { return String(z.id) === old; })) zone.value = old;
     zone.disabled = pickup; zone.required = !pickup;
     document.getElementById('kic-zone-field').classList.toggle('is-disabled', pickup);
@@ -117,7 +121,7 @@
       var saved = read(formKey, {}); Object.keys(saved).forEach(function (key) { if (form.elements[key] && form.elements[key].type !== 'checkbox') form.elements[key].value = saved[key]; });
       document.getElementById('kic-payment-mode').textContent = config.message;
       document.getElementById('kic-payment-mode').classList.toggle('is-sandbox', config.paymentMode === 'sandbox');
-      if (config.paymentMode === 'sandbox' && !config.paymentReady) message('Mode test sélectionné. Renseignez les clés de test Stripe sur le serveur pour ouvrir Checkout.');
+      if (config.paymentsEnabled && !config.paymentReady) message('Le paiement est temporairement indisponible. Contactez KIC pour votre commande.');
       filterZones(); label(); document.getElementById('kic-resume').hidden = !read(pendingKey, null); await refreshQuote();
     } catch (error) { message(error.message); button.disabled = true; }
   }

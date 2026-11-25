@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+require_once __DIR__.'/tax.php';
 
 function require_app_key(): void {
     global $config;
@@ -71,9 +72,10 @@ function quote_order(array $input,bool $lock=false): array {
         $discount=valid_discount($body['discountCode'],$subtotal);
         if(!$discount)fail(422,'INVALID_DISCOUNT','Code promotionnel invalide, expiré ou non applicable à ce montant.');
     }
-    $reduction=$discount?discount_amount($discount,$subtotal):0;$fee=(int)($zone['fee']??0);
+    $reduction=$discount?discount_amount($discount,$subtotal):0;$fee=checkout_delivery_fee($zone,$config);
     if($subtotal+$fee-$reduction>99999999)fail(422,'AMOUNT_TOO_LARGE','Pour ce montant, contactez KIC afin de recevoir un devis professionnel.');
     $quote=['paymentEnvironment'=>$config['payment_mode']??'sandbox','mode'=>$enabled?'PAYMENT':'REQUEST','currency'=>'EUR','items'=>$items,'subtotal'=>$subtotal,'deliveryFee'=>$fee,'discountAmount'=>$reduction,'discountCode'=>$discount['code']??null,'total'=>$subtotal+$fee-$reduction,'taxMode'=>$config['price_tax_mode']??'UNCONFIRMED','deliveryZoneName'=>$zone['name']??'Retrait à Nice'];
+    $quote['taxBreakdown']=tax_breakdown($quote['total'],$config);
     $quote['quoteHash']=hash_hmac('sha256',json_encode([$quote,$body['deliveryMethod'],$body['country'],$body['postalCode'],$body['deliveryZoneId']],JSON_UNESCAPED_UNICODE),$config['app_key']);
     return $quote;
 }
@@ -85,6 +87,7 @@ function order_response(array $order): array {
     $base['reservationStatus']=$order['reservation_status']??'HELD';
     $base['postalCode']=$order['postal_code']??'';
     $base['taxMode']=$order['tax_mode']??'UNCONFIRMED';
+    $base['taxBreakdown']=isset($order['tax_snapshot'])?json_decode($order['tax_snapshot'],true):null;
     $base['expiresAt']=$order['expires_at']?gmdate(DATE_ATOM,strtotime($order['expires_at'].' UTC')):null;
     $q=db()->prepare("SELECT refunded_amount,reconciliation_required FROM payments WHERE order_id=? ORDER BY (status IN ('SUCCESS','REFUNDED','PARTIALLY_REFUNDED')) DESC,id DESC LIMIT 1");$q->execute([$order['id']]);
     if($p=$q->fetch())$base['payment']=array_merge($base['payment']??[],['refundedAmount'=>(int)$p['refunded_amount'],'requiresReview'=>(bool)$p['reconciliation_required']]);
@@ -115,6 +118,7 @@ function create_order_data(array $input,string $key): array {
             $u=current_user(false);
             $q->execute([$number,hash('sha256',$key),$hash,$quote['mode'],$quote['paymentEnvironment'],$pay?'HELD':'NONE',$pay?gmdate('Y-m-d H:i:s',time()+3600):null,$quote['taxMode'],$pay&&$quote['discountCode']?1:0,$u['id']??null,$quote['subtotal'],$quote['deliveryFee'],$quote['discountCode'],$quote['discountAmount'],$quote['total'],$body['contactEmail'],$body['phone'],$body['recipientName'],$body['city'],$body['postalCode'],$body['addressLine'],$body['country'],$body['deliveryMethod'],$body['deliveryMethod']==='DELIVERY'?$body['deliveryZoneId']:null]);
             $id=(int)$pdo->lastInsertId();
+            $pdo->prepare('UPDATE orders SET tax_snapshot=? WHERE id=?')->execute([$quote['taxBreakdown']===null?null:json_encode($quote['taxBreakdown'],JSON_UNESCAPED_UNICODE),$id]);
             foreach($quote['items'] as $item){
                 if($pay){$q=$pdo->prepare('UPDATE product_variants SET stock=stock-? WHERE id=? AND stock>=?');$q->execute([$item['quantity'],$item['variantId'],$item['quantity']]);if(!$q->rowCount())fail(409,'INSUFFICIENT_STOCK','Stock insuffisant.');}
                 $pdo->prepare('INSERT INTO order_items(order_id,variant_id,product_name,format,unit_price,quantity,line_total) VALUES(?,?,?,?,?,?,?)')->execute([$id,$item['variantId'],$item['productName'],$item['format'],$item['unitPrice'],$item['quantity'],$item['lineTotal']]);

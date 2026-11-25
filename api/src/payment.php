@@ -12,6 +12,8 @@ function payment_readiness(): array {
         'paymentMode'=>in_array($config['payment_mode']??'sandbox',['sandbox','live'],true),
         'webhookSecret'=>str_starts_with($config['stripe_webhook_secret']??'','whsec_')&&!str_contains($config['stripe_webhook_secret'],'REMPLACER'),
         'taxMode'=>$sandbox||in_array($config['price_tax_mode']??'',['TTC','VAT_EXEMPT'],true),
+        'vatRate'=>$sandbox||($config['price_tax_mode']??'')!=='TTC'||(is_int($config['vat_rate_bps']??null)&&$config['vat_rate_bps']>=0&&$config['vat_rate_bps']<=10000),
+        'vatNumber'=>$sandbox||($config['price_tax_mode']??'')!=='TTC'||trim($config['seller_vat_number']??'')!=='',
         'sellerRegistration'=>$sandbox||trim($config['seller_registration']??'')!=='',
         'salesTerms'=>$sandbox||(bool)($config['sales_terms_confirmed']??false),
         'https'=>str_starts_with($config['app_url']??'','https://')||($config['app_env']??'production')!=='production',
@@ -26,7 +28,7 @@ function require_payment_ready(): void {
 function shop_config(): array {
     global $config;
     $ready=!in_array(false,payment_readiness(),true);$enabled=!empty($config['payments_enabled']);$sandbox=($config['payment_mode']??'sandbox')==='sandbox';
-    return ['currency'=>'EUR','shopName'=>'KIC — Konan Industrie et Chocolaterie','freeDeliveryThreshold'=>null,'paymentsEnabled'=>$enabled,'paymentReady'=>$ready,'paymentMode'=>$sandbox?'sandbox':'live','ordersAvailable'=>!$enabled||$ready,'checkoutMode'=>$enabled?'PAYMENT':'REQUEST','paymentMethods'=>$enabled?['STRIPE']:[],'taxMode'=>$config['price_tax_mode']??'UNCONFIRMED','countries'=>array_merge(['France'],eu_countries()),'message'=>$enabled?($sandbox?'Paiement de test Stripe : aucun encaissement réel.':'Paiement par carte sur la page sécurisée Stripe.'):'Demande de commande sans paiement. KIC vous confirme les conditions par devis.'];
+    return ['currency'=>'EUR','shopName'=>'KIC — Konan Industrie et Chocolaterie','freeDeliveryThreshold'=>null,'paymentsEnabled'=>$enabled,'paymentReady'=>$ready,'paymentMode'=>$sandbox?'sandbox':'live','ordersAvailable'=>!$enabled||$ready,'checkoutMode'=>$enabled?'PAYMENT':'REQUEST','paymentMethods'=>$enabled?['STRIPE']:[],'taxMode'=>$config['price_tax_mode']??'UNCONFIRMED','deliveryIncludedFrance'=>(bool)($config['delivery_included_france']??false),'countries'=>array_merge(['France'],eu_countries()),'message'=>$enabled?($sandbox?'Paiement de test Stripe : aucun encaissement réel.':'Paiement par carte sur la page sécurisée Stripe.'):'Demande de commande sans paiement. KIC vous confirme les conditions par devis.'];
 }
 function stripe_request(string $path,array $fields=[],string $method='POST',?string $idempotencyKey=null): array {
     global $config;

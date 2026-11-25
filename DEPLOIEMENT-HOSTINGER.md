@@ -1,3 +1,7 @@
+# Passage en production
+
+Pour activer les paiements réels, suivre [PAIEMENT-PRODUCTION.md](PAIEMENT-PRODUCTION.md). Les instructions sandbox ci-dessous concernent uniquement les essais.
+
 # Mise à jour paiement du 30 octobre 2026
 
 Suivre en priorité [PAIEMENT-SANDBOX.md](PAIEMENT-SANDBOX.md). Le paiement reste activé en sandbox. Les anciennes instructions sans passerelle ci-dessous sont historiques et ne décrivent plus le parcours actuel.

@@ -129,7 +129,9 @@ function create_order_data(array $input,string $key): array {
             }
             $pdo->commit();$created=find_order($number,true);
             $result=array_merge(order_response($created),['accessToken'=>order_access_token($created)]);
-            notify_new_order($result);return $result;
+            // Une commande à payer n'est annoncée qu'une fois le paiement confirmé par Stripe.
+            if(!$pay)notify_new_order($result);
+            return $result;
         }catch(Throwable $e){if($pdo->inTransaction())$pdo->rollBack();throw $e;}
     });
 }

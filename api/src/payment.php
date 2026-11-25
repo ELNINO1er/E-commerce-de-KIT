@@ -147,7 +147,14 @@ function apply_stripe_event(array $event): array {
         $q=$pdo->prepare('SELECT * FROM payments WHERE payment_intent=? LIMIT 1');$q->execute([$intent]);
     }
     $payment=$q->fetch();
-    if(!$payment)fail(503,'PAYMENT_RECONCILIATION_PENDING','Transaction non encore rapprochée. Nouvelle tentative requise.');
+    if(!$payment){
+        // Un paiement du site porte toujours son numéro de commande KIC. Sans
+        // lui (facture, lien de paiement…), répondre 503 ferait relancer Stripe
+        // pendant des jours et risquerait la désactivation du webhook.
+        $reference=(string)($object['metadata']['order_number']??$object['client_reference_id']??'');
+        if(!str_starts_with($reference,'KIC-')){error_log('KIC Stripe : événement '.$type.' hors boutique ignoré');return ['received'=>true,'ignored'=>true];}
+        fail(503,'PAYMENT_RECONCILIATION_PENDING','Transaction non encore rapprochée. Nouvelle tentative requise.');
+    }
     $pdo->beginTransaction();
     try{
         $q=$pdo->prepare('SELECT * FROM orders WHERE id=? FOR UPDATE');$q->execute([$payment['order_id']]);$order=$q->fetch();
@@ -167,7 +174,7 @@ function apply_stripe_event(array $event): array {
             $review=(int)$q->fetchColumn()>0||$order['status']==='CANCELLED';
             $status=(int)$payment['refunded_amount']>0?((int)$payment['refunded_amount']>=(int)$payment['amount']?'REFUNDED':'PARTIALLY_REFUNDED'):'SUCCESS';
             $pdo->prepare('UPDATE payments SET status=?,payment_intent=COALESCE(?,payment_intent),paid_at=COALESCE(paid_at,NOW()),reconciliation_required=GREATEST(reconciliation_required,?) WHERE id=?')->execute([$status,$object['payment_intent']??null,$review?1:0,$payment['id']]);
-            if(!$review&&$order['status']==='PENDING')$pdo->prepare("UPDATE orders SET status='PAID',reservation_status='CONSUMED' WHERE id=?")->execute([$order['id']]);
+            if(!$review&&$order['status']==='PENDING'){$pdo->prepare("UPDATE orders SET status='PAID',reservation_status='CONSUMED' WHERE id=?")->execute([$order['id']]);$paidNow=true;}
         }elseif(in_array($type,['checkout.session.expired','checkout.session.async_payment_failed'],true)){
             $pdo->prepare("UPDATE payments SET status=? WHERE id=? AND status='PENDING'")->execute([$type==='checkout.session.expired'?'CANCELLED':'FAILED',$payment['id']]);
             $q=$pdo->prepare("SELECT COUNT(*) FROM payments WHERE order_id=? AND status IN ('PENDING','SUCCESS','PARTIALLY_REFUNDED','REFUNDED')");$q->execute([$order['id']]);
@@ -179,8 +186,14 @@ function apply_stripe_event(array $event): array {
         }elseif(str_starts_with($type,'charge.dispute.')){
             $pdo->prepare('UPDATE payments SET reconciliation_required=1 WHERE id=?')->execute([$payment['id']]);
         }
-        $pdo->commit();return ['received'=>true];
+        $pdo->commit();
     }catch(Throwable $e){if($pdo->inTransaction())$pdo->rollBack();throw $e;}
+    // Après validation seulement : un échec d'envoi ne doit jamais annuler le paiement enregistré.
+    if(!empty($paidNow)){
+        try{notify_new_order(order_response(find_order($order['order_number'],true)),true);}
+        catch(Throwable $e){error_log('KIC notification paiement non envoyée pour '.$order['order_number']);}
+    }
+    return ['received'=>true];
 }
 
 function stripe_webhook(): never {

@@ -15,14 +15,16 @@ function legacy_order_response(array $o): array { $q=db()->prepare('SELECT varia
 function find_order(string $number,bool $admin=false): array { $q=db()->prepare('SELECT o.*,z.name zone_name,z.estimated_days_min,z.estimated_days_max FROM orders o LEFT JOIN delivery_zones z ON z.id=o.delivery_zone_id WHERE o.order_number=?');$q->execute([$number]);$o=$q->fetch();if(!$o)fail(404,'NOT_FOUND','Commande introuvable.');if(!$admin){$u=current_user(false);$owned=$u&&$o['user_id']!==null&&(int)$o['user_id']===(int)$u['id'];$token=(string)($_SERVER['HTTP_X_ORDER_TOKEN']??'');if(!$owned&&!hash_equals(order_access_token($o),$token))fail(404,'NOT_FOUND','Commande introuvable.');}return $o; }
 
 /** Notification interne facultative, sans coordonnées personnelles du client. */
-function notify_new_order(array $order): void
+function notify_new_order(array $order, bool $paid = false): void
 {
     global $config;
     $to = trim((string)($config['order_notification_email'] ?? ''));
     if ($to === '' || !filter_var($to, FILTER_VALIDATE_EMAIL)) return;
+    $subject = ($paid ? 'Commande payée ' : 'Nouvelle demande de commande ') . $order['orderNumber'];
     $lines = [
-        'Nouvelle commande KIC : ' . $order['orderNumber'],
+        ($paid ? 'Paiement confirmé par Stripe — commande à préparer : ' : 'Demande de commande sans paiement (devis à établir) : ') . $order['orderNumber'],
         'Total : ' . number_format(((int)$order['total']) / 100, 2, ',', ' ') . ' EUR',
+        ($paid && ($order['paymentEnvironment'] ?? '') === 'sandbox') ? 'Environnement de TEST — aucun encaissement réel.' : '',
         '',
         'Produits :',
     ];
@@ -33,7 +35,7 @@ function notify_new_order(array $order): void
         'Content-Type: text/plain; charset=UTF-8',
         'From: KIC Boutique <no-reply@kic-fr.com>',
     ];
-    if (!@mail($to, 'Nouvelle commande ' . $order['orderNumber'], implode("\r\n", $lines), implode("\r\n", $headers))) {
+    if (!@mail($to, $subject, implode("\r\n", $lines), implode("\r\n", $headers))) {
         error_log('KIC notification mail non envoyée pour ' . $order['orderNumber']);
     }
 }

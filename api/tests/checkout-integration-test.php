@@ -71,7 +71,10 @@ try{
     ok(order_response(find_order($order['orderNumber'],true))['payment']['refundedAmount']===1000,'remboursement partiel rapproché');
     $refund['amount_refunded']=500;apply_stripe_event(event_for($refund,'charge.refunded'));
     ok(order_response(find_order($order['orderNumber'],true))['payment']['refundedAmount']===1000,'ancien événement ne diminue pas le remboursement');
-    rejects(fn()=>apply_stripe_event(event_for(['id'=>'cs_unknown'],'checkout.session.completed')),'PAYMENT_RECONCILIATION_PENDING');
+    rejects(fn()=>apply_stripe_event(event_for(['id'=>'cs_unknown','metadata'=>['order_number'=>'KIC-INCONNUE']],'checkout.session.completed')),'PAYMENT_RECONCILIATION_PENDING');
+    ok(!empty(apply_stripe_event(event_for(['id'=>'cs_lien_paiement'],'checkout.session.completed'))['ignored']),'session Stripe hors boutique ignorée');
+    ok(!empty(apply_stripe_event(event_for(['id'=>'ch_facture','payment_intent'=>'pi_facture','currency'=>'eur','amount_refunded'=>100],'charge.refunded'))['ignored']),'remboursement hors boutique ignoré');
+    ok(!empty(apply_stripe_event(event_for(['id'=>'dp_facture','payment_intent'=>'pi_facture'],'charge.dispute.created'))['ignored']),'litige hors boutique ignoré');
     $config['payments_enabled']=false;$requestStock=(int)db()->query('SELECT stock FROM product_variants WHERE id=1')->fetchColumn();
     $request=create_order_data(prepared($body),bin2hex(random_bytes(16)));ok($request['mode']==='REQUEST'&&$request['reservationStatus']==='NONE','mode devis sans réservation');
     ok((int)db()->query('SELECT stock FROM product_variants WHERE id=1')->fetchColumn()===$requestStock,'devis ne bloque pas le stock');

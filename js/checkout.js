@@ -24,8 +24,13 @@
   function message(text) { feedback.textContent = text; }
   function label() {
     var pay = !config || config.paymentsEnabled;
-    button.textContent = busy ? 'Traitement en cours…' : pay ? (config && config.paymentMode === 'sandbox' ? 'Tester le paiement Stripe' : 'Payer ma commande') : 'Envoyer ma demande';
+    var title = button.querySelector('strong'), hint = button.querySelector('small');
+    title.textContent = busy ? 'Traitement en cours…' : pay ? (config && config.paymentMode === 'sandbox' ? 'Tester le paiement Stripe' : 'Payer ma commande') : 'Envoyer ma demande';
+    hint.textContent = busy ? 'Veuillez patienter, ne relancez pas la commande.' : pay ? (config && config.paymentMode === 'sandbox' ? 'Mode test — aucun débit réel' : 'Continuer vers le paiement sécurisé Stripe') : 'KIC vous confirme les conditions par devis';
+    button.setAttribute('aria-busy', String(busy));
     button.disabled = busy || !config || (config.paymentsEnabled && !config.paymentReady);
+    document.getElementById('kic-resume-button').disabled = busy;
+    document.getElementById('kic-cancel-button').disabled = busy;
   }
   function appendLine(name, amount, strong) {
     var row = document.createElement('div'); row.className = 'kic-summary-item';
@@ -119,6 +124,9 @@
       var values = await Promise.all([api.config(), api.zones()]); config = values[0]; zones = values[1];
       country.replaceChildren(); config.countries.forEach(function (name) { country.add(new Option(name, name)); });
       var saved = read(formKey, {}); Object.keys(saved).forEach(function (key) { if (form.elements[key] && form.elements[key].type !== 'checkbox') form.elements[key].value = saved[key]; });
+      // Synchroniser aussi les libellés des sélecteurs enrichis après restauration.
+      method.dispatchEvent(new Event('change'));
+      country.dispatchEvent(new Event('change'));
       document.getElementById('kic-payment-mode').textContent = config.message;
       document.getElementById('kic-payment-mode').classList.toggle('is-sandbox', config.paymentMode === 'sandbox');
       if (config.paymentsEnabled && !config.paymentReady) message('Le paiement est temporairement indisponible. Contactez KIC pour votre commande.');

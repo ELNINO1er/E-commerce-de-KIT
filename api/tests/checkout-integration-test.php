@@ -20,6 +20,7 @@ function prepared(array $body): array {$body['quoteHash']=quote_order($body)['qu
 $sessions=[];$requests=[];$networkCalls=0;
 $GLOBALS['kic_test_stripe_transport']=function($path,$fields,$method,$key)use(&$sessions,&$requests,&$networkCalls){
     if($path==='checkout/sessions'&&$method==='POST'){
+        ok(($fields['allowed_payment_method_types[0]']??null)==='card'&&!isset($fields['payment_method_types[0]']),'paramètre Checkout compatible avec Endive');
         if(isset($requests[$key])){ok($requests[$key]['fields']===$fields,'paramètres de reprise Stripe identiques');return $sessions[$requests[$key]['id']];}
         $networkCalls++;$id='cs_test_'.bin2hex(random_bytes(5));
         $sessions[$id]=['id'=>$id,'url'=>'https://checkout.stripe.com/c/pay/'.$id,'status'=>'open','payment_status'=>'unpaid','amount_total'=>$fields['line_items[0][price_data][unit_amount]'],'currency'=>'eur','livemode'=>false,'payment_intent'=>'pi_'.$id,'metadata'=>['order_number'=>$fields['metadata[order_number]'],'attempt_key'=>$fields['metadata[attempt_key]']]];

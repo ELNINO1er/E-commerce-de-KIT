@@ -48,6 +48,19 @@ function stripe_request(string $path,array $fields=[],string $method='POST',?str
     $raw=curl_exec($curl);$status=(int)curl_getinfo($curl,CURLINFO_RESPONSE_CODE);$error=curl_error($curl);curl_close($curl);
     if($raw===false||$error!==''){error_log('KIC Stripe : erreur réseau');fail(502,'PAYMENT_UNAVAILABLE','Le prestataire ne répond pas. Reprenez cette même commande dans quelques instants.');}
     $result=json_decode((string)$raw,true);
+    // Une reprise doit conserver la même clé. Pour une ancienne requête, relire
+    // d'abord sa réponse avec ses paramètres d'origine avant toute migration.
+    $checkout=$path==='checkout/sessions'&&$method==='POST'&&$idempotencyKey!==null;
+    if($checkout&&$status===400&&($result['error']['type']??'')==='idempotency_error'&&isset($fields['allowed_payment_method_types[0]'])){
+        $legacy=$fields;$legacy['payment_method_types[0]']=$legacy['allowed_payment_method_types[0]'];unset($legacy['allowed_payment_method_types[0]']);
+        return stripe_request($path,$legacy,$method,$idempotencyKey);
+    }
+    // Seul un refus explicite du paramètre supprimé prouve qu'aucune session
+    // n'a été créée. Le nouveau nom de clé reste stable pour toutes les reprises.
+    if($checkout&&$status===400&&($result['error']['type']??'')==='invalid_request_error'&&($result['error']['param']??'')==='payment_method_types'&&isset($fields['payment_method_types[0]'])){
+        $updated=$fields;$updated['allowed_payment_method_types[0]']=$updated['payment_method_types[0]'];unset($updated['payment_method_types[0]']);
+        return stripe_request($path,$updated,$method,$idempotencyKey.'-endive-allowed');
+    }
     if($status<200||$status>=300||!is_array($result)){error_log('KIC Stripe HTTP '.$status);fail(502,'PAYMENT_PROVIDER_ERROR','Le paiement n’a pas pu être préparé. Reprenez cette même commande ou contactez KIC.');}
     return $result;
 }
@@ -82,7 +95,7 @@ function checkout_payment_data(array $authorizedOrder): array {
         if(strtotime($attempt['checkout_expires_at'].' UTC')<time()+1800)fail(409,'PAYMENT_REVIEW_REQUIRED','La tentative interrompue nécessite une vérification par KIC. Ne recommencez pas avec une autre commande.');
         $base=rtrim($config['app_url'],'/');
         $session=stripe_request('checkout/sessions',[
-            'mode'=>'payment','payment_method_types[0]'=>'card',
+            'mode'=>'payment','allowed_payment_method_types[0]'=>'card',
             'success_url'=>$base.'/confirmation.html?order='.rawurlencode($order['order_number']).'&session_id={CHECKOUT_SESSION_ID}',
             'cancel_url'=>$base.'/commande.html?payment=cancelled',
             'customer_email'=>$order['contact_email'],'client_reference_id'=>$order['order_number'],
